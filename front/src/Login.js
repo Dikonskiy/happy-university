@@ -13,7 +13,7 @@ const Login = () => {
                         <label for="password">Password:</label>
                         <input type="password" id="password" name="password" placeholder="Password"></input>
                     </div>
-                    <a href="/resetpassword">Forgot password?</a>
+                    <a href="/forgotpassword">Forgot password?</a>
                     <button type="submit">Log in</button>
                 </form>
             </div>
