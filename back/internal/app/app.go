@@ -30,19 +30,30 @@ var (
 	Cnfg   *models.Config
 )
 
-func (a *Application) StartServer() {
-	r := mux.NewRouter()
-
+func init() {
 	var err error
 	Cnfg, err = config.NewConfig("config.json")
 	if err != nil {
-		Logger.Log.Error("Failed to initialize the configuration:", err)
+		log.Println("Failed to initialize the configuration:", err)
 		return
 	}
 
 	Logger = logger.NewLogerr()
 	Repo = repository.NewRepository(Cnfg.MysqlConnectionString, Logger)
-	Hand = handlers.NewHandler()
+	Hand = handlers.NewHandler(Repo)
+}
+
+func (a *Application) StartServer() {
+	r := mux.NewRouter()
+
+	err2 := Repo.CreateUser("user1", "password123")
+	if err2 != nil {
+		Logger.Log.Error("Error creating user:", err2)
+		return
+	}
+	Logger.Log.Info("User created successfully")
+
+	r.HandleFunc("/login", Hand.HandleLogin)
 
 	server := &http.Server{
 		Addr:         ":" + Cnfg.ListenPort,
