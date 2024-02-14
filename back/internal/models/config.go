@@ -11,6 +11,7 @@ type Person struct {
 	PersonID int
 	Name     string
 	Email    string
+	Password string
 }
 
 type Student struct {
@@ -26,10 +27,9 @@ type Teacher struct {
 }
 
 type Course struct {
-	CourseID    string
-	Name        string
-	CreditHours int
-	Teacher     Teacher
+	CourseID string
+	Name     string
+	Teacher  Teacher
 }
 
 type Attendance struct {

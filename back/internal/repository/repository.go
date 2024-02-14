@@ -2,9 +2,9 @@ package repository
 
 import (
 	"database/sql"
-	"time"
 
 	"github.com/Dikonskiy/happy-university/back/internal/logger"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 type Repository struct {
@@ -15,16 +15,13 @@ type Repository struct {
 func NewRepository(MysqlConnectionString string, logerr *logger.Logger) *Repository {
 	db, err := sql.Open("mysql", MysqlConnectionString)
 	if err != nil {
-		logerr.Log.Error("Failed initialize database connection")
+		logerr.Log.Error("Failed initialize database connection", err)
 		return nil
 	}
 
-	db.SetMaxOpenConns(39)
-	db.SetMaxIdleConns(5)
-	db.SetConnMaxLifetime(3 * time.Minute)
-
 	if err := db.Ping(); err != nil {
 		db.Close()
+		logerr.Log.Error("Failed to ping database:", err)
 		return nil
 	}
 
