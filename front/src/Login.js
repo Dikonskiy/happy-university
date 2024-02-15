@@ -1,5 +1,5 @@
 import './css/login.css';
-import { sendDataToBackend } from './components/Button';
+import { sendDataToBackend } from './components/utils';
 
 const Login = () => {
     const handleSubmit = (e) => {
@@ -13,14 +13,14 @@ const Login = () => {
 
     return (
         <div>
-            <div class="form-wrapper"> <h1>Log in</h1>
-                <form handleSubmit={handleSubmit} action="#">
-                    <div class="input-field">
-                        <label for="email">Email address:</label>
+            <div className="form-wrapper"> <h1>Log in</h1>
+                <form onSubmit={handleSubmit} action="#">
+                    <div className="input-field">
+                        <label htmlFor="email">Email address:</label>
                         <input type="email" id="email" name="email" placeholder="Email address"></input>
                     </div>
-                    <div class="input-field">
-                        <label for="password">Password:</label>
+                    <div className="input-field">
+                        <label htmlFor="password">Password:</label>
                         <input type="password" id="password" name="password" placeholder="Password"></input>
                     </div>
                     <a href="/forgotpassword">Forgot password?</a>

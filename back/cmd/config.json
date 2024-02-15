@@ -1,0 +1,4 @@
+{
+    "listenPort": "8080",
+    "mysqlConnectionString": "root:root@tcp(127.0.0.1:3306)/soft"
+  }
