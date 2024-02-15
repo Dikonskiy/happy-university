@@ -14,6 +14,7 @@ import (
 	"github.com/Dikonskiy/happy-university/back/internal/models"
 	"github.com/Dikonskiy/happy-university/back/internal/repository"
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 )
 
 type Application struct {
@@ -46,12 +47,15 @@ func init() {
 func (a *Application) StartServer() {
 	r := mux.NewRouter()
 
-	err2 := Repo.CreateUser("user1", "password123")
-	if err2 != nil {
-		Logger.Log.Error("Error creating user:", err2)
-		return
-	}
-	Logger.Log.Info("User created successfully")
+	// Add CORS middleware
+	r.Use(cors.AllowAll().Handler)
+
+	// err2 := Repo.CreateUser("user1@gmail.com", "password123")
+	// if err2 != nil {
+	// 	Logger.Log.Error("Error creating user:", err2)
+	// 	return
+	// }
+	// Logger.Log.Info("User created successfully")
 
 	r.HandleFunc("/login", Hand.HandleLogin)
 

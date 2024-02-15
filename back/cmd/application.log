@@ -14,3 +14,7 @@
 {"time":"2024-02-14T11:04:38.7823018+06:00","level":"INFO","msg":"User created successfully"}
 {"time":"2024-02-14T11:04:38.7874107+06:00","level":"INFO","msg":"Listening on port","8080":"..."}
 {"time":"2024-02-14T11:14:08.4084185+06:00","level":"INFO","msg":"caught signal","signal":"interrupt"}
+{"time":"2024-02-15T19:33:03.0177855+06:00","level":"INFO","msg":"Listening on port","8080":"..."}
+{"time":"2024-02-15T20:01:20.1725114+06:00","level":"INFO","msg":"caught signal","signal":"interrupt"}
+{"time":"2024-02-15T20:04:11.667647+06:00","level":"INFO","msg":"Listening on port","8080":"..."}
+{"time":"2024-02-15T20:35:08.3492376+06:00","level":"INFO","msg":"caught signal","signal":"interrupt"}

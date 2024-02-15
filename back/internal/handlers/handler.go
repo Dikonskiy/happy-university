@@ -29,14 +29,14 @@ func (h *Handler) HandleLogin(w http.ResponseWriter, r *http.Request) {
 
 	// Perform authentication (replace this with your authentication logic)
 	// Example: check if username and password match in the database
-	isAuthenticated := h.Repo.Authenticate(person.Name, person.Password)
+	isAuthenticated := h.Repo.Authenticate(person.Email, person.Password)
 	if !isAuthenticated {
 		http.Error(w, "Invalid username or password", http.StatusUnauthorized)
 		return
 	}
 
 	// Generate access and refresh tokens
-	accessToken, refreshToken, err := token.GenerateTokens(person.Name)
+	accessToken, refreshToken, err := token.GenerateTokens(person.Email)
 	if err != nil {
 		http.Error(w, "Failed to generate tokens", http.StatusInternalServerError)
 		return

@@ -6,9 +6,9 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func (r *Repository) Authenticate(username, password string) bool {
+func (r *Repository) Authenticate(email, password string) bool {
 	var storedPasswordHash string
-	err := r.Db.QueryRow("SELECT password FROM users WHERE username = ?", username).Scan(&storedPasswordHash)
+	err := r.Db.QueryRow("SELECT password FROM users WHERE email = ?", email).Scan(&storedPasswordHash)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return false
@@ -24,13 +24,13 @@ func (r *Repository) Authenticate(username, password string) bool {
 	return true
 }
 
-func (r *Repository) CreateUser(username, password string) error {
+func (r *Repository) CreateUser(email, password string) error {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
 		return err
 	}
 
-	_, err = r.Db.Query("INSERT INTO users (username, password) VALUES (?, ?)", username, string(hashedPassword))
+	_, err = r.Db.Query("INSERT INTO users (email, password) VALUES (?, ?)", email, string(hashedPassword))
 	if err != nil {
 		return err
 	}
