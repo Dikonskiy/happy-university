@@ -24,13 +24,13 @@ func (r *Repository) Authenticate(email, password string) bool {
 	return true
 }
 
-func (r *Repository) CreateUser(email, password string) error {
+func (r *Repository) CreateUser(name, email, role, password string) error {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
 		return err
 	}
 
-	_, err = r.Db.Query("INSERT INTO users (email, password) VALUES (?, ?)", email, string(hashedPassword))
+	_, err = r.Db.Query("INSERT INTO users (username, email, role, password) VALUES (?, ?, ?, ?)", name, email, role, string(hashedPassword))
 	if err != nil {
 		return err
 	}

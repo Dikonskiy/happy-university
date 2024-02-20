@@ -11,6 +11,7 @@ type Person struct {
 	PersonID int
 	Name     string
 	Email    string
+	Role     string
 	Password string
 }
 
