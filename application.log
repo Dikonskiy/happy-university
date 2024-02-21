@@ -22,3 +22,5 @@
 {"time":"2024-02-20T21:40:48.4264678+06:00","level":"INFO","msg":"caught signal","signal":"interrupt"}
 {"time":"2024-02-20T21:40:51.2415782+06:00","level":"INFO","msg":"Listening on port","8080":"..."}
 {"time":"2024-02-20T21:44:04.3953862+06:00","level":"INFO","msg":"caught signal","signal":"interrupt"}
+{"time":"2024-02-21T12:10:52.9498878+06:00","level":"INFO","msg":"Listening on port","8080":"..."}
+{"time":"2024-02-21T12:19:56.8181571+06:00","level":"INFO","msg":"caught signal","signal":"interrupt"}
