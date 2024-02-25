@@ -1,7 +1,15 @@
 import React from 'react';
+// import { useHistory } from 'react-router-dom';
 import './css/home.css';
 
 const Home = () => {
+  const accessToken = localStorage.getItem('accessToken');
+  // const history = useHistory();
+  
+  if (!accessToken) {
+    window.location.href = '/login';
+  }
+  
   return (
     <div className="Home">
       <header className="Home-header">
@@ -10,7 +18,12 @@ const Home = () => {
       <div className="Home-body">
         <div className="Home-attendance">
           <h2>Electronic Attendance</h2>
-          <button className="Home-signout">Sign Out</button>
+          <button className="Home-signout" onClick={() => {
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('refreshToken');
+            // history.push('/login');
+            window.location.href = '/login';
+          }}>Sign Out</button>
         </div>
         <div className="Home-studentinfo">
           <h2>Student Information</h2>
