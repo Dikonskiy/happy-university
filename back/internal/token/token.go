@@ -7,20 +7,18 @@ import (
 )
 
 type CustomClaims struct {
-	Type string `json:"type"`
+	Email string `json:"email"`
+	Role  string `json:"role"`
 	jwt.StandardClaims
 }
 
-// generateToken generates both access and refresh tokens
-func GenerateTokens(role string) (accessToken string, refreshToken string, err error) {
-	// Generate access token
-	accessToken, err = generateToken(role, time.Minute*15)
+func GenerateTokens(email, role string) (accessToken string, refreshToken string, err error) {
+	accessToken, err = generateToken(email, role, time.Minute*15)
 	if err != nil {
 		return "", "", err
 	}
 
-	// Generate refresh token
-	refreshToken, err = generateToken(role, time.Hour*24*7) // Refresh token expires in 7 days
+	refreshToken, err = generateToken(email, role, time.Hour*24*7)
 	if err != nil {
 		return "", "", err
 	}
@@ -28,10 +26,10 @@ func GenerateTokens(role string) (accessToken string, refreshToken string, err e
 	return accessToken, refreshToken, nil
 }
 
-// generateToken generates a JWT token with the specified expiration time
-func generateToken(role string, expiration time.Duration) (string, error) {
+func generateToken(email, role string, expiration time.Duration) (string, error) {
 	claims := CustomClaims{
-		Type: role,
+		Email: email,
+		Role:  role,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(expiration).Unix(),
 		},

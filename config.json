@@ -1,0 +1,5 @@
+{
+    "listenPort": "8080",
+    "mysqlConnectionString": "kursUser:kursPswd@tcp(127.0.0.1:3306)/happy-university"
+  }
+  

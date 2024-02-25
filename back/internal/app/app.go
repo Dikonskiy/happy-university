@@ -1,6 +1,7 @@
 package app
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -39,6 +40,7 @@ func init() {
 		return
 	}
 
+	fmt.Println(Cnfg.MysqlConnectionString)
 	Logger = logger.NewLogerr()
 	Repo = repository.NewRepository(Cnfg.MysqlConnectionString, Logger)
 	Hand = handlers.NewHandler(Repo)
@@ -47,17 +49,10 @@ func init() {
 func (a *Application) StartServer() {
 	r := mux.NewRouter()
 
-	// Add CORS middleware
 	r.Use(cors.AllowAll().Handler)
 
-	// err2 := Repo.CreateUser("user1@gmail.com", "password123")
-	// if err2 != nil {
-	// 	Logger.Log.Error("Error creating user:", err2)
-	// 	return
-	// }
-	// Logger.Log.Info("User created successfully")
-
-	r.HandleFunc("/login", Hand.HandleLogin)
+	r.HandleFunc("/login", Hand.LoginHandler)
+	r.HandleFunc("/register", Hand.RegisterHandler)
 
 	server := &http.Server{
 		Addr:         ":" + Cnfg.ListenPort,

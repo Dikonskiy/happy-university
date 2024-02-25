@@ -19,33 +19,57 @@ func NewHandler(repo *repository.Repository) *Handler {
 	}
 }
 
-func (h *Handler) HandleLogin(w http.ResponseWriter, r *http.Request) {
-	// Parse the request body
+func (h *Handler) LoginHandler(w http.ResponseWriter, r *http.Request) {
 	var person models.Person
 	if err := json.NewDecoder(r.Body).Decode(&person); err != nil {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
 
-	// Perform authentication (replace this with your authentication logic)
-	// Example: check if username and password match in the database
 	isAuthenticated := h.Repo.Authenticate(person.Email, person.Password)
 	if !isAuthenticated {
 		http.Error(w, "Invalid username or password", http.StatusUnauthorized)
 		return
 	}
 
-	// Generate access and refresh tokens
-	accessToken, refreshToken, err := token.GenerateTokens(person.Email)
+	role, err := h.Repo.GetRole(person.Email)
+	if err != nil {
+		http.Error(w, "failed to get role", http.StatusUnauthorized)
+		h.Repo.Logerr.Log.Error("failed to get role", err)
+		return
+	}
+
+	accessToken, refreshToken, err := token.GenerateTokens(person.Email, role)
 	if err != nil {
 		http.Error(w, "Failed to generate tokens", http.StatusInternalServerError)
 		return
 	}
 
-	// Return tokens in the response
 	response := map[string]string{
 		"access_token":  accessToken,
 		"refresh_token": refreshToken,
 	}
 	json.NewEncoder(w).Encode(response)
+}
+
+func (h *Handler) RegisterHandler(w http.ResponseWriter, r *http.Request) {
+	var person models.Person
+	err := json.NewDecoder(r.Body).Decode(&person)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	if person.Name == "" || person.Email == "" || person.Role == "" || person.Password == "" {
+		http.Error(w, "Missing required fields", http.StatusBadRequest)
+		return
+	}
+
+	err = h.Repo.CreateUser(person.Name, person.Email, person.Role, person.Password)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
 }
