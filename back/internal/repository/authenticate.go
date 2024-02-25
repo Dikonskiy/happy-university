@@ -37,3 +37,13 @@ func (r *Repository) CreateUser(name, email, role, password string) error {
 
 	return nil
 }
+
+func (r *Repository) GetRole(email string) (string, error) {
+	var role string
+	err := r.Db.QueryRow("SELECT role FROM users WHERE email = ?", email).Scan(&role)
+	if err != nil {
+		return "", err
+	}
+
+	return role, nil
+}

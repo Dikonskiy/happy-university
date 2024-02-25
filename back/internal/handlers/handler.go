@@ -32,7 +32,14 @@ func (h *Handler) LoginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	accessToken, refreshToken, err := token.GenerateTokens(person.Email, person.Role)
+	role, err := h.Repo.GetRole(person.Email)
+	if err != nil {
+		http.Error(w, "failed to get role", http.StatusUnauthorized)
+		h.Repo.Logerr.Log.Error("failed to get role", err)
+		return
+	}
+
+	accessToken, refreshToken, err := token.GenerateTokens(person.Email, role)
 	if err != nil {
 		http.Error(w, "Failed to generate tokens", http.StatusInternalServerError)
 		return
