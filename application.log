@@ -27,3 +27,9 @@
 {"time":"2024-02-21T00:36:42.7514934+06:00","level":"INFO","msg":"Listening on port","8080":"..."}
 {"time":"2024-02-21T00:44:57.5555792+06:00","level":"INFO","msg":"caught signal","signal":"terminated"}
 {"time":"2024-02-25T17:34:19.6812799+06:00","level":"INFO","msg":"Listening on port","8080":"..."}
+{"time":"2024-02-28T13:35:42.0643658+06:00","level":"INFO","msg":"Listening on port","8080":"..."}
+{"time":"2024-02-28T14:38:08.5654219+06:00","level":"INFO","msg":"caught signal","signal":"interrupt"}
+{"time":"2024-02-28T14:38:19.898867+06:00","level":"INFO","msg":"Listening on port","8080":"..."}
+{"time":"2024-02-28T14:39:18.31614+06:00","level":"INFO","msg":"caught signal","signal":"interrupt"}
+{"time":"2024-02-28T14:39:25.155522+06:00","level":"INFO","msg":"Listening on port","8080":"..."}
+{"time":"2024-02-28T16:20:36.1130211+06:00","level":"INFO","msg":"caught signal","signal":"interrupt"}

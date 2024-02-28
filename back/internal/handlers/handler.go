@@ -20,7 +20,7 @@ func NewHandler(repo *repository.Repository) *Handler {
 }
 
 func (h *Handler) LoginHandler(w http.ResponseWriter, r *http.Request) {
-	var person models.Person
+	var person models.RegisterRequest
 	if err := json.NewDecoder(r.Body).Decode(&person); err != nil {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
@@ -53,7 +53,7 @@ func (h *Handler) LoginHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) RegisterHandler(w http.ResponseWriter, r *http.Request) {
-	var person models.Person
+	var person models.RegisterRequest
 	err := json.NewDecoder(r.Body).Decode(&person)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -72,4 +72,30 @@ func (h *Handler) RegisterHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
+}
+
+func (h *Handler) ReadCardHandler(w http.ResponseWriter, r *http.Request) {
+	var request models.AttendanceRequest
+	err := json.NewDecoder(r.Body).Decode(&request)
+	if err != nil {
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+
+	err = h.Repo.UpdateAttendance(request.StudentId)
+	if err != nil {
+		http.Error(w, "Failed to update attendance", http.StatusInternalServerError)
+		return
+	}
+
+	response := models.SuccessResponse{Message: "Attendance recorded successfully"}
+	jsonResponse, err := json.Marshal(response)
+	if err != nil {
+		http.Error(w, "JSON marshaling error", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(jsonResponse)
 }
