@@ -1,7 +1,7 @@
 import { encode } from 'js-base64';
 
 // utils.js
-export const sendDataToBackend = (email, password) => {
+export const authorization = (email, password) => {
   const data = {
     email: email,
     password: password

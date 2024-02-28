@@ -1,15 +1,32 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 // import { useHistory } from 'react-router-dom';
 import './css/home.css';
 
 const Home = () => {
+  const [loading, setLoading] = useState(true);
   const accessToken = localStorage.getItem('accessToken');
-  // const history = useHistory();
-  
-  if (!accessToken) {
-    window.location.href = '/login';
+
+  useEffect(() => {
+    // Simulating an asynchronous operation (e.g., fetching data) that takes time
+    const fetchData = async () => {
+      // Replace this with your actual asynchronous operation
+      await new Promise(resolve => setTimeout(resolve, 1));
+      setLoading(false); // Set loading to false when the operation is complete
+    };
+
+    if (!accessToken) {
+      window.location.href = '/login';
+    } else {
+      fetchData();
+    }
+  }, [accessToken]);
+
+  if (loading) {
+    return (
+      <div className="loader"></div>
+    );
   }
-  
+
   return (
     <div className="Home">
       <header className="Home-header">
@@ -38,6 +55,7 @@ const Home = () => {
         <p>System Portal Guideline</p>
       </footer>
     </div>
+    
   );
 };
 

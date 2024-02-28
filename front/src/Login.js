@@ -1,16 +1,39 @@
 import './css/login.css';
-// import React, { useState } from 'react';
-import { sendDataToBackend } from './components/utils';
+import React, { useState, useEffect } from 'react';
+import { authorization } from './components/utils';
 import { jwtDecode } from 'jwt-decode';
 
 const Login = () => {
+  const [loading, setLoading] = useState(true);
+  const accessToken = localStorage.getItem('accessToken');
     // TODO first refresh token after access token
-    if (localStorage.getItem('accessToken')) {
-      if (localStorage.getItem('refreshToken')) {
-        // TODO this is where you would refresh the access token
+    // if (localStorage.getItem('accessToken')) {
+    //   if (localStorage.getItem('refreshToken')) {
+    //     // TODO this is where you would refresh the access token
+    //   }
+    //   window.location.href = '/home';
+    // }
+    useEffect(() => {
+      // Simulating an asynchronous operation (e.g., fetching data) that takes time
+      const fetchData = async () => {
+        // Replace this with your actual asynchronous operation
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        setLoading(false); // Set loading to false when the operation is complete
+      };
+  
+      if (accessToken) {
+        window.location.href = '/home';
+      } else {
+        fetchData();
       }
-      window.location.href = '/home';
+    }, [accessToken]);
+  
+    if (loading) {
+      return (
+        <div className="loader"></div>
+      );
     }
+  
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -18,7 +41,7 @@ const Login = () => {
         const password = e.target.password.value;
       
         // Send the data to your Go back-end
-        sendDataToBackend(email, password)
+        authorization(email, password)
           .then((response) => {
             // Handle successful login
             if (response.ok) {
