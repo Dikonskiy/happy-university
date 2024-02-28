@@ -13,11 +13,31 @@ import '../css/login.css'
 
 const SignUp = () => {
   const [tab, setTab] = useState('login')
+  const [loading, setLoading] = useState(true);
+  const accessToken = localStorage.getItem('accessToken');
 
   useEffect(() => {
+    // Simulating an asynchronous operation (e.g., fetching data) that takes time
+    const fetchData = async () => {
+      // Replace this with your actual asynchronous operation
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      setLoading(false); // Set loading to false when the operation is complete
+    };
+
+    if (accessToken) {
+      window.location.href = '/home';
+    } else {
+      fetchData();
+    }
     // После монтирования компонента устанавливаем кнопку "Sign up" как активную
     document.querySelector('.button-box button:first-child').classList.add('active');
-  }, []); 
+  }, [accessToken]);
+
+  if (loading) {
+    return (
+      <div className="loader"></div>
+    );
+  }
 
   const highlightButton = (tabName, event) => {
     setTab(tabName);
