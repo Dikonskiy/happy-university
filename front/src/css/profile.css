@@ -1,0 +1,105 @@
+.layout {
+  display: flex;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.sidebar {
+  padding: 20px;
+  width: 21%; 
+  height: 700px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative; 
+}
+
+.conteiner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 65%; 
+  height: 30%;
+}
+
+.logo {
+  margin-bottom: 20px;
+  font-size: 24px;
+  /* Happy University */
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 130%;
+  /* or 42px */
+  letter-spacing: -0.01em;
+}
+
+.sidebar-btn {
+  width: 100%;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.sidebar-btn-down {
+  width: 90%;
+  position: absolute;
+  bottom: 0;
+}
+
+.main {
+  flex: 1;
+  padding: 20px;
+  position: relative;
+}
+
+.header {
+  height: 25%;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.header h2 {  
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 25px;
+  letter-spacing: 0em;
+  text-align: left;
+}
+
+.home-h2 {
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: 700;
+}
+
+.box {
+  background-color: #66718D;
+  width: 90%;
+  height: 70%;
+  padding: 20px;  
+  border-radius: 32px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.attendance-box {
+  width: 90%;
+  height: 70%;
+  padding: 20px;
+}
+
+.attendance-box h2 {
+  color: #66718D;
+}
+
+.box img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.box-info {
+  display: flex;
+}

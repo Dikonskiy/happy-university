@@ -27,10 +27,3 @@
 {"time":"2024-02-21T00:36:42.7514934+06:00","level":"INFO","msg":"Listening on port","8080":"..."}
 {"time":"2024-02-21T00:44:57.5555792+06:00","level":"INFO","msg":"caught signal","signal":"terminated"}
 {"time":"2024-02-25T17:34:19.6812799+06:00","level":"INFO","msg":"Listening on port","8080":"..."}
-{"time":"2024-02-25T19:07:43.7159358+06:00","level":"ERROR","msg":"Failed to ping database:","!BADKEY":"Error 1045 (28000): Access denied for user 'kursUser'@'localhost' (using password: YES)"}
-{"time":"2024-02-25T19:07:43.7169671+06:00","level":"INFO","msg":"Listening on port","8080":"..."}
-{"time":"2024-02-25T19:13:31.8575796+06:00","level":"INFO","msg":"caught signal","signal":"interrupt"}
-{"time":"2024-02-25T19:13:35.1764145+06:00","level":"INFO","msg":"Listening on port","8080":"..."}
-{"time":"2024-02-25T19:29:22.9563044+06:00","level":"INFO","msg":"caught signal","signal":"terminated"}
-{"time":"2024-02-26T18:50:13.8945501+06:00","level":"INFO","msg":"Listening on port","8080":"..."}
-{"time":"2024-02-27T16:17:15.6442829+06:00","level":"INFO","msg":"Listening on port","8080":"..."}
