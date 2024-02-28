@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
+
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #fff; /* Set background color directly on body */
+}   
+
+h1 {
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    font-size: 48px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+button {
+    border-radius: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    height: 56px;
+}
+
+button:hover {
+    background-color: gray;
+}
+
+button[type="submit"] {
+    background-color: black;
+    /* border: none; */
+    color: #fff;
+}
+
+button[type="submit"]:hover {
+    background-color: #444;
+}
+    
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+    width: 353px;
+    padding: 16px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    height: 56px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+a { /* Style for forgot password link */
+    margin-top: 70px;
+    margin-bottom: 10px;
+    color: #000000;
+    background-color: transparent;
+    text-decoration: none;
+}

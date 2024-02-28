@@ -1,10 +1,13 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './css/App.css';
-import Login from './Login.js'; 
-import ForgotPasswordForm from './ForgotPasswordForm.js';
-import ResetPassword from './ResetPassword.js';
-import Home from './Home.js';
+import './css/public.css'
+import './css/login.css'
+import SignUp from './pages/SignUp.js';
+import ForgotPasswordForm from './pages/ForgotPasswordForm.js';
+import SendCode from './pages/SendCode.js';
+import ResetPassword from './pages/ResetPassword.js';
+import Layout from './pages/Layout.js';
 
 
 const App = () => {
@@ -12,10 +15,11 @@ const App = () => {
     <Router>
       <div className='App'>
         <Switch>
-          <Route exact path='/' component={Login} />
+          <Route exact path='/' component={SignUp} />
           <Route exact path='/forgotpassword' component={ForgotPasswordForm} />
+          <Route exact path='/sendcode' component={SendCode} />
           <Route exact path='/resetpassword' component={ResetPassword} />
-          <Route exact path='/home' component={Home} />
+          <Route exact path='/home' component={Layout} />
         </Switch>
       </div>
     </Router>
