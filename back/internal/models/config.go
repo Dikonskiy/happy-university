@@ -7,24 +7,28 @@ type Config struct {
 	MysqlConnectionString string `json:"mysqlConnectionString"`
 }
 
-type Person struct {
-	PersonID int
+type Student struct {
+	ID       int
 	Name     string
+	IdCard   string
 	Email    string
-	Role     string
 	Password string
 }
 
-type Student struct {
-	StudentID int
-	Major     string
-	Person    Person
+type Teacher struct {
+	ID       int
+	Name     string
+	IdCard   string
+	Email    string
+	Password string
 }
 
-type Teacher struct {
-	TeacherID  int
-	Department string
-	Person     Person
+type Admin struct {
+	ID       int
+	Name     string
+	IdCard   string
+	Email    string
+	Password string
 }
 
 type Course struct {
