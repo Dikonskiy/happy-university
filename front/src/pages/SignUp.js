@@ -30,7 +30,7 @@ const SignUp = () => {
       fetchData();
     }
     // После монтирования компонента устанавливаем кнопку "Sign up" как активную
-    document.querySelector('.button-box button:first-child').classList.add('active');
+    // document.querySelector('.button-box button:first-child').classList.add('active');
   }, [accessToken]);
 
   if (loading) {
@@ -39,25 +39,18 @@ const SignUp = () => {
     );
   }
 
-  const highlightButton = (tabName, event) => {
+  const highlightButton = (tabName) => {
     setTab(tabName);
-    const buttons = document.querySelectorAll('.button-box button');  
-    buttons.forEach((btn) => {
-      btn.classList.remove('active');
-    });
-    // Добавляем класс active к нажатой кнопке
-    event.target.classList.add('active');
   };
     
   
   return (
     <div className="form-wrapper">
       <h1>Happy</h1>
-      <form action="#"> 
         <div className="input-field">
           <div className="button-box">
-            <button isActive={tab==='login'} onClick={(e) => highlightButton('login', e)}>Sign up</button>
-            <button isActive={tab==='register'} onClick={(e) => highlightButton('register', e)}>Register</button>
+            <button className={tab === 'login' ? 'active' : 'inactive'} onClick={() => highlightButton('login')}>Sign up</button>
+            <button className={tab === 'register' ? 'active' : 'inactive'} onClick={() => highlightButton('register')}>Register</button>
           </div>
 
           {tab === 'login' && (
@@ -72,7 +65,6 @@ const SignUp = () => {
             </>
           )}
         </div>
-      </form>
     </div>
   );
 };

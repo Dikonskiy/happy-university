@@ -46,12 +46,12 @@ const Login = () => {
       };
     return (
             <form onSubmit={handleSubmit} action="#">
-                <div class="input-field">
-                    <label for="email">Email address:</label>
+                <div className="input-field">
+                    <label htmlFor="email">Email address:</label>
                     <input type="email" id="email" name="email" placeholder="Your email"></input>
                 </div>
-                <div class="input-field">
-                    <label for="password">Password:</label>
+                <div className="input-field">
+                    <label htmlFor="password">Password:</label>
                     <input type="password" id="password" name="password" placeholder="Password"></input>
                 </div>
                 <a href="/forgotpassword">Forgot password?</a>

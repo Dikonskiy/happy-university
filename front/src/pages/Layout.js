@@ -33,27 +33,26 @@ const Layout = () => {
 
   const highlightButton = (tabName, event) => {
     setTab(tabName);
-    event.target.classList.add('active');
   };
 
   return (
-    <div class="layout">
-        <div class="sidebar">
-            <div class="conteiner">
-              <img src="https://cdn-icons-png.flaticon.com/512/6063/6063620.png " width="40%"  class="img-fluid rounded" alt="Logo"/>
-              <h1 class="logo">Happy University</h1>
+    <div className="layout">
+        <div className="sidebar">
+            <div className="conteiner">
+              <img src="https://cdn-icons-png.flaticon.com/512/6063/6063620.png " width="40%"  className="img-fluid rounded" alt="Logo"/>
+              <h1 className="logo">Happy University</h1>
             </div>
-            <button isActive={tab==='home'} onClick={(e) => highlightButton('home', e)} class="sidebar-btn">Home</button>
-            <button isActive={tab==='attendance'} onClick={(e) => highlightButton('attendance', e)} class="sidebar-btn">Electronic Attendance</button>
-            <button class="sidebar-btn-down" type="submit" onClick={() => {
+            <button onClick={(e) => highlightButton('home', e)} className="sidebar-btn">Home</button>
+            <button onClick={(e) => highlightButton('attendance', e)} className="sidebar-btn">Electronic Attendance</button>
+            <button className="sidebar-btn-down" type="submit" onClick={() => {
               localStorage.removeItem('accessToken');
               localStorage.removeItem('refreshToken');
               // history.push('/login');
               window.location.href = '/login';
             }}>Sign Out</button>
         </div>
-        <div class="main">
-            <header class="header">
+        <div className="main">
+            <header className="header">
               <h2>Student Information<br/>System</h2>
               <h2>Portal Guidlenes</h2>
             </header>
