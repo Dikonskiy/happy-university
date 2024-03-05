@@ -4,11 +4,11 @@ import { jwtDecode } from 'jwt-decode';
 const Login = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
-        const email = e.target.email.value;
+        const id = e.target.card_id.value;
         const password = e.target.password.value;
       
         // Send the data to your Go back-end
-        authorization(email, password)
+        authorization(id, password)
           .then((response) => {
             // Handle successful login
             if (response.ok) {
@@ -47,8 +47,8 @@ const Login = () => {
     return (
             <form onSubmit={handleSubmit} action="#">
                 <div className="input-field">
-                    <label htmlFor="email">Email address:</label>
-                    <input type="email" id="email" name="email" placeholder="Your email"></input>
+                    <label htmlFor="card_id">Card Id:</label>
+                    <input type="card_id" id="card_id" name="card_id" placeholder="ID"></input>
                 </div>
                 <div className="input-field">
                     <label htmlFor="password">Password:</label>

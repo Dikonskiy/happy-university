@@ -1,4 +1,4 @@
-import React, { useState/*, useEffect */} from 'react';
+import React, { useState, useEffect } from 'react';
 import Home from '../components/Home'
 import Attendance from '../components/Attendance'
 import Info from '../components/Info';
@@ -7,29 +7,29 @@ import '../css/profile.css'
 
 const Layout = () => {
   const [tab, setTab] = useState('home')
-  // const [loading, setLoading] = useState(true);
-  // const accessToken = localStorage.getItem('accessToken');
+  const [loading, setLoading] = useState(true);
+  const accessToken = localStorage.getItem('accessToken');
 
-  // useEffect(() => {
-  //   // Simulating an asynchronous operation (e.g., fetching data) that takes time
-  //   const fetchData = async () => {
-  //     // Replace this with your actual asynchronous operation
-  //     await new Promise(resolve => setTimeout(resolve, 1));
-  //     setLoading(false); // Set loading to false when the operation is complete
-  //   };
+  useEffect(() => {
+    // Simulating an asynchronous operation (e.g., fetching data) that takes time
+    const fetchData = async () => {
+      // Replace this with your actual asynchronous operation
+      await new Promise(resolve => setTimeout(resolve, 1));
+      setLoading(false); // Set loading to false when the operation is complete
+    };
 
-  //   if (!accessToken) {
-  //     window.location.href = '/login';
-  //   } else {
-  //     fetchData();
-  //   }
-  // }, [accessToken]);
+    if (!accessToken) {
+      window.location.href = '/login';
+    } else {
+      fetchData();
+    }
+  }, [accessToken]);
 
-  // if (loading) {
-  //   return (
-  //     <div className="loader"></div>
-  //   );
-  // }
+  if (loading) {
+    return (
+      <div className="loader"></div>
+    );
+  }
 
   const highlightButton = (tabName) => {
     setTab(tabName);
