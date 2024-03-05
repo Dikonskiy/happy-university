@@ -7,18 +7,18 @@ import (
 )
 
 type CustomClaims struct {
-	Email string `json:"email"`
-	Role  string `json:"role"`
+	CardId string `json:"email"`
+	Role   string `json:"role"`
 	jwt.StandardClaims
 }
 
-func GenerateTokens(email, role string) (accessToken string, refreshToken string, err error) {
-	accessToken, err = generateToken(email, role, time.Minute*15)
+func GenerateTokens(cardId, role string) (accessToken string, refreshToken string, err error) {
+	accessToken, err = generateToken(cardId, role, time.Minute*15)
 	if err != nil {
 		return "", "", err
 	}
 
-	refreshToken, err = generateToken(email, role, time.Hour*24*7)
+	refreshToken, err = generateToken(cardId, role, time.Hour*24*7)
 	if err != nil {
 		return "", "", err
 	}
@@ -26,10 +26,10 @@ func GenerateTokens(email, role string) (accessToken string, refreshToken string
 	return accessToken, refreshToken, nil
 }
 
-func generateToken(email, role string, expiration time.Duration) (string, error) {
+func generateToken(cardId, role string, expiration time.Duration) (string, error) {
 	claims := CustomClaims{
-		Email: email,
-		Role:  role,
+		CardId: cardId,
+		Role:   role,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(expiration).Unix(),
 		},
