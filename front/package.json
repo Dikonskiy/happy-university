@@ -6,7 +6,7 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-    "js-base64": "^3.7.6",
+    "js-base64": "^3.7.7",
     "jwt-decode": "^4.0.0",
     "npm": "^10.4.0",
     "react": "^18.2.0",
