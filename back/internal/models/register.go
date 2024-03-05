@@ -19,3 +19,13 @@ type SuccessResponse struct {
 type ErrorResponse struct {
 	Error string `json:"error"`
 }
+
+type Tokens struct {
+	AccessToken  string `json:"access_token"`
+	RefreshToken string `json:"refresh_token"`
+}
+
+type LoginRequest struct {
+	CardId   string `json:"card_id"`
+	Password string `json:"password"`
+}
