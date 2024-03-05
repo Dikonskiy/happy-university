@@ -16,7 +16,7 @@ const ForgotPasswordForm = () => {
   return (
     <div className="form-wrapper">
       <h1>Forgot password?</h1>
-      <p>Don't worry! It happens. Please enter the email associated with your account.</p>
+      <p>Don't worry! It happens. Please enter the<br/> email associated with your account.</p>
       <form onSubmit={handleFormSubmit}>
         <div className="input-field">
           <label htmlFor="email">Email address:</label>
@@ -29,8 +29,11 @@ const ForgotPasswordForm = () => {
             placeholder="Email address"
             required
           />
-        </div>
+        </div> <br/><br/><br/>
         <button type="submit">Send code</button>
+        <p>
+            Remember password? <a href="/login">Log in</a>
+        </p>
       </form>
     </div>
   );
