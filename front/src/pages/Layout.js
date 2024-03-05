@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Home from '../components/Home'
 import Attendance from '../components/Attendance'
+import { checkTokens } from '../components/utils';
 import '../css/profile.css'
 
 
@@ -9,6 +10,24 @@ const Layout = () => {
   const [tab, setTab] = useState('home')
   const [loading, setLoading] = useState(true);
   const accessToken = localStorage.getItem('accessToken');
+  const refreshToken = localStorage.getItem('refreshToken');
+  
+  // send tokens for expiration
+  // ! uncomment for continue
+  // checkTokens(accessToken, refreshToken)
+  //   .then((response) => {
+  //     if (response.ok) {
+  //       return response.json();
+  //     } else {
+  //       throw new Error('Token check failed');
+  //     }
+  //   })
+  //   .then((data) => {
+  //      TODO take a data
+  //   })
+  //   .catch((error) => {
+  //     console.error(error);
+  //   });
 
   useEffect(() => {
     // Simulating an asynchronous operation (e.g., fetching data) that takes time
@@ -18,7 +37,7 @@ const Layout = () => {
       setLoading(false); // Set loading to false when the operation is complete
     };
 
-    if (!accessToken) {
+    if (!accessToken) { // TODO change accessToken to data from backend
       window.location.href = '/login';
     } else {
       fetchData();

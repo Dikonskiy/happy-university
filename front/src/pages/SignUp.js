@@ -20,7 +20,7 @@ const SignUp = () => {
     // Simulating an asynchronous operation (e.g., fetching data) that takes time
     const fetchData = async () => {
       // Replace this with your actual asynchronous operation
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 1));
       setLoading(false); // Set loading to false when the operation is complete
     };
 
@@ -29,8 +29,6 @@ const SignUp = () => {
     } else {
       fetchData();
     }
-    // После монтирования компонента устанавливаем кнопку "Sign up" как активную
-    // document.querySelector('.button-box button:first-child').classList.add('active');
   }, [accessToken]);
 
   if (loading) {

@@ -41,9 +41,6 @@ const Registration = () => {
           <button type="submit" disabled={!agreeToTerms}>
               Commit
           </button>
-          {/* <div className="already-have-an-account">
-              Already have an account? <a href='\login'>Log in</a>
-          </div> */}
       </form>
   );
 };
