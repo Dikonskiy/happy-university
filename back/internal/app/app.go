@@ -54,6 +54,7 @@ func (a *Application) StartServer() {
 	r.HandleFunc("/login", Hand.LoginHandler)
 	r.HandleFunc("/register", Hand.RegisterHandler)
 	r.HandleFunc("/card-entry", Hand.ReadCardHandler)
+	r.HandleFunc("/check-tokens", Hand.CheckToken)
 
 	server := &http.Server{
 		Addr:         ":" + Cnfg.ListenPort,
