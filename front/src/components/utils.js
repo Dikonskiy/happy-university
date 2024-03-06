@@ -30,9 +30,28 @@ export const checkTokens = (accessToken, refreshToken) => {
   headers.append('Accept', 'application/json');
   headers.append('Origin','http://localhost:3000');
 
-  return fetch('http://localhost:8080/token', {
+  return fetch('http://localhost:8080/check-tokens', {
     method: 'POST',
     headers: headers,
     body: JSON.stringify(data),
   })
+}
+
+export const registration = (name, email, role, password) => {
+  const data = {
+    name: name,
+    email: email,
+    role: role,
+    password: password
+  };
+  let headers = new Headers();
+  headers.append('Content-Type', 'application/json');
+  headers.append('Accept', 'application/json');
+  headers.append('Origin','http://localhost:3000');
+
+  return fetch('http://localhost:8080/register', {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify(data),
+    })
 }

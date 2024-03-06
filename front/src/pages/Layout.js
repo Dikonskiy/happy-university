@@ -11,23 +11,26 @@ const Layout = () => {
   const [loading, setLoading] = useState(true);
   const accessToken = localStorage.getItem('accessToken');
   const refreshToken = localStorage.getItem('refreshToken');
+  const userRole = localStorage.getItem('userRole');
+  console.log(userRole)
   
   // send tokens for expiration
   // ! uncomment for continue
-  // checkTokens(accessToken, refreshToken)
-  //   .then((response) => {
-  //     if (response.ok) {
-  //       return response.json();
-  //     } else {
-  //       throw new Error('Token check failed');
-  //     }
-  //   })
-  //   .then((data) => {
-  //      TODO take a data
-  //   })
-  //   .catch((error) => {
-  //     console.error(error);
-  //   });
+  checkTokens(accessToken, refreshToken)
+    .then((response) => {
+      if (response.ok) {
+        return response.text();
+      } else {
+        throw new Error('Token check failed');
+      }
+    })
+    .then((data) => {
+      // TODO save to var
+      // console.log(data)
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 
   useEffect(() => {
     // Simulating an asynchronous operation (e.g., fetching data) that takes time
@@ -36,8 +39,8 @@ const Layout = () => {
       await new Promise(resolve => setTimeout(resolve, 1));
       setLoading(false); // Set loading to false when the operation is complete
     };
-
-    if (!accessToken) { // TODO change accessToken to data from backend
+    // TODO change accessToken to data from backend (depend dias)
+    if (!accessToken) { 
       window.location.href = '/login';
     } else {
       fetchData();

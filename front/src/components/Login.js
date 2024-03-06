@@ -24,18 +24,19 @@ const Login = () => {
         console.log(data)
         // Save the tokens
         if (data && data.access_token && data.refresh_token) {
-          // TODO dont need decode tokens
-          const decodedAccessToken = jwtDecode(data.access_token);
-          console.log(data.access_token);
-          localStorage.setItem("accessToken", decodedAccessToken);
+          
+          localStorage.setItem("accessToken", data.access_token);
+          localStorage.setItem("refreshToken", data.refresh_token);
 
-          const decodedRefreshToken = jwtDecode(data.refresh_token);
-          console.log(decodedRefreshToken);
-          localStorage.setItem("refreshToken", decodedRefreshToken);
+          const decodedAccessToken = jwtDecode(data.access_token);
+          // Save the role
+          if (decodedAccessToken && decodedAccessToken.role) {
+            localStorage.setItem("userRole", decodedAccessToken.role);
+          }
 
           // Redirect to home page after successful login
-          // ! comment/uncomment for check
-          window.location.href = "/home";
+          window.location.href = "/home"; // ! comment/uncomment for check
+          
         } else {
           console.error("Invalid token data:", data);
         }
