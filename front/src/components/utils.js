@@ -13,9 +13,45 @@ export const authorization = (id, password) => {
   headers.append('Authorization', 'Basic ' + encode(id + ":" +  password));
   headers.append('Origin','http://localhost:3000');
 
-    return fetch('http://localhost:8080/login', {
+  return fetch('http://localhost:8080/login', {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify(data),
+  })
+};
+
+export const checkTokens = (accessToken, refreshToken) => {
+  const data = {
+    access_token: accessToken,
+    refresh_token: refreshToken
+  }
+  let headers = new Headers();
+  headers.append('Content-Type', 'application/json');
+  headers.append('Accept', 'application/json');
+  headers.append('Origin','http://localhost:3000');
+
+  return fetch('http://localhost:8080/check-tokens', {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify(data),
+  })
+}
+
+export const registration = (name, email, role, password) => {
+  const data = {
+    name: name,
+    email: email,
+    role: role,
+    password: password
+  };
+  let headers = new Headers();
+  headers.append('Content-Type', 'application/json');
+  headers.append('Accept', 'application/json');
+  headers.append('Origin','http://localhost:3000');
+
+  return fetch('http://localhost:8080/register', {
       method: 'POST',
       headers: headers,
       body: JSON.stringify(data),
     })
-};
+}

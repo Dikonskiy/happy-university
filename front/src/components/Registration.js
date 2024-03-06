@@ -1,4 +1,5 @@
 import React from 'react';
+import { registration } from './utils';
 
 const Registration = () => {
   const [agreeToTerms, setAgreeToTerms] = React.useState(false);
@@ -7,8 +8,34 @@ const Registration = () => {
     setAgreeToTerms(!agreeToTerms);
   };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    // Implement your password reset logic here.
+
+    const email = event.target.email.value;
+    const fullName = event.target.fullName.value;
+    const role = event.target.role.value;
+    const password = event.target.password.value;
+
+    // Send the data to your Go back-end
+    registration(fullName, email, role, password)
+        .then((response) => {
+            // Handle successful login
+            if (response.ok) {
+                return response;
+            }
+        })
+        .catch((error) => {
+            // Handle error
+            console.error(error);
+            // Show error message to user
+            alert(error.message)
+        });
+
+  };
+
   return (
-        <form action="#">
+        <form onSubmit={handleSubmit} action="#">
             <div className="input-field">
                 <label htmlFor="email">Email:</label>
                 <input type="email" id="email" name="email" placeholder="Your email" />
@@ -45,9 +72,6 @@ const Registration = () => {
             <button type="submit" disabled={!agreeToTerms}>
                 Commit
             </button>
-            {/* <div className="already-have-an-account">
-                Already have an account? <a href='\login'>Log in</a>
-            </div> */}
         </form>
   );
 };
