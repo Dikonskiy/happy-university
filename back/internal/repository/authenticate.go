@@ -8,6 +8,8 @@ import (
 	"time"
 
 	"github.com/Dikonskiy/happy-university/back/internal/models"
+	tkn "github.com/Dikonskiy/happy-university/back/internal/token"
+	"github.com/dgrijalva/jwt-go"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -113,7 +115,7 @@ func generateCardID(role string) string {
 
 func (r *Repository) UpdateAttendance(studentID string) error {
 	var student models.Student
-	err := r.Db.QueryRow("SELECT student_id, student_name, student_id_card, email FROM Students WHERE student_id = ?", studentID).Scan(&student.ID, &student.Name, &student.IdCard, &student.Email)
+	err := r.Db.QueryRow("SELECT student_id, student_name, student_id_card, email FROM Students WHERE student_id_card = ?", studentID).Scan(&student.ID, &student.Name, &student.IdCard, &student.Email)
 	if err != nil {
 		return err
 	}
@@ -125,4 +127,23 @@ func (r *Repository) UpdateAttendance(studentID string) error {
 	}
 
 	return nil
+}
+
+func (r *Repository) GetRoleFromToken(tokenString string) (string, error) {
+	token, err := jwt.ParseWithClaims(tokenString, &tkn.CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
+		return []byte("your_secret_key"), nil
+	})
+	if err != nil {
+		return "", err
+	}
+
+	if !token.Valid {
+		return "", errors.New("invalid token")
+	}
+
+	if claims, ok := token.Claims.(*tkn.CustomClaims); ok {
+		return claims.Role, nil
+	}
+
+	return "", errors.New("invalid token claims")
 }
