@@ -6,7 +6,8 @@ import '../css/profile.css'
 
 
 const Layout = () => {
-  const [tab, setTab] = useState('home')
+  console.log(localStorage.getItem('activeTab'))
+  const [tab, setTab] = useState(localStorage.getItem('activeTab')||'home')
   const [loading, setLoading] = useState(true);
   const accessToken = localStorage.getItem('accessToken');
 
@@ -33,6 +34,7 @@ const Layout = () => {
 
   const highlightButton = (tabName) => {
     setTab(tabName);
+    localStorage.setItem('activeTab', tabName)
   };
 
   return (
@@ -42,8 +44,8 @@ const Layout = () => {
               <img src="https://cdn-icons-png.flaticon.com/512/6063/6063620.png " width="110px" height="110px" alt="Logo"/>
               <h1 className="logo">Happy University</h1>
             </div>
-            <button onClick={() => highlightButton('home')} className="sidebar-btn">Home</button>
-            <button onClick={() => highlightButton('attendance')} className="sidebar-btn">Electronic Attendance</button>
+            <button className={`sidebar-btn ${tab === 'home' ? 'active' : 'inactive'}`} onClick={() => highlightButton('home')} >Home</button>
+            <button className={`sidebar-btn ${tab === 'attendance' ? 'active' : 'inactive'}`} onClick={() => highlightButton('attendance')} >Electronic Attendance</button>
             <button className="sidebar-btn-down" type="submit" onClick={() => {
               localStorage.removeItem('accessToken');
               localStorage.removeItem('refreshToken');
@@ -65,15 +67,11 @@ const Layout = () => {
                 )}
             </div>
             {tab === 'home' && (
-              <>
               <Home />
-              </>
             )}
 
             {tab === 'attendance' && (
-              <>
               <Attendance />
-              </>
             )}
         </div>
     </div>
