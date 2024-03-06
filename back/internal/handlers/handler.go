@@ -78,7 +78,7 @@ func (h *Handler) ReadCardHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = h.Repo.UpdateAttendance(request.StudentId)
+	err = h.Repo.UpdateAttendance(request.CardId)
 	if err != nil {
 		http.Error(w, "Failed to update attendance", http.StatusInternalServerError)
 		return
@@ -123,4 +123,30 @@ func (h *Handler) CheckToken(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("Token is valid"))
+}
+
+func (h *Handler) GetRoleHandler(w http.ResponseWriter, r *http.Request) {
+	var req models.GetRoleRequest
+	err := json.NewDecoder(r.Body).Decode(&req)
+	if err != nil {
+		http.Error(w, "Failed to parse request body", http.StatusBadRequest)
+		return
+	}
+
+	role, err := h.Repo.GetRoleFromToken(req.AccessToken)
+	if err != nil {
+		http.Error(w, "Failed to get role from token: "+err.Error(), http.StatusUnauthorized)
+		return
+	}
+
+	res := models.GetRoleResponse{
+		Role: role,
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	err = json.NewEncoder(w).Encode(res)
+	if err != nil {
+		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
+		return
+	}
 }

@@ -18,7 +18,6 @@ CREATE TABLE IF NOT EXISTS Attendance (
     student_id INT NOT NULL,
     course_id INT NOT NULL,
     check_in_time DATETIME NOT NULL,
-    check_out_time DATETIME,
     attendance_date DATE NOT NULL,
     FOREIGN KEY (student_id) REFERENCES Students(student_id),
     FOREIGN KEY (course_id) REFERENCES Courses(course_id)
