@@ -12,9 +12,9 @@ import '../css/login.css'
 // `
 
 const SignUp = () => {
-  const [tab, setTab] = useState('login')
+  const [tab, setTab] = useState(localStorage.getItem('tabActive')||'login')
   const [loading, setLoading] = useState(true);
-  const accessToken = localStorage.getItem('accessToken');
+  const accessToken = localStorage.getItem('accessToken');  
 
   useEffect(() => {
     // Simulating an asynchronous operation (e.g., fetching data) that takes time
@@ -39,6 +39,7 @@ const SignUp = () => {
 
   const highlightButton = (tabName) => {
     setTab(tabName);
+    localStorage.setItem('tabActive', tabName);
   };
     
   

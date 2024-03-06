@@ -11,6 +11,7 @@
 .form-row {
     display: flex;
     flex-direction: row;
+    align-self: start;
 }
 
 .input-field {

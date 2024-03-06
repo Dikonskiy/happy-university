@@ -128,7 +128,8 @@
 .user-info {
   display: flex;
   flex-direction: column;
-  margin-right: 20%;
+  align-items: center;
+  margin-right: 30px;
 }
 
 .td-info {
@@ -137,6 +138,5 @@
 
 .images {
   border-radius: 15px;
-  margin-top: 10px;
-  margin-right: 10px;
+  margin: 10px;
 }
