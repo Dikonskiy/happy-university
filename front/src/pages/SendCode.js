@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import InputCode from "../components/InputCode";
+import '../css/resetPassword.css'
 
 const SendCode = () => {
-  const [code] = useState('');
+  const [code] = useState('4');
   const [email] = useState('helloworld@gmail.com');
   const [timer, setTimer] = useState(120);
-
+  
+  const [loading, setLoading] = useState(false);
   // const handleInputChange = (e) => {
   //   setEmail(e.target.value);
   // };
@@ -41,34 +44,38 @@ const SendCode = () => {
   
 
   return (
-    <div className="form-wrapper">
-      <h1>Forgot Password</h1>
-      <p>
-        Please check your email <strong>{email}</strong>
-      </p>
-      <p>We've sent a code to your email address</p>
-      <div className="code-timer">
-        <span>{Math.floor(timer / 60)}:</span>
-        <span>{('0' + (timer % 60)).slice(-2)}</span>
-      </div>
-      <form onSubmit={handleFormSubmit}>
-        <div>
-          <input className="input-number" type="text_number" maxLength="1" size="1" min="0" max="9" pattern="[0-9]{1}" />
-          <input className="input-number" type="text_number" maxLength="1" size="1" min="0" max="9" pattern="[0-9]{1}" />
-          <input className="input-number" type="text_number" maxLength="1" size="1" min="0" max="9" pattern="[0-9]{1}" />
-          <input className="input-number" type="text_number" maxLength="1" size="1" min="0" max="9" pattern="[0-9]{1}" />
+      <div className="form-wrapper">
+        <h1>Please check your email</h1>
+        <p>
+          We've sent a code to <strong>{email}</strong>
+        </p>
+        <form onSubmit={handleFormSubmit}>
+          <InputCode
+          length={4}
+          label="Code Label"
+          loading={loading}
+          onComplete={() => {
+            setLoading(true);
+            setTimeout(() => setLoading(false), 10000);
+          }}
+          />
+          <button className="btn btn-primary btn-embossed" type="submit">Verify</button>
+        </form>
+        <br/> 
+        <div className="form-row">
+          <button
+            className ="send-code-again"
+            disabled={timer > 0}
+            onClick={sendCodeAgain}
+          >
+            Send code again
+          </button>
+          <div className="code-timer">
+            <span>{Math.floor(timer / 60)}:</span>
+            <span>{('0' + (timer % 60)).slice(-2)}</span>
+          </div>
         </div>
-        <br></br>
-        <button class="btn btn-primary btn-embossed" type="submit">Verify</button>
-      </form>
-      <button
-        className="send-code-again"
-        disabled={timer > 0}
-        onClick={sendCodeAgain}
-      >
-        Send code again
-      </button>
-    </div>
+      </div>
   );
 };
 

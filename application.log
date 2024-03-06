@@ -39,7 +39,3 @@
 {"time":"2024-03-05T22:45:20.4655117+05:00","level":"INFO","msg":"caught signal","signal":"interrupt"}
 {"time":"2024-03-05T22:45:25.1687602+05:00","level":"INFO","msg":"Listening on port","8080":"..."}
 {"time":"2024-03-05T23:03:06.4043723+05:00","level":"INFO","msg":"caught signal","signal":"interrupt"}
-{"time":"2024-03-06T10:49:00.7574668+05:00","level":"INFO","msg":"Listening on port","8080":"..."}
-{"time":"2024-03-06T14:32:34.5560348+05:00","level":"INFO","msg":"caught signal","signal":"interrupt"}
-{"time":"2024-03-06T14:32:43.8640142+05:00","level":"INFO","msg":"Listening on port","8080":"..."}
-{"time":"2024-03-06T14:35:12.0279814+05:00","level":"INFO","msg":"caught signal","signal":"interrupt"}

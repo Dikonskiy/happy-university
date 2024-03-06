@@ -38,7 +38,7 @@ button:hover {
 
 button[type="submit"] {
     background-color: black;
-    /* border: none; */
+    border: none;
     color: #fff;
 }
 
@@ -64,4 +64,16 @@ a { /* Style for forgot password link */
     color: #000000;
     background-color: transparent;
     text-decoration: none;
+}
+
+p {
+    font-weight: 400;
+    font-size: 14px;
+    color: gray;
+    margin: 10px;
+}
+
+strong {
+    color: #000000;
+    font-weight: 600;
 }
