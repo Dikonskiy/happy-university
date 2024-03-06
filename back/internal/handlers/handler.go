@@ -7,6 +7,7 @@ import (
 	"github.com/Dikonskiy/happy-university/back/internal/models"
 	"github.com/Dikonskiy/happy-university/back/internal/repository"
 	"github.com/Dikonskiy/happy-university/back/internal/token"
+	"github.com/dgrijalva/jwt-go"
 )
 
 type Handler struct {
@@ -20,26 +21,21 @@ func NewHandler(repo *repository.Repository) *Handler {
 }
 
 func (h *Handler) LoginHandler(w http.ResponseWriter, r *http.Request) {
-	var person models.RegisterRequest
+	var person models.LoginRequest
 	if err := json.NewDecoder(r.Body).Decode(&person); err != nil {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
 
-	isAuthenticated := h.Repo.Authenticate(person.Email, person.Password)
+	isAuthenticated := h.Repo.Authenticate(person.CardId, person.Password)
 	if !isAuthenticated {
 		http.Error(w, "Invalid username or password", http.StatusUnauthorized)
 		return
 	}
 
-	role, err := h.Repo.GetRole(person.Email)
-	if err != nil {
-		http.Error(w, "failed to get role", http.StatusUnauthorized)
-		h.Repo.Logerr.Log.Error("failed to get role", err)
-		return
-	}
+	role := h.Repo.GetRole(person.CardId)
 
-	accessToken, refreshToken, err := token.GenerateTokens(person.Email, role)
+	accessToken, refreshToken, err := token.GenerateTokens(person.CardId, role)
 	if err != nil {
 		http.Error(w, "Failed to generate tokens", http.StatusInternalServerError)
 		return
@@ -82,7 +78,7 @@ func (h *Handler) ReadCardHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = h.Repo.UpdateAttendance(request.StudentId)
+	err = h.Repo.UpdateAttendance(request.CardId)
 	if err != nil {
 		http.Error(w, "Failed to update attendance", http.StatusInternalServerError)
 		return
@@ -98,4 +94,59 @@ func (h *Handler) ReadCardHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(jsonResponse)
+}
+
+func (h *Handler) CheckToken(w http.ResponseWriter, r *http.Request) {
+	var tokens models.Tokens
+	err := json.NewDecoder(r.Body).Decode(&tokens)
+	if err != nil {
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+
+	claims := &token.CustomClaims{}
+	token, err := jwt.ParseWithClaims(tokens.AccessToken, claims, func(token *jwt.Token) (interface{}, error) {
+		return []byte("your_secret_key"), nil
+	})
+	if err != nil {
+		if err == jwt.ErrSignatureInvalid {
+			http.Error(w, "Invalid token signature", http.StatusUnauthorized)
+			return
+		}
+		http.Error(w, "Invalid token", http.StatusUnauthorized)
+		return
+	}
+	if !token.Valid {
+		http.Error(w, "Token is not valid", http.StatusUnauthorized)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("Token is valid"))
+}
+
+func (h *Handler) GetRoleHandler(w http.ResponseWriter, r *http.Request) {
+	var req models.GetRoleRequest
+	err := json.NewDecoder(r.Body).Decode(&req)
+	if err != nil {
+		http.Error(w, "Failed to parse request body", http.StatusBadRequest)
+		return
+	}
+
+	role, err := h.Repo.GetRoleFromToken(req.AccessToken)
+	if err != nil {
+		http.Error(w, "Failed to get role from token: "+err.Error(), http.StatusUnauthorized)
+		return
+	}
+
+	res := models.GetRoleResponse{
+		Role: role,
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	err = json.NewEncoder(w).Encode(res)
+	if err != nil {
+		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
+		return
+	}
 }
