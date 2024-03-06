@@ -33,3 +33,17 @@
 {"time":"2024-02-28T14:39:18.31614+06:00","level":"INFO","msg":"caught signal","signal":"interrupt"}
 {"time":"2024-02-28T14:39:25.155522+06:00","level":"INFO","msg":"Listening on port","8080":"..."}
 {"time":"2024-02-28T16:20:36.1130211+06:00","level":"INFO","msg":"caught signal","signal":"interrupt"}
+{"time":"2024-02-28T16:26:42.4920203+06:00","level":"INFO","msg":"Listening on port","8080":"..."}
+{"time":"2024-02-28T16:34:26.120614+06:00","level":"INFO","msg":"caught signal","signal":"terminated"}
+{"time":"2024-02-29T01:46:48.153493+06:00","level":"INFO","msg":"Listening on port","8080":"..."}
+{"time":"2024-02-29T01:57:16.6494844+06:00","level":"INFO","msg":"Listening on port","8080":"..."}
+{"time":"2024-02-29T02:00:32.4807543+06:00","level":"INFO","msg":"Listening on port","8080":"..."}
+{"time":"2024-02-29T02:03:20.5029039+06:00","level":"INFO","msg":"caught signal","signal":"terminated"}
+{"time":"2024-03-01T11:27:01.7940029+05:00","level":"INFO","msg":"Listening on port","8080":"..."}
+{"time":"2024-03-01T11:38:18.8271427+05:00","level":"INFO","msg":"Listening on port","8080":"..."}
+{"time":"2024-03-01T11:40:15.0358734+05:00","level":"INFO","msg":"Listening on port","8080":"..."}
+{"time":"2024-03-01T11:41:39.3388538+05:00","level":"INFO","msg":"Listening on port","8080":"..."}
+{"time":"2024-03-01T11:43:14.6020452+05:00","level":"INFO","msg":"Listening on port","8080":"..."}
+{"time":"2024-03-01T11:46:00.8861872+05:00","level":"INFO","msg":"Listening on port","8080":"..."}
+{"time":"2024-03-01T11:49:17.8531603+05:00","level":"INFO","msg":"caught signal","signal":"terminated"}
+{"time":"2024-03-06T16:03:10.0834327+05:00","level":"INFO","msg":"Listening on port","8080":"..."}
