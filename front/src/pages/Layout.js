@@ -2,21 +2,20 @@ import React, { useState, useEffect } from 'react';
 import Home from '../components/Home'
 import Attendance from '../components/Attendance'
 import Info from '../components/Info';
-import { checkTokens } from '../components/utils';
+import { checkTokens, takeUserData } from '../components/utils';
 import '../css/profile.css'
+import Person from '../components/Person';
 
 
 const Layout = () => {
-  console.log(localStorage.getItem('activeTab'))
   const [tab, setTab] = useState(localStorage.getItem('activeTab')||'home')
   const [loading, setLoading] = useState(true);
+  const [isValid, setIsValid] = useState(false); // token
   const accessToken = localStorage.getItem('accessToken');
   const refreshToken = localStorage.getItem('refreshToken');
   const userRole = localStorage.getItem('userRole');
-  console.log(userRole)
   
-  // send tokens for expiration
-  // ! uncomment for continue
+  // send tokens for check expiration
   checkTokens(accessToken, refreshToken)
     .then((response) => {
       if (response.ok) {
@@ -26,8 +25,31 @@ const Layout = () => {
       }
     })
     .then((data) => {
-      // TODO save to var
       // console.log(data)
+      setIsValid(data === 'true');
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+
+  takeUserData(accessToken, refreshToken)
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error('Token check failed');
+      }
+    })
+    .then((userData) => {
+      if (userData && userData.userName && userData.userId && userData.userEmail) {
+        const userFullName = userData.userFullName;
+        const userId = userData.userId;
+        const userEmail = userData.userEmail;
+        const user = new Person(userFullName, userId, userEmail);
+        localStorage.setItem('userData', user); // ! for Arman => tut userData
+      } else{
+        throw new Error('Invalid user data: ', userData);
+      }
     })
     .catch((error) => {
       console.error(error);
@@ -40,13 +62,12 @@ const Layout = () => {
       await new Promise(resolve => setTimeout(resolve, 1));
       setLoading(false); // Set loading to false when the operation is complete
     };
-    // TODO change accessToken to data from backend (depend dias)
-    if (!accessToken) { 
-      window.location.href = '/login';
-    } else {
+    if (isValid) { 
       fetchData();
+    } else {
+      window.location.href = '/login';
     }
-  }, [accessToken]);
+  }, [isValid]);
 
   if (loading) {
     return (

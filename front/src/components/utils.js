@@ -55,3 +55,20 @@ export const registration = (name, email, role, password) => {
       body: JSON.stringify(data),
     })
 }
+
+export const takeUserData = (accessToken, refreshToken) => {
+  const data = {
+    access_token: accessToken,
+    refresh_token: refreshToken
+  }
+  let headers = new Headers();
+  headers.append('Content-Type', 'application/json');
+  headers.append('Accept', 'application/json');
+  headers.append('Origin','http://localhost:3000');
+
+  return fetch('http://localhost:8080/user', {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify(data),
+  })
+}
