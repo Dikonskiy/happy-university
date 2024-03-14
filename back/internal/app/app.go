@@ -1,7 +1,6 @@
 package app
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -14,6 +13,8 @@ import (
 	"github.com/Dikonskiy/happy-university/back/internal/logger"
 	"github.com/Dikonskiy/happy-university/back/internal/models"
 	"github.com/Dikonskiy/happy-university/back/internal/repository"
+	tkn "github.com/Dikonskiy/happy-university/back/internal/token"
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 )
@@ -40,7 +41,6 @@ func init() {
 		return
 	}
 
-	fmt.Println(Cnfg.MysqlConnectionString)
 	Logger = logger.NewLogerr()
 	Repo = repository.NewRepository(Cnfg.MysqlConnectionString, Logger)
 	Hand = handlers.NewHandler(Repo)
@@ -50,9 +50,10 @@ func (a *Application) StartServer() {
 	r := mux.NewRouter()
 
 	r.Use(cors.AllowAll().Handler)
+	r.Use(TokenMiddleware)
 
 	r.HandleFunc("/login", Hand.LoginHandler)
-	r.HandleFunc("/register", Hand.RegisterHandler)
+	r.HandleFunc("/register", Hand.RegisterHandler).Methods("POST")
 	r.HandleFunc("/card-entry", Hand.ReadCardHandler)
 	r.HandleFunc("/check-tokens", Hand.CheckToken)
 	r.HandleFunc("/get-role", Hand.GetRoleHandler)
@@ -80,4 +81,41 @@ func shutdown(quit chan os.Signal, logger logger.Logger) {
 		"signal", s.String(),
 	)
 	os.Exit(0)
+}
+
+func TokenMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path == "/login" || r.URL.Path == "/register" {
+			next.ServeHTTP(w, r)
+			return
+		}
+
+		tokenString := r.Header.Get("Authorization")
+		if tokenString == "" {
+			http.Error(w, "Authorization token is missing", http.StatusUnauthorized)
+			return
+		}
+
+		token, err := jwt.ParseWithClaims(tokenString, &tkn.CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
+			return []byte("your_secret_key"), nil
+		})
+
+		if err != nil {
+			http.Error(w, "Invalid token", http.StatusUnauthorized)
+			return
+		}
+		
+		claims, ok := token.Claims.(*tkn.CustomClaims)
+		if !ok || !token.Valid {
+			http.Error(w, "Invalid token claims", http.StatusUnauthorized)
+			return
+		}
+
+		if time.Now().Unix() > claims.ExpiresAt {
+			http.Error(w, "Token has expired", http.StatusUnauthorized)
+			return
+		}
+
+		next.ServeHTTP(w, r)
+	})
 }

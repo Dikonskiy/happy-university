@@ -1,5 +1,5 @@
 {
     "listenPort": "8080",
-    "mysqlConnectionString": "root:admin@tcp(127.0.0.1:3306)/users"
+    "mysqlConnectionString": "root:123456@tcp(127.0.0.1:3306)/happy-university"
   }
   
