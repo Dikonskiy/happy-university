@@ -2,58 +2,61 @@ import React, { useState, useEffect } from 'react';
 import Home from '../components/Home'
 import Attendance from '../components/Attendance'
 import Info from '../components/Info';
-import { checkTokens, takeUserData } from '../components/utils';
+import { getRole, takeUserData } from '../components/utils';
 import '../css/profile.css'
-import Person from '../components/Person';
+import { Person } from '../components/Models';
 
 
 const Layout = () => {
   const [tab, setTab] = useState(localStorage.getItem('activeTab')||'home')
   const [loading, setLoading] = useState(true);
-  const [isValid, setIsValid] = useState(false); // token
   const accessToken = localStorage.getItem('accessToken');
   const refreshToken = localStorage.getItem('refreshToken');
-  const userRole = localStorage.getItem('userRole');
-  
-  // send tokens for check expiration
-  checkTokens(accessToken, refreshToken)
+  // const userRole = localStorage.getItem('userRole');
+
+  getRole(accessToken)
     .then((response) => {
       if (response.ok) {
-        return response.text();
+        return response.json();
       } else {
-        throw new Error('Token check failed');
+        throw new Error("Server error");
       }
     })
     .then((data) => {
-      // console.log(data)
-      setIsValid(data === 'true');
+      if (data && data.role) {
+        console.log(data)
+        // localStorage.setItem('userRole', data.role);
+      } else {
+        throw new Error('Invalid user data: ', data);
+      }
     })
     .catch((error) => {
       console.error(error);
     });
 
-  takeUserData(accessToken, refreshToken)
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      } else {
-        throw new Error('Token check failed');
-      }
-    })
-    .then((userData) => {
-      if (userData && userData.userName && userData.userId && userData.userEmail) {
-        const userFullName = userData.userFullName;
-        const userId = userData.userId;
-        const userEmail = userData.userEmail;
-        const user = new Person(userFullName, userId, userEmail);
-        localStorage.setItem('userData', user); // ! for Arman => tut userData
-      } else{
-        throw new Error('Invalid user data: ', userData);
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+
+  // takeUserData(accessToken, refreshToken)
+  //   .then((response) => {
+  //     if (response.ok) {
+  //       return response.json();
+  //     } else {
+  //       throw new Error('Token check failed');
+  //     }
+  //   })
+  //   .then((userData) => {
+  //     if (userData && userData.userName && userData.userId && userData.userEmail) {
+  //       const userFullName = userData.userFullName;
+  //       const userId = userData.userId;
+  //       const userEmail = userData.userEmail;
+  //       const user = new Person(userFullName, userId, userEmail);
+  //       localStorage.setItem('userData', user); // ! for Arman => tut userData
+  //     } else{
+  //       throw new Error('Invalid user data: ', userData);
+  //     }
+  //   })
+  //   .catch((error) => {
+  //     console.error(error);
+  //   });
 
   useEffect(() => {
     // Simulating an asynchronous operation (e.g., fetching data) that takes time
@@ -62,12 +65,14 @@ const Layout = () => {
       await new Promise(resolve => setTimeout(resolve, 1));
       setLoading(false); // Set loading to false when the operation is complete
     };
-    if (isValid) { 
+    // console.log('test1:', isValid)
+    if (accessToken) { // change this 
+      // console.log('suuuuuuuuuuck')
       fetchData();
     } else {
       window.location.href = '/login';
     }
-  }, [isValid]);
+  }, [accessToken]); // and these 
 
   if (loading) {
     return (

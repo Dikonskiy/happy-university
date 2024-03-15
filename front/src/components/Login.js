@@ -21,7 +21,7 @@ const Login = () => {
         }
       })
       .then((data) => {
-        console.log(data)
+        console.log('test in login:', data)
         // Save the tokens
         if (data && data.access_token && data.refresh_token) {
           
