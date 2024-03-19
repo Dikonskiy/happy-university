@@ -1,21 +1,22 @@
 import React from "react";
 
 const Info = () => {
+    let user = JSON.parse(localStorage.getItem('userData'))
     return (
         <div className="user-info">
             <div className="form-row">
                 <div className="td-info">Name Surname:</div>
-                <div className="td-info">John Lee</div>
+                {/* <div className="td-info">{user.fullName}</div> */}
             </div>
             
             <div className="form-row">
                 <div className="td-info">ID:</div> 
-                <div className="td-info">24010487</div>
+                {/* <div className="td-info">{user.id}</div> */}
             </div>
 
             <div className="form-row">
                 <div className="td-info">Email:</div>
-                <div className="td-info">germanlee@happy.edu.kz</div>
+                {/* <div className="td-info">{user.email}</div> */}
             </div>
         </div>
     );

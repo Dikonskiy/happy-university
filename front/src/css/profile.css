@@ -140,3 +140,71 @@
   border-radius: 15px;
   margin: 10px;
 }
+
+.ct {
+  margin-right: 10px;
+}
+
+.select-term {
+  color: #66718D;
+  width: 186px;
+  height: 26px;
+  background: #D9D9D9;
+  border-radius: 15px;
+  border: none;
+  font-size: 16px;
+  font-weight: 500;
+  margin-right: 50px;
+  padding-left: 20px;
+}
+
+.select-term:hover {
+  background: #808080;
+  color: white;
+}
+
+.select-term option {
+  background: #D9D9D9;
+}
+
+.show-button {
+  color: #66718D;
+  width: 90px;
+  height: 26px;
+  border-radius: 15px;
+  background: #D9D9D9;
+  border: none;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.show-button:hover {
+  background: #808080;
+  color: white;
+}
+
+.course-table {
+  margin: 10px;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.course-table, .course-row, .course-row td {
+  border: 2px solid #D8DADC;
+  font-weight: 600;
+  line-height: 20px;
+}
+
+.course-td {
+  color: gray;
+}
+
+th, td {
+  padding: 8px;
+  text-align: left; 
+}
+
+.gray-label {
+  color: #66718D;
+  font-size: 16px;
+}

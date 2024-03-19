@@ -14,25 +14,25 @@ const Layout = () => {
   const refreshToken = localStorage.getItem('refreshToken');
   // const userRole = localStorage.getItem('userRole');
 
-  getRole(accessToken)
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      } else {
-        throw new Error("Server error");
-      }
-    })
-    .then((data) => {
-      if (data && data.role) {
-        console.log(data)
-        // localStorage.setItem('userRole', data.role);
-      } else {
-        throw new Error('Invalid user data: ', data);
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+  // getRole(accessToken)
+  //   .then((response) => {
+  //     if (response.ok) {
+  //       return response.json();
+  //     } else {
+  //       throw new Error("Server error");
+  //     }
+  //   })
+  //   .then((data) => {
+  //     if (data && data.role) {
+  //       console.log(data)
+  //       // localStorage.setItem('userRole', data.role);
+  //     } else {
+  //       throw new Error('Invalid user data: ', data);
+  //     }
+  //   })
+  //   .catch((error) => {
+  //     console.error(error);
+  //   });
 
 
   // takeUserData(accessToken, refreshToken)
@@ -49,7 +49,7 @@ const Layout = () => {
   //       const userId = userData.userId;
   //       const userEmail = userData.userEmail;
   //       const user = new Person(userFullName, userId, userEmail);
-  //       localStorage.setItem('userData', user); // ! for Arman => tut userData
+  //       localStorage.setItem('userData', JSON.stringify(user)); // ! for Arman => tut userData
   //     } else{
   //       throw new Error('Invalid user data: ', userData);
   //     }
@@ -89,7 +89,7 @@ const Layout = () => {
     <div className="layout">
         <div className="sidebar">
             <div className="conteiner">
-              <img src="https://cdn-icons-png.flaticon.com/512/6063/6063620.png " width="110px" height="110px" alt="Logo"/>
+              <img src="https://cdn-icons-png.flaticon.com/512/6063/6063620.png " width="110" height="110" alt="Logo"/>
               <h1 className="logo">Happy University</h1>
             </div>
             <button className={`sidebar-btn ${tab === 'home' ? 'active' : 'inactive'}`} onClick={() => highlightButton('home')} >Home</button>
@@ -110,7 +110,7 @@ const Layout = () => {
               {tab === 'attendance' && (
                   <div className="form-row">
                     <Info/>
-                    <img src="https://oldmy.sdu.edu.kz/stud_photo.php?ses=e69f85cc9b0d3a6f75a2a26b292a05f3&t=63" width="140" height="180" className="images" alt="Profile"/>
+                    <img src="https://oldmy.sdu.edu.kz/stud_photo.php?ses=c7c4d9bdd29e6e5e579c4056a5ef2d67&t=74" width="140" height="180" className="images" alt="Profile"/>
                   </div>
                 )}
             </div>
