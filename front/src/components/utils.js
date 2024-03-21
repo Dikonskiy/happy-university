@@ -49,6 +49,7 @@ export const takeUserData = (accessToken, refreshToken) => {
   headers.append('Accept', 'application/json');
   headers.append('Origin','http://localhost:3000');
   headers.append('Authorization', 'Bearer ' + accessToken)
+  console.log(accessToken);
 
   return fetch('http://localhost:8080/user', {
     method: 'POST',

@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 	"time"
 
@@ -53,7 +54,7 @@ func (a *Application) StartServer() {
 	r.Use(TokenMiddleware)
 
 	r.HandleFunc("/login", Hand.LoginHandler)
-	r.HandleFunc("/register", Hand.RegisterHandler).Methods("POST")
+	r.HandleFunc("/register", Hand.RegisterHandler)
 	r.HandleFunc("/card-entry", Hand.ReadCardHandler)
 	r.HandleFunc("/check-tokens", Hand.CheckToken)
 	r.HandleFunc("/get-role", Hand.GetRoleHandler)
@@ -96,6 +97,9 @@ func TokenMiddleware(next http.Handler) http.Handler {
 			http.Error(w, "Authorization token is missing", http.StatusUnauthorized)
 			return
 		}
+		tokenString = strings.TrimPrefix(tokenString, "Bearer")
+
+		Logger.Log.Info(tokenString)
 
 		token, err := jwt.ParseWithClaims(tokenString, &tkn.CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
 			return []byte("your_secret_key"), nil
