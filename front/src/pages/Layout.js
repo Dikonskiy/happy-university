@@ -10,30 +10,8 @@ import { Person } from '../components/Models';
 const Layout = () => {
   const [tab, setTab] = useState(localStorage.getItem('activeTab')||'home')
   const [loading, setLoading] = useState(true);
+  const [role, setRole] = useState('');
   const accessToken = localStorage.getItem('accessToken');
-  const refreshToken = localStorage.getItem('refreshToken');
-  // const userRole = localStorage.getItem('userRole');
-
-  // getRole(accessToken)
-  //   .then((response) => {
-  //     if (response.ok) {
-  //       return response.json();
-  //     } else {
-  //       throw new Error("Server error");
-  //     }
-  //   })
-  //   .then((data) => {
-  //     if (data && data.role) {
-  //       console.log(data)
-  //       // localStorage.setItem('userRole', data.role);
-  //     } else {
-  //       throw new Error('Invalid user data: ', data);
-  //     }
-  //   })
-  //   .catch((error) => {
-  //     console.error(error);
-  //   });
-
 
   // takeUserData(accessToken, refreshToken)
   //   .then((response) => {
@@ -59,20 +37,41 @@ const Layout = () => {
   //   });
 
   useEffect(() => {
-    // Simulating an asynchronous operation (e.g., fetching data) that takes time
-    const fetchData = async () => {
-      // Replace this with your actual asynchronous operation
-      await new Promise(resolve => setTimeout(resolve, 1));
-      setLoading(false); // Set loading to false when the operation is complete
-    };
-    // console.log('test1:', isValid)
-    if (accessToken) { // change this 
-      // console.log('suuuuuuuuuuck')
-      fetchData();
-    } else {
-      window.location.href = '/login';
+    const fetchRole = async () => {
+      getRole(accessToken)
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          }
+          else if (response.status === 401){
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('refreshToken');
+            localStorage.removeItem('activeTab');
+            localStorage.removeItem('userData');
+            localStorage.removeItem('userRole');
+            window.location.href = '/login';
+          }
+          else {
+            throw new Error("Server error");
+          }
+        })
+        .then((data) => {
+          if (data && data.role) {
+            // console.log(data)
+            setRole(data.role);
+            localStorage.setItem('userRole', data.role);
+          } else {
+            throw new Error('Invalid data: ', data);
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+
+      setLoading(false);
     }
-  }, [accessToken]); // and these 
+    fetchRole();
+  }, []);
 
   if (loading) {
     return (
@@ -97,7 +96,9 @@ const Layout = () => {
             <button className="sidebar-btn-down" type="submit" onClick={() => {
               localStorage.removeItem('accessToken');
               localStorage.removeItem('refreshToken');
-              // history.push('/login');
+              localStorage.removeItem('activeTab');
+              localStorage.removeItem('userData');
+              localStorage.removeItem('userRole');
               window.location.href = '/login';
             }}>Sign Out</button>
         </div>

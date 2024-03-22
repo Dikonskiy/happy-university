@@ -41,7 +41,7 @@ func (h *Handler) LoginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	h.Repo.Logerr.Log.Info("from login" + accessToken)
+	h.Repo.Logerr.Log.Info("from login " + accessToken)
 
 	response := map[string]string{
 		"access_token":  accessToken,

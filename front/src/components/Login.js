@@ -1,5 +1,4 @@
 import { authorization } from "./utils";
-import { jwtDecode } from "jwt-decode";
 
 const Login = () => {
   //handle submit from Login form
@@ -28,14 +27,14 @@ const Login = () => {
           localStorage.setItem("accessToken", data.access_token);
           localStorage.setItem("refreshToken", data.refresh_token);
 
-          const decodedAccessToken = jwtDecode(data.access_token);
-          // Save the role
-          if (decodedAccessToken && decodedAccessToken.role) {
-            localStorage.setItem("userRole", decodedAccessToken.role);
-          }
+          // const decodedAccessToken = jwtDecode(data.access_token);
+          // // Save the role
+          // if (decodedAccessToken && decodedAccessToken.role) {
+          //   localStorage.setItem("userRole", decodedAccessToken.role);
+          // }
 
           // Redirect to home page after successful login
-          window.location.href = "/home"; // ! comment/uncomment for check
+          window.location.href = "/home"; 
           
         } else {
           console.error("Invalid token data:", data);
