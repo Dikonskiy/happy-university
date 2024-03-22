@@ -40,8 +40,8 @@ func (h *Handler) LoginHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Failed to generate tokens", http.StatusInternalServerError)
 		return
 	}
-	
-	r.Header.Set("Authorization", "Bearer "+accessToken)
+
+	h.Repo.Logerr.Log.Info("from login" + accessToken)
 
 	response := map[string]string{
 		"access_token":  accessToken,
