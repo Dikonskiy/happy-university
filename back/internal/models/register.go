@@ -8,8 +8,8 @@ type RegisterRequest struct {
 }
 
 type AttendanceRequest struct {
-	CardId   string `json:"card_id"`
-	Password string `json:"password"`
+	CardId string `json:"card_id"`
+	Course string `json:"course"`
 }
 
 type SuccessResponse struct {

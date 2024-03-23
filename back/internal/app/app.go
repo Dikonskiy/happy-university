@@ -51,7 +51,7 @@ func (a *Application) StartServer() {
 	r := mux.NewRouter()
 
 	r.Use(cors.AllowAll().Handler)
-	r.Use(TokenMiddleware)
+	// r.Use(TokenMiddleware)
 
 	r.HandleFunc("/login", Hand.LoginHandler)
 	r.HandleFunc("/register", Hand.RegisterHandler)

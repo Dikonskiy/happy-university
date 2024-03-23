@@ -32,12 +32,11 @@ CREATE TABLE IF NOT EXISTS Courses (
 CREATE TABLE IF NOT EXISTS Attendance (
     attendance_id INT AUTO_INCREMENT PRIMARY KEY,
     student_id INT NOT NULL,
-    course_id INT NOT NULL,
+    course_id varchar(255) NOT NULL,
     check_in_time DATETIME NOT NULL,
     check_out_time DATETIME,
     attendance_date DATE NOT NULL,
-    FOREIGN KEY (student_id) REFERENCES Students(student_id),
-    FOREIGN KEY (course_id) REFERENCES Courses(course_id)
+    FOREIGN KEY (student_id) REFERENCES Students(student_id)
 );
 
 CREATE TABLE IF NOT EXISTS Student_Courses (
