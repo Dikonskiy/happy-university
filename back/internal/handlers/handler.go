@@ -74,7 +74,7 @@ func (h *Handler) RegisterHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 }
 
-func (h *Handler) ReadCardHandler(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) ReadCardInHandler(w http.ResponseWriter, r *http.Request) {
 	var request models.AttendanceRequest
 	err := json.NewDecoder(r.Body).Decode(&request)
 	if err != nil {
@@ -83,6 +83,33 @@ func (h *Handler) ReadCardHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err = h.Repo.UpdateAttendance(request.CardId)
+	if err != nil {
+		h.Repo.Logerr.Log.Error("Failed to update attendance", err)
+		http.Error(w, "Failed to update attendance", http.StatusInternalServerError)
+		return
+	}
+
+	response := models.SuccessResponse{Message: "Attendance recorded successfully"}
+	jsonResponse, err := json.Marshal(response)
+	if err != nil {
+		http.Error(w, "JSON marshaling error", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(jsonResponse)
+}
+
+func (h *Handler) ReadCardOutHandler(w http.ResponseWriter, r *http.Request) {
+	var request models.AttendanceRequest
+	err := json.NewDecoder(r.Body).Decode(&request)
+	if err != nil {
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+
+	err = h.Repo.AttendanceOut(request.CardId)
 	if err != nil {
 		http.Error(w, "Failed to update attendance", http.StatusInternalServerError)
 		return

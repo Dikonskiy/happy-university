@@ -129,6 +129,22 @@ func (r *Repository) UpdateAttendance(studentID string) error {
 	return nil
 }
 
+func (r *Repository) AttendanceOut(studentID string) error {
+	var student models.Student
+	err := r.Db.QueryRow("SELECT student_id FROM Students WHERE student_id_card = ?", studentID).Scan(&student.ID)
+	if err != nil {
+		return err
+	}
+
+	currentDateTime := time.Now()
+	_, err = r.Db.Exec("UPDATE Attendance SET check_out_time = ? WHERE student_id = ? AND attendance_date = ?", currentDateTime, student.ID, currentDateTime.Format("2006-01-02"))
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (r *Repository) GetRoleFromToken(tokenString string) (string, error) {
 	token, err := jwt.ParseWithClaims(tokenString, &tkn.CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
 		return []byte("your_secret_key"), nil

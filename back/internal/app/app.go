@@ -55,7 +55,8 @@ func (a *Application) StartServer() {
 
 	r.HandleFunc("/login", Hand.LoginHandler)
 	r.HandleFunc("/register", Hand.RegisterHandler)
-	r.HandleFunc("/card-entry", Hand.ReadCardHandler)
+	r.HandleFunc("/card-entry-in", Hand.ReadCardInHandler)
+	r.HandleFunc("/card-entry-out", Hand.ReadCardOutHandler)
 	r.HandleFunc("/check-tokens", Hand.CheckToken)
 	r.HandleFunc("/get-role", Hand.GetRoleHandler)
 
