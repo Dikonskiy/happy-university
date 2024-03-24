@@ -51,13 +51,12 @@ func (a *Application) StartServer() {
 	r := mux.NewRouter()
 
 	r.Use(cors.AllowAll().Handler)
-	// r.Use(TokenMiddleware)
+	r.Use(TokenMiddleware)
 
 	r.HandleFunc("/login", Hand.LoginHandler)
 	r.HandleFunc("/register", Hand.RegisterHandler)
 	r.HandleFunc("/card-entry-in", Hand.ReadCardInHandler)
 	r.HandleFunc("/card-entry-out", Hand.ReadCardOutHandler)
-	r.HandleFunc("/check-tokens", Hand.CheckToken)
 	r.HandleFunc("/get-role", Hand.GetRoleHandler)
 
 	server := &http.Server{

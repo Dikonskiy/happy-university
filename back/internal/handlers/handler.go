@@ -7,7 +7,6 @@ import (
 	"github.com/Dikonskiy/happy-university/back/internal/models"
 	"github.com/Dikonskiy/happy-university/back/internal/repository"
 	"github.com/Dikonskiy/happy-university/back/internal/token"
-	"github.com/dgrijalva/jwt-go"
 )
 
 type Handler struct {
@@ -125,35 +124,6 @@ func (h *Handler) ReadCardOutHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(jsonResponse)
-}
-
-func (h *Handler) CheckToken(w http.ResponseWriter, r *http.Request) {
-	var tokens models.Tokens
-	err := json.NewDecoder(r.Body).Decode(&tokens)
-	if err != nil {
-		http.Error(w, "Invalid request body", http.StatusBadRequest)
-		return
-	}
-
-	claims := &token.CustomClaims{}
-	token, err := jwt.ParseWithClaims(tokens.AccessToken, claims, func(token *jwt.Token) (interface{}, error) {
-		return []byte("your_secret_key"), nil
-	})
-	if err != nil {
-		if err == jwt.ErrSignatureInvalid {
-			http.Error(w, "Invalid token signature", http.StatusUnauthorized)
-			return
-		}
-		http.Error(w, "Invalid token", http.StatusUnauthorized)
-		return
-	}
-	if !token.Valid {
-		http.Error(w, "Token is not valid", http.StatusUnauthorized)
-		return
-	}
-
-	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("Token is valid"))
 }
 
 func (h *Handler) GetRoleHandler(w http.ResponseWriter, r *http.Request) {
