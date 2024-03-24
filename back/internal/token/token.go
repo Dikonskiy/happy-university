@@ -21,12 +21,12 @@ type CustomClaims struct {
 }
 
 func GenerateTokens(cardId, role string) (accessToken string, refreshToken string, err error) {
-	accessToken, err = generateToken(cardId, role, AccessToken, time.Minute*1)
+	accessToken, err = GenerateToken(cardId, role, AccessToken, time.Minute*1)
 	if err != nil {
 		return "", "", err
 	}
 
-	refreshToken, err = generateToken(cardId, role, RefreshToken, time.Hour*24*7)
+	refreshToken, err = GenerateToken(cardId, role, RefreshToken, time.Hour*24*7)
 	if err != nil {
 		return "", "", err
 	}
@@ -34,7 +34,7 @@ func GenerateTokens(cardId, role string) (accessToken string, refreshToken strin
 	return accessToken, refreshToken, nil
 }
 
-func generateToken(cardId, role string, tokenType TokenType, expiration time.Duration) (string, error) {
+func GenerateToken(cardId, role string, tokenType TokenType, expiration time.Duration) (string, error) {
 	claims := CustomClaims{
 		CardId: cardId,
 		Role:   role,

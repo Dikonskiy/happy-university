@@ -55,6 +55,7 @@ func (a *Application) StartServer() {
 
 	r.HandleFunc("/login", Hand.LoginHandler)
 	r.HandleFunc("/register", Hand.RegisterHandler)
+	r.HandleFunc("/access-token", Hand.RefreshTokenHandler)
 	r.HandleFunc("/card-entry-in", Hand.ReadCardInHandler)
 	r.HandleFunc("/card-entry-out", Hand.ReadCardOutHandler)
 	r.HandleFunc("/get-role", Hand.GetRoleHandler)
@@ -86,7 +87,7 @@ func shutdown(quit chan os.Signal, logger logger.Logger) {
 
 func TokenMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path == "/login" || r.URL.Path == "/register" {
+		if r.URL.Path == "/login" || r.URL.Path == "/register" || r.URL.Path == "/access-token" {
 			next.ServeHTTP(w, r)
 			return
 		}
