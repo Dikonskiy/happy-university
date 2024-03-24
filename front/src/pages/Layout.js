@@ -102,7 +102,15 @@ const Layout = () => {
         <div className="main">
             <div className="top-bar">
               <header className="header">
-                <h2>Student Information<br/>System</h2>
+                {role === 'Student' && (
+                  <h2>Student Information<br/>System</h2>
+                )}
+                {role === 'Teacher' && (
+                  <h2>Teacher Information<br/>System</h2>
+                )}
+                {role === 'Admin' && (
+                  <h2>Admin Workspace<br/>System</h2>
+                )}
                 <h2>Portal Guidlenes</h2>
               </header>
               {tab === 'attendance' && (
