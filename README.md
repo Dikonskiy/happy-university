@@ -45,6 +45,7 @@ npm start
     "role": "string",
     "password": "string"   
 }
+```
 
 /login
 
@@ -53,6 +54,7 @@ npm start
     "card_id": "string",
     "password": "string"
 }
+```
 
 /card-entry-in
 /card-entry-out
@@ -62,6 +64,7 @@ npm start
     "card_id": "string",
     "course": "string"
 }
+```
 
 /get-role
 
@@ -69,3 +72,4 @@ npm start
 {
     "access_token": "string"
 }
+```
