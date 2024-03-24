@@ -52,36 +52,37 @@ func (r *Repository) Authenticate(cardID, password string) bool {
 	return true
 }
 
-func (r *Repository) CreateUser(name, email, role, password string) error {
+func (r *Repository) CreateUser(name, email, role, password string) (string, error) {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
-		return err
+		return "", err
 	}
 
+	var cardID string
 	switch role {
 	case "student":
-		cardID := generateCardID(role)
+		cardID = generateCardID(role)
 		_, err = r.Db.Query("INSERT INTO Students (student_name, student_id_card, email, password) VALUES (?, ?, ?, ?)", name, cardID, email, string(hashedPassword))
 		if err != nil {
-			return err
+			return "", err
 		}
 	case "teacher":
-		cardID := generateCardID(role)
+		cardID = generateCardID(role)
 		_, err = r.Db.Query("INSERT INTO Teachers (teacher_name, teacher_id_card, email, password) VALUES (?, ?, ?, ?)", name, cardID, email, string(hashedPassword))
 		if err != nil {
-			return err
+			return "", err
 		}
 	case "admin":
-		cardID := generateCardID(role)
+		cardID = generateCardID(role)
 		_, err = r.Db.Query("INSERT INTO Admins (admin_name, admin_id_card, email, password) VALUES (?, ?, ?, ?)", name, cardID, email, string(hashedPassword))
 		if err != nil {
-			return err
+			return "", err
 		}
 	default:
-		return errors.New("unsupported role")
+		return "", errors.New("unsupported role")
 	}
 
-	return nil
+	return cardID, nil
 }
 
 func (r *Repository) GetRole(cardId string) string {

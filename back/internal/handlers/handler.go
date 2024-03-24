@@ -64,13 +64,25 @@ func (h *Handler) RegisterHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = h.Repo.CreateUser(person.Name, person.Email, person.Role, person.Password)
+	cardID, err := h.Repo.CreateUser(person.Name, person.Email, person.Role, person.Password)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	response := models.RegisterResponse{
+		CardId: cardID,
+	}
+
+	responseJSON, err := json.Marshal(response)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
+	w.Write(responseJSON)
+
 }
 
 func (h *Handler) ReadCardInHandler(w http.ResponseWriter, r *http.Request) {
