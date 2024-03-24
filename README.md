@@ -33,3 +33,43 @@ Execute the following command to run the application:
 ```bash
 npm start
 ```
+
+## Endpoints
+
+/register
+
+```json
+{
+    "name": "string",
+    "email": "string",
+    "role": "string",
+    "password": "string"   
+}
+```
+
+/login
+
+```json
+{
+    "card_id": "string",
+    "password": "string"
+}
+```
+
+/card-entry-in<br>
+/card-entry-out
+
+```json
+{
+    "card_id": "string",
+    "course": "string"
+}
+```
+
+/get-role
+
+```json
+{
+    "access_token": "string"
+}
+```

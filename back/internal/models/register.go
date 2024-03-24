@@ -7,9 +7,13 @@ type RegisterRequest struct {
 	Password string `json:"password"`
 }
 
+type RegisterResponse struct {
+	CardId string `json:"card_id"`
+}
+
 type AttendanceRequest struct {
-	CardId   string `json:"card_id"`
-	Password string `json:"password"`
+	CardId string `json:"card_id"`
+	Course string `json:"course"`
 }
 
 type SuccessResponse struct {
