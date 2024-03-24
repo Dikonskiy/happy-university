@@ -9,7 +9,7 @@ const Home = () => {
       </div>
       
       <div className="form-row">  
-        <img src="https://oldmy.sdu.edu.kz/stud_photo.php?ses=c7c4d9bdd29e6e5e579c4056a5ef2d67&t=74" width="300" height="500" className="images" alt="Profile"/>
+        <img src="../stud_photo.jpg" width="300" height="500" className="images" alt="Profile"/>
         <Info/>
       </div>
     </div>
