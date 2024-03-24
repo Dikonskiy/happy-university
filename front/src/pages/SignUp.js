@@ -44,15 +44,11 @@ const SignUp = () => {
             </div>
 
             {tab === 'login' && (
-              <>
               <Login />
-              </>
             )}
 
             {tab === 'register' && (
-              <>
               <Registration />
-              </>
             )}
           </div>
       </div>

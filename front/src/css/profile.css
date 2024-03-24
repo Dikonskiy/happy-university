@@ -199,9 +199,18 @@
   color: gray;
 }
 
+.course-link {
+  color: gray;
+}
+
+.course-link:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 th, td {
   padding: 8px;
-  text-align: left; 
+  text-align: center; 
 }
 
 .gray-label {
