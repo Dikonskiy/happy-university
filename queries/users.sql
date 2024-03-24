@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS Courses (
     course_id INT AUTO_INCREMENT PRIMARY KEY,
     course_name VARCHAR(255) NOT NULL,
     teacher_id INT,
+    term int,
     FOREIGN KEY (teacher_id) REFERENCES Teachers(teacher_id)
 );
 

@@ -18,7 +18,7 @@ func GenerateTokens(cardId, role string) (accessToken string, refreshToken strin
 		return "", "", err
 	}
 
-	refreshToken, err = generateToken(cardId, role, time.Hour*24*7)
+	refreshToken, err = generateToken(cardId, role, time.Hour*24)
 	if err != nil {
 		return "", "", err
 	}
