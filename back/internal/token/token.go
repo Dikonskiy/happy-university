@@ -13,7 +13,7 @@ type CustomClaims struct {
 }
 
 func GenerateTokens(cardId, role string) (accessToken string, refreshToken string, err error) {
-	accessToken, err = generateToken(cardId, role, time.Minute*1)
+	accessToken, err = generateToken(cardId, role, time.Minute*20)
 	if err != nil {
 		return "", "", err
 	}

@@ -82,7 +82,6 @@ func (h *Handler) RegisterHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(responseJSON)
-
 }
 
 func (h *Handler) ReadCardInHandler(w http.ResponseWriter, r *http.Request) {
