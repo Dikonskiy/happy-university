@@ -56,7 +56,7 @@ npm start
 }
 ```
 
-/card-entry-in
+/card-entry-in<br>
 /card-entry-out
 
 ```json
