@@ -1,0 +1,67 @@
+.form-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+    border-radius: 5px;
+    margin-top: 50px;
+    /* box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1); */
+}
+
+.form-row {
+    display: flex;
+    flex-direction: row;
+    align-self: start;
+}
+
+.input-field {
+    margin-top: 50px;
+    margin-bottom: 10px;
+}
+
+.checkbox-container {
+    display: flex; /* Размещаем элементы в строку */
+    align-items: center; /* Выравниваем элементы по вертикали по центру */
+    margin-bottom: 50px;
+}
+
+.checkbox-container input[type="checkbox"] {
+    margin-right: 10px; /* Добавляем небольшое расстояние между чекбоксом и меткой */
+}
+
+.checkbox-container label {
+    margin: 0; /* Убираем внешние отступы */
+}
+  
+.button-box {
+    display: inline-block;
+    border-radius: 10px;
+    background: #EDEEEF;
+    width: 353px;
+    height: 5;
+    position: relative; /* Добавляем относительное позиционирование */
+}
+
+.button-box button {
+    border: none;
+    font-weight: 700;
+    margin-top: 2.5px;
+    margin-left: 3px;
+    margin-bottom: 2.5px;
+    display: inline-block;
+    cursor: pointer;
+    height: 30px;
+    position: relative;
+    background: #EDEEEF;
+    width: 172px;
+}
+
+.button-box button.active {
+    background-color: white;
+}
+
+/* Убираем обводку при фокусировке кнопки */
+.button-box button:focus {
+    color: black;
+    outline: none; 
+}
