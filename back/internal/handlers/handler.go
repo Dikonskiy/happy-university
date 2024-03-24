@@ -7,7 +7,6 @@ import (
 	"github.com/Dikonskiy/happy-university/back/internal/models"
 	"github.com/Dikonskiy/happy-university/back/internal/repository"
 	"github.com/Dikonskiy/happy-university/back/internal/token"
-	"github.com/dgrijalva/jwt-go"
 )
 
 type Handler struct {
@@ -65,16 +64,28 @@ func (h *Handler) RegisterHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = h.Repo.CreateUser(person.Name, person.Email, person.Role, person.Password)
+	cardID, err := h.Repo.CreateUser(person.Name, person.Email, person.Role, person.Password)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	response := models.RegisterResponse{
+		CardId: cardID,
+	}
+
+	responseJSON, err := json.Marshal(response)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
+	w.Write(responseJSON)
+
 }
 
-func (h *Handler) ReadCardHandler(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) ReadCardInHandler(w http.ResponseWriter, r *http.Request) {
 	var request models.AttendanceRequest
 	err := json.NewDecoder(r.Body).Decode(&request)
 	if err != nil {
@@ -82,8 +93,9 @@ func (h *Handler) ReadCardHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = h.Repo.UpdateAttendance(request.CardId)
+	err = h.Repo.UpdateAttendance(request.CardId, request.Course)
 	if err != nil {
+		h.Repo.Logerr.Log.Error("Failed to update attendance", err)
 		http.Error(w, "Failed to update attendance", http.StatusInternalServerError)
 		return
 	}
@@ -100,33 +112,30 @@ func (h *Handler) ReadCardHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write(jsonResponse)
 }
 
-func (h *Handler) CheckToken(w http.ResponseWriter, r *http.Request) {
-	var tokens models.Tokens
-	err := json.NewDecoder(r.Body).Decode(&tokens)
+func (h *Handler) ReadCardOutHandler(w http.ResponseWriter, r *http.Request) {
+	var request models.AttendanceRequest
+	err := json.NewDecoder(r.Body).Decode(&request)
 	if err != nil {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
 
-	claims := &token.CustomClaims{}
-	token, err := jwt.ParseWithClaims(tokens.AccessToken, claims, func(token *jwt.Token) (interface{}, error) {
-		return []byte("your_secret_key"), nil
-	})
+	err = h.Repo.AttendanceOut(request.CardId, request.Course)
 	if err != nil {
-		if err == jwt.ErrSignatureInvalid {
-			http.Error(w, "Invalid token signature", http.StatusUnauthorized)
-			return
-		}
-		http.Error(w, "Invalid token", http.StatusUnauthorized)
-		return
-	}
-	if !token.Valid {
-		http.Error(w, "Token is not valid", http.StatusUnauthorized)
+		http.Error(w, "Failed to update attendance", http.StatusInternalServerError)
 		return
 	}
 
+	response := models.SuccessResponse{Message: "Attendance recorded successfully"}
+	jsonResponse, err := json.Marshal(response)
+	if err != nil {
+		http.Error(w, "JSON marshaling error", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("Token is valid"))
+	w.Write(jsonResponse)
 }
 
 func (h *Handler) GetRoleHandler(w http.ResponseWriter, r *http.Request) {
