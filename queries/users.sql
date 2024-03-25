@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS Student_Courses (
 
 CREATE TABLE IF NOT EXISTS Schedule (
     schedule_id INT AUTO_INCREMENT PRIMARY KEY,
-    course_code INT NOT NULL,
+    course_code varchar(7) NOT NULL,
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
     day_of_week ENUM('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday') NOT NULL,
