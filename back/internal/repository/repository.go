@@ -9,7 +9,7 @@ import (
 
 type Repository struct {
 	Db     *sql.DB
-	Logerr *logger.Logger
+	logerr *logger.Logger
 }
 
 func NewRepository(MysqlConnectionString string, logerr *logger.Logger) *Repository {
@@ -27,6 +27,6 @@ func NewRepository(MysqlConnectionString string, logerr *logger.Logger) *Reposit
 
 	return &Repository{
 		Db:     db,
-		Logerr: logerr,
+		logerr: logerr,
 	}
 }
