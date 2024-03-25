@@ -44,7 +44,7 @@ func init() {
 
 	Logger = logger.NewLogerr()
 	Repo = repository.NewRepository(Cnfg.MysqlConnectionString, Logger)
-	Hand = handlers.NewHandler(Repo)
+	Hand = handlers.NewHandler(Repo, Logger)
 }
 
 func (a *Application) StartServer() {
@@ -100,14 +100,12 @@ func TokenMiddleware(next http.Handler) http.Handler {
 		}
 		tokenString = strings.TrimPrefix(tokenString, "Bearer")
 
-		Logger.Log.Info(tokenString)
-
 		token, err := jwt.ParseWithClaims(tokenString, &tkn.CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
 			return []byte("your_secret_key"), nil
 		})
 
 		if err != nil {
-			Logger.Log.Error("invalid token")
+			Logger.Log.Error("invalid token", err)
 			http.Error(w, "Invalid token", http.StatusUnauthorized)
 			return
 		}
