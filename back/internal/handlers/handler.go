@@ -244,3 +244,29 @@ func (h *Handler) RefreshTokenHandler(w http.ResponseWriter, r *http.Request) {
 
 	h.logerr.Log.Info("Access token generated successfully")
 }
+
+func (h *Handler) GetCoursesHandler(w http.ResponseWriter, r *http.Request) {
+	var req models.GetCoursesRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		h.logerr.Log.Error("Failed to decode request body", err)
+		http.Error(w, "failed to decode request body", http.StatusBadRequest)
+		return
+	}
+
+	courses, err := h.Repo.GetCourses(req.CardId)
+	if err != nil {
+		h.logerr.Log.Error("Failed to get courses from db", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	res := models.GetCoursesResponse{Courses: courses}
+
+	if err := json.NewEncoder(w).Encode(res); err != nil {
+		h.logerr.Log.Error("failed to encode response", err)
+		http.Error(w, "failed to encode response", http.StatusInternalServerError)
+		return
+	}
+
+	h.logerr.Log.Info("Get courses is successfull", err)
+}
