@@ -49,3 +49,11 @@ type RefreshRequest struct {
 type RefreshResponse struct {
 	AccessToken string `json:"access_token"`
 }
+
+type GetCoursesRequest struct {
+	CardId string `json:"card_id"`
+}
+
+type GetCoursesResponse struct {
+	Courses []string `json:"card_id"`
+}
