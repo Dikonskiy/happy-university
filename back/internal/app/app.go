@@ -44,7 +44,7 @@ func init() {
 
 	Logger = logger.NewLogerr()
 	Repo = repository.NewRepository(Cnfg.MysqlConnectionString, Logger)
-	Hand = handlers.NewHandler(Repo)
+	Hand = handlers.NewHandler(Repo, Logger)
 }
 
 func (a *Application) StartServer() {
@@ -55,9 +55,11 @@ func (a *Application) StartServer() {
 
 	r.HandleFunc("/login", Hand.LoginHandler)
 	r.HandleFunc("/register", Hand.RegisterHandler)
+	r.HandleFunc("/access-token", Hand.RefreshTokenHandler)
 	r.HandleFunc("/card-entry-in", Hand.ReadCardInHandler)
 	r.HandleFunc("/card-entry-out", Hand.ReadCardOutHandler)
 	r.HandleFunc("/get-role", Hand.GetRoleHandler)
+	r.HandleFunc("/get-courses", Hand.GetCoursesHandler)
 
 	server := &http.Server{
 		Addr:         ":" + Cnfg.ListenPort,
@@ -86,7 +88,7 @@ func shutdown(quit chan os.Signal, logger logger.Logger) {
 
 func TokenMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path == "/login" || r.URL.Path == "/register" {
+		if r.URL.Path == "/login" || r.URL.Path == "/register" || r.URL.Path == "/access-token" {
 			next.ServeHTTP(w, r)
 			return
 		}
@@ -99,14 +101,12 @@ func TokenMiddleware(next http.Handler) http.Handler {
 		}
 		tokenString = strings.TrimPrefix(tokenString, "Bearer")
 
-		Logger.Log.Info(tokenString)
-
 		token, err := jwt.ParseWithClaims(tokenString, &tkn.CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
 			return []byte("your_secret_key"), nil
 		})
 
 		if err != nil {
-			Logger.Log.Error("invalid token")
+			Logger.Log.Error("invalid token", err)
 			http.Error(w, "Invalid token", http.StatusUnauthorized)
 			return
 		}

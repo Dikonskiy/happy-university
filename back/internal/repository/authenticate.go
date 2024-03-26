@@ -164,3 +164,31 @@ func (r *Repository) GetRoleFromToken(tokenString string) (string, error) {
 
 	return "", errors.New("invalid token claims")
 }
+
+func (r *Repository) GetCourses(studentIDCard string) ([]string, error) {
+	rows, err := r.Db.Query("SELECT course_code FROM student_courses WHERE student_id_card LIKE ?", studentIDCard)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var courses []string
+
+	for rows.Next() {
+		var courseCode string
+		if err := rows.Scan(&courseCode); err != nil {
+			return nil, err
+		}
+		courses = append(courses, courseCode)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	if len(courses) == 0 {
+		return nil, errors.New("no courses found for the given student ID card")
+	}
+
+	return courses, nil
+}
