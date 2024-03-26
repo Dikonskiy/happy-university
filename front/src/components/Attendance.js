@@ -1,21 +1,62 @@
 import React, { useState} from 'react';
 import TableAtt from './TableAtt';
 import CourseDetails from './CourseDetails'
+import { takeAttendanceDataForStudent } from '../components/utils'
 
 const Attendance = () => {
-    const [term, setTerm] = useState('Term 2');
-    const [termToUpdate, setTermToUpdate] = useState('Term 2');
+
+    // logic for define current term
+    const date = new Date();
+    const month = date.getMonth() + 1;
+    if (month >= 9 && month <= 12 || month == 1) {
+        var currentTerm = 'Term 1';
+    } else {
+        var currentTerm = 'Term 2';
+    }
+
+    const [term, setTerm] = useState(currentTerm);
+    const [termToUpdate, setTermToUpdate] = useState(currentTerm);
     const [selectedCourse, setSelectedCourse] = useState(null); // Состояние для отслеживания выбранного курса
+    // const [courses, setCourses] = useState(''); // ! backend dependency
     const role = localStorage.getItem('userRole');
 
     const handleSelectChange = (event) => {
         setTermToUpdate(event.target.value);
     };
-    const handleButtonClick = () => {
+    const handleButtonClick = (e) => {
         // Update the selected term with the termToUpdate
         setTerm(termToUpdate);
         // Reset the termToUpdate state
         setTermToUpdate(termToUpdate);
+
+    // ! backend dependency
+    //     takeAttendanceDataForStudent(termToUpdate)
+    //         .then((response) => {
+    //             if(response.ok){
+    //                 return response.json();
+    //             }
+    //             else if (response.status === 401){
+    //                 localStorage.removeItem('accessToken');
+    //                 localStorage.removeItem('refreshToken');
+    //                 localStorage.removeItem('activeTab');
+    //                 localStorage.removeItem('userData');
+    //                 localStorage.removeItem('userRole');
+    //                 window.location.href = '/login';
+    //             }
+    //             else {
+    //                 throw new Error("Server error");
+    //             }
+    //         })
+    //         .then((courses) => {
+    //             if (courses && courses.code && courses.name && courses.hours && courses.attendance && courses.absence && courses.absenceLimit && courses.absencePercentage){
+    //                 setCourses(JSON.stringify(courses));
+    //             } else {
+    //                 throw new Error('Invalid courses data: ', courses);
+    //             }
+    //         })
+    //         .catch((error) => {
+    //             console.error(error);
+    //         });
     };
 
     const handleCourseClick = (course) => {

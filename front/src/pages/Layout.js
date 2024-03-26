@@ -13,7 +13,8 @@ const Layout = () => {
   const [role, setRole] = useState('');
   const accessToken = localStorage.getItem('accessToken');
 
-  // takeUserData(accessToken, refreshToken)
+  // ! backend dependency
+  // takeUserData(accessToken)
   //   .then((response) => {
   //     if (response.ok) {
   //       return response.json();
@@ -23,11 +24,7 @@ const Layout = () => {
   //   })
   //   .then((userData) => {
   //     if (userData && userData.userName && userData.userId && userData.userEmail) {
-  //       const userFullName = userData.userFullName;
-  //       const userId = userData.userId;
-  //       const userEmail = userData.userEmail;
-  //       const user = new Person(userFullName, userId, userEmail);
-  //       localStorage.setItem('userData', JSON.stringify(user)); // ! for Arman => tut userData
+  //       localStorage.setItem('userData', JSON.stringify(userData)); // ! for Arman => tut userData
   //     } else{
   //       throw new Error('Invalid user data: ', userData);
   //     }
@@ -119,7 +116,7 @@ const Layout = () => {
               {tab === 'attendance' && (
                   <div className="form-row">
                     <Info/>
-                    <img src="https://oldmy.sdu.edu.kz/stud_photo.php?ses=c7c4d9bdd29e6e5e579c4056a5ef2d67&t=74" width="140" height="180" className="images" alt="Profile"/>
+                    <img src="../stud_photo.jpg" width="140" height="180" className="images" alt="Profile"/>
                   </div>
                 )}
             </div>

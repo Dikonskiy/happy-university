@@ -73,3 +73,19 @@ export const getRole = (accessToken) => {
     body: JSON.stringify(data),
   })
 }
+
+export const takeAttendanceDataForStudent = (term) => {
+  const data = {
+    term: term
+  }
+  let headers = new Headers();
+  headers.append('Content-Type', 'application/json');
+  headers.append('Accept', 'application/json');
+  headers.append('Origin','http://localhost:3000');
+  headers.append('Authorization', 'Bearer'+ localStorage.getItem('accessToken'))
+
+  return fetch('http://localhost:8080/attendance', {
+    method: 'GET',
+    headers: headers,
+  })
+}
