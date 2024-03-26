@@ -106,7 +106,7 @@ func TokenMiddleware(next http.Handler) http.Handler {
 		})
 
 		if err != nil {
-			Logger.Log.Error("invalid token")
+			Logger.Log.Error("invalid token: ", err)
 			http.Error(w, "Invalid token", http.StatusUnauthorized)
 			return
 		}
