@@ -20,7 +20,7 @@ const Attendance = () => {
     const [selectedCourse, setSelectedCourse] = useState(null); // Состояние для отслеживания выбранного курса
     const [loading, setLoading] = useState(true);
     // const [courses, setCourses] = useState(''); // ! backend dependency
-
+    const role = localStorage.getItem('userRole');
 
     const handleSelectChange = (event) => {
         setTermToUpdate(event.target.value);
@@ -78,7 +78,7 @@ const Attendance = () => {
           hours: 45,
           attendance: 12,
           absence: 1,
-          permission: 0
+          permission: 2
         },
         { 
           code: 'CSS 152',
@@ -146,12 +146,20 @@ const Attendance = () => {
         <div className="attendance-box">
             {selectedCourse ? ( 
             <div>
-                <h2 className='home-h2'>Course Details</h2>
-                <CourseDetails course={selectedCourse} onReturn={handleReturn} />
+                <button onClick={handleReturn} className='show-button'>{'< '}Back</button>
+                <h2 className='home-h2'>{selectedCourse.code}</h2>
+                <label className='gray-label'>{selectedCourse.name}</label>
+                <CourseDetails course={selectedCourse} />
             </div>
             ) : (
             <div>
-                <h2 className="home-h2">Electronic Attendance</h2>
+                {role === 'Teacher' && (
+                    <h2 className="home-h2">Course Schedule</h2>
+                )}
+                {role === 'Student' && (
+                    <h2 className="home-h2">Electronic Attendance</h2>
+                )}
+                
                 <div className="choose">
                     <div className='form-row'>
                         <span className="ct">Year and term:</span>
@@ -160,6 +168,9 @@ const Attendance = () => {
                             <option value="Term 1">1st term</option>
                         </select>
                         <input className="show-button" type='button' value='Show' onClick={handleButtonClick}></input>
+                        {role === 'Teacher' && (
+                            <input className="show-button" type='button' value='Check'></input>
+                        )}
                     </div>  
                     <label className='gray-label'>{ term }</label>
                     <TableAtt courses={courses} handleCourseClick={handleCourseClick} /> 

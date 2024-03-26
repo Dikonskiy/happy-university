@@ -9,18 +9,18 @@ const TableAtt = ({ courses, handleCourseClick }) => {
         <table className='course-table'>
             <tbody>
                 <tr className='course-row'>
-                    <td width="25">&nbsp;</td>
-                    <td align="left" width="60"><b>Code</b></td>
+                    <td width="20">&nbsp;</td>
+                    <td width="80" align="center"><b>Code</b></td>
                     <td width="180"><b>Course name</b></td>
-                    <td width="80" align="center" title="Credits"><b>Credits</b></td>
+                    <td width="60" align="center" title="Credits"><b>Credits</b></td>
                     <td width="40" align="center" title="ECTS"><b>ECTS</b></td>
-                    <td width="40" align="center" title="Course hour"><b>Hours</b></td>
+                    <td width="45" align="center" title="Course hour"><b>Hours</b></td>
                     {role === 'Student' && (
                         <>
-                        <td width="40" align="center" title="Attendance"><b>Att</b></td>
-                        <td width="40" align="center" title="Absent"><b>Abs</b></td>
-                        <td width="40" align="center" title="Permission"><b>Per</b></td>
-                        <td width="180" align="center" title=""><b>Absence % (Limit: 30%)</b></td>
+                        <td width="30" align="center" title="Attendance"><b>Att</b></td>
+                        <td width="30" align="center" title="Absent"><b>Abs</b></td>
+                        <td width="30" align="center" title="Permission"><b>Per</b></td>
+                        <td width="160" align="center" title=""><b>Absence % <br/>(Limit: 30%)</b></td>
                         </>
                     )}
                 </tr>

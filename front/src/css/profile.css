@@ -84,6 +84,10 @@
   font-weight: 700;
 }
 
+.choose {
+  padding: 10px;
+}
+
 .box {
   background-color: #66718D;
   width: 90%;
@@ -100,7 +104,7 @@
 }
 
 .attendance-box {
-  width: 90%;
+  width: 70%;
   height: 70%;
   padding: 20px;
 }
@@ -153,9 +157,9 @@
   border-radius: 15px;
   border: none;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 600;
   margin-right: 50px;
-  padding-left: 20px;
+  text-align: center;
 }
 
 .select-term:hover {
@@ -175,7 +179,9 @@
   background: #D9D9D9;
   border: none;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 600;
+  margin-right: 40px;
+  margin-bottom: 10px;
 }
 
 .show-button:hover {
