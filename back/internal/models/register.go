@@ -57,3 +57,13 @@ type GetCoursesRequest struct {
 type GetCoursesResponse struct {
 	Courses []string `json:"card_id"`
 }
+
+type GetUserDataRequest struct {
+	CardId string `json:"card_id"`
+}
+
+type GetUserDataResponse struct {
+	CardId string `json:"card_id"`
+	Name   string `json:"name"`
+	Email  string `json:"email"`
+}
