@@ -106,21 +106,15 @@ func TokenMiddleware(next http.Handler) http.Handler {
 		})
 
 		if err != nil {
-			Logger.Log.Error("invalid token", err)
+			Logger.Log.Error("invalid token ", err)
 			http.Error(w, "Invalid token", http.StatusUnauthorized)
 			return
 		}
 
-		claims, ok := token.Claims.(*tkn.CustomClaims)
+		_, ok := token.Claims.(*tkn.CustomClaims)
 		if !ok || !token.Valid {
 			Logger.Log.Error("invalid token claims")
 			http.Error(w, "Invalid token claims", http.StatusUnauthorized)
-			return
-		}
-
-		if time.Now().Unix() > claims.ExpiresAt {
-			Logger.Log.Error("token has expired")
-			http.Error(w, "Token has expired", http.StatusUnauthorized)
 			return
 		}
 
