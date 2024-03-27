@@ -47,7 +47,7 @@ const Registration = () => {
             <div className="input-field">
                 <label htmlFor="Role">Choose your role</label>
                 <select className="form-select" type="role" id="role" name="role" required="">
-                    <option value="">--Please choose an option--</option>
+                    <option value="none" selected disabled hidden>--Please choose an option--</option>
                     <option value="student">Student</option>
                     <option value="teacher">Teacher</option>
                 </select>
