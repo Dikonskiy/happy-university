@@ -6,17 +6,17 @@ const Info = () => {
         <div className="user-info">
             <div className="form-row">
                 <div className="td-info">Name Surname:</div>
-                {/* <div className="td-info">{user.fullName}</div> */}
+                <div className="td-info">{user.name}</div>
             </div>
             
             <div className="form-row">
                 <div className="td-info">ID:</div> 
-                {/* <div className="td-info">{user.id}</div> */}
+                <div className="td-info">{user.card_id}</div>
             </div>
 
             <div className="form-row">
                 <div className="td-info">Email:</div>
-                {/* <div className="td-info">{user.email}</div> */}
+                <div className="td-info">{user.email}</div>
             </div>
         </div>
     );

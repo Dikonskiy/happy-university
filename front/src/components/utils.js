@@ -39,18 +39,17 @@ export const registration = (name, email, role, password) => {
     })
 }
 
-export const takeUserData = (accessToken, refreshToken) => {
+export const takeUserData = (cardId) => {
   const data = {
-    access_token: accessToken,
-    refresh_token: refreshToken
+    card_id: cardId
   }
   let headers = new Headers();
   headers.append('Content-Type', 'application/json');
   headers.append('Accept', 'application/json');
   headers.append('Origin','http://localhost:3000');
-  headers.append('Authorization', 'Bearer ' + accessToken)
+  headers.append('Authorization', 'Bearer' + localStorage.getItem('accessToken'))
 
-  return fetch('http://localhost:8080/user', {
+  return fetch('http://localhost:8080/get-user-data', {
     method: 'POST',
     headers: headers,
     body: JSON.stringify(data),

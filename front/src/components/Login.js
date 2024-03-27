@@ -1,4 +1,5 @@
 import { authorization } from "./utils";
+import { jwtDecode } from 'jwt-decode'
 
 const Login = () => {
   //handle submit from Login form
@@ -20,18 +21,21 @@ const Login = () => {
         }
       })
       .then((data) => {
-        console.log('test in login:', data)
         // Save the tokens
         if (data && data.access_token && data.refresh_token) {
           
           localStorage.setItem("accessToken", data.access_token);
           localStorage.setItem("refreshToken", data.refresh_token);
 
-          // const decodedAccessToken = jwtDecode(data.access_token);
+          const decodedAccessToken = jwtDecode(data.access_token);
+          // console.log(decodedAccessToken.card_id)
           // // Save the role
           // if (decodedAccessToken && decodedAccessToken.role) {
           //   localStorage.setItem("userRole", decodedAccessToken.role);
           // }
+          if (decodedAccessToken && decodedAccessToken.card_id){
+            localStorage.setItem('cardId', decodedAccessToken.card_id)
+          }
 
           // Redirect to home page after successful login
           window.location.href = "/home"; 
