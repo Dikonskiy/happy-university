@@ -198,17 +198,17 @@ func (r *Repository) GetUserData(cardId string) (string, string, error) {
 
 	switch cardId[0] {
 	case '1':
-		err := r.Db.QueryRow("SELECT student_name, student_id_card, email FROM Students WHERE student_id_card = ?", cardId).Scan(&name, &cardId, &email)
+		err := r.Db.QueryRow("SELECT student_name, email FROM Students WHERE student_id_card = ?", cardId).Scan(&name, &email)
 		if err != nil {
 			return "", "", err
 		}
 	case '2':
-		err := r.Db.QueryRow("SELECT teacher_name, teacher_id_card, email FROM Teachers WHERE teacher_id_card = ?", cardId).Scan(&name, &cardId, &email)
+		err := r.Db.QueryRow("SELECT teacher_name, email FROM Teachers WHERE teacher_id_card = ?", cardId).Scan(&name, &email)
 		if err != nil {
 			return "", "", err
 		}
 	case '3':
-		err := r.Db.QueryRow("SELECT admin_name, admin_id_card, email FROM Admins WHERE admin_id_card = ?", cardId).Scan(&name, &cardId, &email)
+		err := r.Db.QueryRow("SELECT admin_name, email FROM Admins WHERE admin_id_card = ?", cardId).Scan(&name, &email)
 		if err != nil {
 			return "", "", err
 		}
