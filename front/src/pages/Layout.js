@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Home from '../components/Home'
 import Attendance from '../components/Attendance'
 import Info from '../components/Info';
-import { getRole, takeUserData } from '../components/utils';
+import { getRole, takeUserData, checkToken } from '../components/utils';
 import '../css/profile.css'
 import { Person } from '../components/Models';
 
@@ -10,8 +10,9 @@ import { Person } from '../components/Models';
 const Layout = () => {
   const [tab, setTab] = useState(localStorage.getItem('activeTab')||'home')
   const [loading, setLoading] = useState(true);
-  const [role, setRole] = useState('');
-  const accessToken = localStorage.getItem('accessToken');
+  const role = localStorage.getItem('userRole');
+  const [accessToken, setAccessToken] = useState(localStorage.getItem('accessToken'));
+  const refresh_token = localStorage.getItem('refreshToken');
 
   // ! backend dependency
   // takeUserData(accessToken)
@@ -33,41 +34,51 @@ const Layout = () => {
   //     console.error(error);
   //   });
 
+  // accessToken = checkToken(accessToken, refresh_token);
+
   useEffect(() => {
     const fetchRole = async () => {
-      getRole(accessToken)
-        .then((response) => {
-          if (response.ok) {
-            return response.json();
-          }
-          else if (response.status === 401){
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('refreshToken');
-            localStorage.removeItem('activeTab');
-            localStorage.removeItem('userData');
-            localStorage.removeItem('userRole');
-            window.location.href = '/login';
-          }
-          else {
-            throw new Error("Server error");
-          }
-        })
-        .then((data) => {
-          if (data && data.role) {
-            // console.log(data)
-            setRole(data.role);
-            localStorage.setItem('userRole', data.role);
-          } else {
-            throw new Error('Invalid data: ', data);
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-
+      console.log(accessToken);
+      const newAccessToken = checkToken(accessToken, refresh_token);
+      setAccessToken(newAccessToken);
+      console.log(newAccessToken);
       setLoading(false);
+
+      // localStorage.setItem('accessToken', newAccessToken);
+      // return newAccessToken;
+
+      // getRole(accessToken)
+      //   .then((response) => {
+      //     if (response.ok) {
+      //       return response.json();
+      //     }
+      //     else if (response.status === 401){
+      //       localStorage.removeItem('accessToken');
+      //       localStorage.removeItem('refreshToken');
+      //       localStorage.removeItem('activeTab');
+      //       localStorage.removeItem('userData');
+      //       localStorage.removeItem('userRole');
+      //       window.location.href = '/login';
+      //     }
+      //     else {
+      //       throw new Error("Server error");
+      //     }
+      //   })
+      //   .then((data) => {
+      //     if (data && data.role) {
+      //       setRole(data.role);
+      //       localStorage.setItem('userRole', data.role);
+      //     } else {
+      //       throw new Error('Invalid data: ', data);
+      //     }
+      //   })
+      //   .catch((error) => {
+      //     console.error(error);
+      //   });
+
     }
     fetchRole();
+    // console.log(accessToken)
   }, []);
 
   if (loading) {

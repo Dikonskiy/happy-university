@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Login from '../components/Login';
 import Registration from '../components/Registration';
+import { checkToken } from '../components/utils';
 import '../css/login.css'
 
 const SignUp = () => {
@@ -12,17 +13,16 @@ const SignUp = () => {
   useEffect(() => {
     // Simulating an asynchronous operation (e.g., fetching data) that takes time
     const fetchData = async () => {
-      // Replace this with your actual asynchronous operation
-      await new Promise(resolve => setTimeout(resolve, 1));
-      setLoading(false); // Set loading to false when the operation is complete
-    };
+      console.log(accessToken)
+      // const newAccessToken = checkToken(accessToken, refreshToken);
+      if (accessToken && accessToken !== 'undefined') {
+        window.location.href = '/home';
+      }
 
-    if (!accessToken) { // change there 
-      fetchData()
-    } else {
-      window.location.href = '/home';
-    }
-  }, [accessToken]); // and there
+      setLoading(false);
+    };
+    fetchData();
+  }, []); // and there
 
   const highlightButton = (tabName) => {
     setTab(tabName);
