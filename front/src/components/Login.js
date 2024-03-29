@@ -31,6 +31,9 @@ const Login = () => {
           if (decodedAccessToken && decodedAccessToken.role) {
             localStorage.setItem("userRole", decodedAccessToken.role);
           }
+          if (decodedAccessToken && decodedAccessToken.card_id){
+            localStorage.setItem('cardId', decodedAccessToken.card_id)
+          }
 
           // Redirect to home page after successful login
           window.location.href = "/home"; 

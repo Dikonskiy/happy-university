@@ -13,28 +13,28 @@ const Layout = () => {
   const role = localStorage.getItem('userRole');
   const [accessToken, setAccessToken] = useState(localStorage.getItem('accessToken'));
   const refresh_token = localStorage.getItem('refreshToken');
+  const cardId = localStorage.getItem('cardId')
 
   // ! backend dependency
-  // takeUserData(accessToken)
-  //   .then((response) => {
-  //     if (response.ok) {
-  //       return response.json();
-  //     } else {
-  //       throw new Error('Token check failed');
-  //     }
-  //   })
-  //   .then((userData) => {
-  //     if (userData && userData.userName && userData.userId && userData.userEmail) {
-  //       localStorage.setItem('userData', JSON.stringify(userData)); // ! for Arman => tut userData
-  //     } else{
-  //       throw new Error('Invalid user data: ', userData);
-  //     }
-  //   })
-  //   .catch((error) => {
-  //     console.error(error);
-  //   });
-
-  // accessToken = checkToken(accessToken, refresh_token);
+  takeUserData(cardId)
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error('Token check failed');
+      }
+    })
+    .then((userData) => {
+      console.log(userData)
+      if (userData && userData.name && userData.card_id && userData.email) {
+        localStorage.setItem('userData', JSON.stringify(userData)); // ! for Arman => tut userData
+      } else{
+        throw new Error('Invalid user data: ', userData);
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 
   useEffect(() => {
     const fetchRole = async () => {
