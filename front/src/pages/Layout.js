@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Home from '../components/Home'
 import Attendance from '../components/Attendance'
 import Info from '../components/Info';
-import { getRole, takeUserData, checkToken } from '../components/utils';
+import { checkToken } from '../components/utils';
 import '../css/profile.css'
-import { Person } from '../components/Models';
 
 
 const Layout = () => {
@@ -12,74 +11,18 @@ const Layout = () => {
   const [loading, setLoading] = useState(true);
   const role = localStorage.getItem('userRole');
   const [accessToken, setAccessToken] = useState(localStorage.getItem('accessToken'));
-  const refresh_token = localStorage.getItem('refreshToken');
-  const cardId = localStorage.getItem('cardId')
-
-  // ! backend dependency
-  takeUserData(cardId)
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      } else {
-        throw new Error('Token check failed');
-      }
-    })
-    .then((userData) => {
-      console.log(userData)
-      if (userData && userData.name && userData.card_id && userData.email) {
-        localStorage.setItem('userData', JSON.stringify(userData)); // ! for Arman => tut userData
-      } else{
-        throw new Error('Invalid user data: ', userData);
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+  const refreshToken = localStorage.getItem('refreshToken');
 
   useEffect(() => {
-    const fetchRole = async () => {
-      console.log(accessToken);
-      const newAccessToken = checkToken(accessToken, refresh_token);
+    const checkAccessToken = async () => {
+      const newAccessToken = await checkToken(accessToken, refreshToken);
       setAccessToken(newAccessToken);
-      console.log(newAccessToken);
+      localStorage.setItem('accessToken', newAccessToken);
       setLoading(false);
-
-      // localStorage.setItem('accessToken', newAccessToken);
-      // return newAccessToken;
-
-      // getRole(accessToken)
-      //   .then((response) => {
-      //     if (response.ok) {
-      //       return response.json();
-      //     }
-      //     else if (response.status === 401){
-      //       localStorage.removeItem('accessToken');
-      //       localStorage.removeItem('refreshToken');
-      //       localStorage.removeItem('activeTab');
-      //       localStorage.removeItem('userData');
-      //       localStorage.removeItem('userRole');
-      //       window.location.href = '/login';
-      //     }
-      //     else {
-      //       throw new Error("Server error");
-      //     }
-      //   })
-      //   .then((data) => {
-      //     if (data && data.role) {
-      //       setRole(data.role);
-      //       localStorage.setItem('userRole', data.role);
-      //     } else {
-      //       throw new Error('Invalid data: ', data);
-      //     }
-      //   })
-      //   .catch((error) => {
-      //     console.error(error);
-      //   });
-
     }
-    fetchRole();
-    // console.log(accessToken)
-  }, []);
+
+    checkAccessToken();
+  }, [accessToken, refreshToken]);
 
   if (loading) {
     return (

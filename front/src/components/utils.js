@@ -5,71 +5,55 @@ const JWT_EXP_BUFFER_MINUTES = 5; // Set the buffer time in minutes before the t
 
 // utils.js
 
-export const checkToken = (accessToken, refreshToken) => {
+export const checkToken = async (accessToken, refreshToken) => {
+  // console.log(accessToken);
   const data = {
     refresh_token: refreshToken
   };
-  // console.log(accessToken);
-  if (typeof accessToken === 'string' && accessToken !== 'undefined') {
-    const decodedAccessToken = jwtDecode(accessToken)
-    const jwtExpirationTime = decodedAccessToken.exp * 1000; // Convert the expiration time to milliseconds
-    const currentTime = Date.now();
-    // console.log(jwtExpirationTime - currentTime)
-    // console.log(JWT_EXP_BUFFER_MINUTES * 60 * 1000)
-    if (jwtExpirationTime - currentTime < JWT_EXP_BUFFER_MINUTES * 60 * 1000) {
-      let newAccessToken;
-      let headers = new Headers();
-      headers.append('Content-Type', 'application/json');
-      headers.append('Accept', 'application/json');
-      headers.append('Origin','http://localhost:3000');
-      newAccessToken = fetch('http://localhost:8080/access-token', {
-        method: 'POST',
-        headers: headers,
-        body: JSON.stringify(data),
-      })
-        .then((response) => { 
-          if (response.ok) {
-            return response.json();
-          } 
-          else if (response.statusCode === 401){
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('refreshToken');
-            localStorage.removeItem('activeTab');
-            localStorage.removeItem('userData');
-            localStorage.removeItem('userRole');
-            window.location.href = '/login';
-          } 
-          else {
-            throw new Error("Failed to refresh access token");
-          }
-        })
-        .then((data) => {
-          if (data && data.access_token){
-            return data.access_token;
-          } else {
-            throw new Error('Invalid data: ', data);
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-          return accessToken;
-        });
-      return newAccessToken.json();
-    } else {
-      console.log('Access token is valid'); // TODO change to logger
-      return accessToken;
-    }
-  } 
-  else{
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    localStorage.removeItem('activeTab');
-    localStorage.removeItem('userData');
-    localStorage.removeItem('userRole');
-    window.location.href = '/login';
-    return null;
-  }
   
+  if (typeof accessToken !== 'string' || accessToken === 'undefined') {
+    localStorage.clear();
+    window.location.href = '/login';
+  }
+
+  const decodedAccessToken = jwtDecode(accessToken)
+  const jwtExpirationTime = decodedAccessToken.exp * 1000; // Convert the expiration time to milliseconds
+  const currentTime = Date.now();
+
+  if (jwtExpirationTime - currentTime > JWT_EXP_BUFFER_MINUTES * 60 * 1000) {
+    console.log('Access token is valid'); // TODO change to logger
+    return accessToken;
+  }
+
+  let headers = new Headers();
+  headers.append('Content-Type', 'application/json');
+  headers.append('Accept', 'application/json');
+  headers.append('Origin','http://localhost:3000');
+  try{
+    const response = await fetch('http://localhost:8080/access-token', {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify(data),
+    })
+    if (response.ok) {
+      const data = await response.json();
+      if (data && data.access_token){
+        return data.access_token;
+      } else {
+        throw new Error("Invalid data");
+      }
+    } 
+    else if (response.statusCode === 401){
+      localStorage.clear();
+      window.location.href = '/login';
+    } 
+    else {
+      throw new Error("Failed to refresh access token");
+    }
+  } catch (error){
+    console.error(error);
+    return accessToken;
+  }
 }
 
 export const authorization = (id, password) => {

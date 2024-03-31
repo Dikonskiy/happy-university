@@ -7,22 +7,24 @@ import '../css/login.css'
 const SignUp = () => {
   const [tab, setTab] = useState(localStorage.getItem('tabActive')||'login')
   const [loading, setLoading] = useState(true);
-  const accessToken = localStorage.getItem('accessToken'); 
+  const [accessToken, setAccessToken] = useState(localStorage.getItem('accessToken'));
   const refreshToken = localStorage.getItem('refreshToken');
 
   useEffect(() => {
-    // Simulating an asynchronous operation (e.g., fetching data) that takes time
-    const fetchData = async () => {
-      console.log(accessToken)
-      // const newAccessToken = checkToken(accessToken, refreshToken);
-      if (accessToken && accessToken !== 'undefined') {
-        window.location.href = '/home';
-      }
-
-      setLoading(false);
+    const checkAccessToken = async () => {
+      // refresh token
+      const newAccessToken = await checkToken(accessToken, refreshToken);
+      setAccessToken(newAccessToken)
+      localStorage.setItem('accessToken', newAccessToken);
+      window.location.href = '/home';
     };
-    fetchData();
-  }, []); // and there
+    
+    if (accessToken && ( typeof accessToken === 'string' && accessToken !== 'undefined')) {
+      checkAccessToken();
+    }else{
+      setLoading(false);
+    }
+  }, [accessToken, refreshToken]);
 
   const highlightButton = (tabName) => {
     setTab(tabName);
