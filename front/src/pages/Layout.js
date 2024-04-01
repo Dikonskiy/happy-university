@@ -5,7 +5,6 @@ import Check from '../components/Check'
 import Info from '../components/Info';
 import { checkToken } from '../components/utils';
 import '../css/profile.css'
-import { Person } from '../components/Models';
 
 
 const Layout = () => {
@@ -22,8 +21,8 @@ const Layout = () => {
       localStorage.setItem('accessToken', newAccessToken);
       setLoading(false);
     }
-    fetchRole();
-  }, []);
+    checkAccessToken();
+  }, [accessToken, refreshToken]);
 
   if (loading) {
     return (

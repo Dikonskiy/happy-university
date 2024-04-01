@@ -1,7 +1,7 @@
 import { encode } from 'js-base64';
 import { jwtDecode } from 'jwt-decode';
 
-const JWT_EXP_BUFFER_MINUTES = 5; // Set the buffer time in minutes before the token expires
+const JWT_EXP_BUFFER_MINUTES = 5; // buffer time in minutes before the token expires
 
 // utils.js
 
@@ -21,7 +21,6 @@ export const checkToken = async (accessToken, refreshToken) => {
   const currentTime = Date.now();
 
   if (jwtExpirationTime - currentTime > JWT_EXP_BUFFER_MINUTES * 60 * 1000) {
-    console.log('Access token is valid'); // TODO change to logger
     return accessToken;
   }
 
