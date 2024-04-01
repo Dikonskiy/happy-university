@@ -1,7 +1,7 @@
 import React, { useEffect, useState} from 'react';
 import TableAtt from './TableAtt';
 import CourseDetails from './CourseDetails'
-import { takeAttendanceDataForStudent } from '../components/utils'
+import { takeAttendanceDataForStudent, checkToken } from '../components/utils'
 
 const Attendance = () => {
 
@@ -18,6 +18,8 @@ const Attendance = () => {
     const [term, setTerm] = useState(currentTerm);
     const [termToUpdate, setTermToUpdate] = useState(currentTerm);
     const [selectedCourse, setSelectedCourse] = useState(null); // Состояние для отслеживания выбранного курса
+    const [accessToken, setAccessToken] = useState(localStorage.getItem('accessToken'));
+    const refreshToken = localStorage.getItem('refreshToken');
     const [loading, setLoading] = useState(true);
     // const [courses, setCourses] = useState(''); // ! backend dependency
     const role = localStorage.getItem('userRole');
@@ -26,10 +28,18 @@ const Attendance = () => {
         setTermToUpdate(event.target.value);
     };
     const handleButtonClick = (e) => {
+        const checkAccessToken = async () => {
+            const newAccessToken = await checkToken(accessToken, refreshToken);
+            setAccessToken(newAccessToken, newAccessToken)
+            localStorage.setItem('accessToken', newAccessToken);
+        }
         // Update the selected term with the termToUpdate
         setTerm(termToUpdate);
         // Reset the termToUpdate state
         setTermToUpdate(termToUpdate);
+        
+        setLoading(true);
+        checkAccessToken();
 
     // ! backend dependency
         // takeAttendanceDataForStudent(term)
@@ -38,11 +48,7 @@ const Attendance = () => {
         //             return response.json();
         //         }
         //         else if (response.status === 401){
-        //             localStorage.removeItem('accessToken');
-        //             localStorage.removeItem('refreshToken');
-        //             localStorage.removeItem('activeTab');
-        //             localStorage.removeItem('userData');
-        //             localStorage.removeItem('userRole');
+        //             localStorage.clear();
         //             window.location.href = '/login';
         //         }
         //         else {
@@ -59,6 +65,7 @@ const Attendance = () => {
         //     .catch((error) => {
         //         console.error(error);
         //     });
+        setLoading(false)
     };
 
     const handleCourseClick = (course) => {
@@ -102,7 +109,14 @@ const Attendance = () => {
         }
     ];
     // ! backend dependecy 
-    // useEffect(() => {
+    useEffect(() => {
+        const checkAccessToken = async () => {
+            const newAccessToken = await checkToken(accessToken, refreshToken);
+            setAccessToken(newAccessToken);
+            localStorage.setItem('accessToken', newAccessToken);
+            // setIsAuthenticated(true); // ? mb need
+            // await fetchAttendanceData(); // ! backend dependecy 
+        }
     //     const fetchAttendanceData = async () => {
     //         takeAttendanceDataForStudent(term)
     //             .then((response) => {
@@ -110,11 +124,7 @@ const Attendance = () => {
     //                     return response.json();
     //                 }
     //                 else if (response.status === 401){
-    //                     localStorage.removeItem('accessToken');
-    //                     localStorage.removeItem('refreshToken');
-    //                     localStorage.removeItem('activeTab');
-    //                     localStorage.removeItem('userData');
-    //                     localStorage.removeItem('userRole');
+    //                     localStorage.clear();
     //                     window.location.href = '/login';
     //                 }
     //                 else {
@@ -133,8 +143,9 @@ const Attendance = () => {
     //             });
     //         setLoading(false);
     //     }
-    //     fetchAttendanceData();
-    // }, []);
+    //     
+       checkAccessToken();
+    }, []);
 
     // if (loading) {
     //     return (

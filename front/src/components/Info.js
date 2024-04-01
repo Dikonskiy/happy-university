@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
+import { takeUserData, checkToken } from '../components/utils';
 
 const Info = () => {
     let user = JSON.parse(localStorage.getItem('userData'))
     return (
         <div className="user-info">
             <div className="form-row">
-                <div className="td-info">Surname Name:</div>
+                <div className="td-info">Name Surname:</div>
                 <div className="td-info">{user.name}</div>
             </div>
             

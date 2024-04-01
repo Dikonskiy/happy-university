@@ -3,75 +3,27 @@ import Home from '../components/Home'
 import Attendance from '../components/Attendance'
 import Check from '../components/Check'
 import Info from '../components/Info';
-import { getRole, takeUserData } from '../components/utils';
+import { checkToken } from '../components/utils';
 import '../css/profile.css'
-// import { Person } from '../components/Models';
+import { Person } from '../components/Models';
 
 
 const Layout = () => {
   const [tab, setTab] = useState(localStorage.getItem('activeTab')||'home')
   const [loading, setLoading] = useState(true);
-  const [role, setRole] = useState('');
-  const accessToken = localStorage.getItem('accessToken');
-  const cardId = localStorage.getItem('cardId')
-
-  // ! backend dependency
-  takeUserData(cardId)
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      } else {
-        throw new Error('Token check failed');
-      }
-    })
-    .then((userData) => {
-      console.log(userData)
-      if (userData && userData.name && userData.card_id && userData.email) {
-        localStorage.setItem('userData', JSON.stringify(userData)); // ! for Arman => tut userData
-      } else{
-        throw new Error('Invalid user data: ', userData);
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+  const role = localStorage.getItem('userRole');
+  const [accessToken, setAccessToken] = useState(localStorage.getItem('accessToken'));
+  const refreshToken = localStorage.getItem('refreshToken');
 
   useEffect(() => {
-    const fetchRole = async () => {
-      getRole(accessToken)
-        .then((response) => {
-          if (response.ok) {
-            return response.json();
-          }
-          else if (response.status === 401){
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('refreshToken');
-            localStorage.removeItem('activeTab');
-            localStorage.removeItem('userData');
-            localStorage.removeItem('userRole');
-            window.location.href = '/login';
-          }
-          else {
-            throw new Error("Server error");
-          }
-        })
-        .then((data) => {
-          if (data && data.role) {
-            // console.log(data)
-            setRole(data.role);
-            localStorage.setItem('userRole', data.role);
-          } else {
-            throw new Error('Invalid data: ', data);
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-
+    const checkAccessToken = async () => {
+      const newAccessToken = await checkToken(accessToken, refreshToken);
+      setAccessToken(newAccessToken);
+      localStorage.setItem('accessToken', newAccessToken);
       setLoading(false);
     }
     fetchRole();
-  }, [accessToken]);
+  }, []);
 
   if (loading) {
     return (
