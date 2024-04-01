@@ -1,7 +1,7 @@
 import React from 'react';
 import PieChart from "./PieChart";
 
-const CourseDetails = ({ course, onReturn }) => {
+const CourseDetails = ({ course }) => {
   const role = localStorage.getItem('userRole');
 
   let hour = course.hours - course.attendance - course.absence - course.permission

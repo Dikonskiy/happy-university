@@ -28,6 +28,7 @@ label {
 button {
     border-radius: 10px;
     font-size: 14px;
+    font-weight: 550;
     cursor: pointer;
     height: 56px;
 }

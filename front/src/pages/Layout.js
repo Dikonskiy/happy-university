@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Home from '../components/Home'
 import Attendance from '../components/Attendance'
+import Check from '../components/Check'
 import Info from '../components/Info';
 import { getRole, takeUserData } from '../components/utils';
 import '../css/profile.css'
-import { Person } from '../components/Models';
+// import { Person } from '../components/Models';
 
 
 const Layout = () => {
@@ -70,7 +71,7 @@ const Layout = () => {
       setLoading(false);
     }
     fetchRole();
-  }, []);
+  }, [accessToken]);
 
   if (loading) {
     return (
@@ -92,6 +93,9 @@ const Layout = () => {
             </div>
             <button className={`sidebar-btn ${tab === 'home' ? 'active' : 'inactive'}`} onClick={() => highlightButton('home')} >Home</button>
             <button className={`sidebar-btn ${tab === 'attendance' ? 'active' : 'inactive'}`} onClick={() => highlightButton('attendance')} >Electronic Attendance</button>
+            {role === 'Student' && (
+              <button className={`sidebar-btn ${tab === 'check' ? 'active' : 'inactive'}`} onClick={() => highlightButton('check')} >Autocheck</button>
+            )}
             <button className="sidebar-btn-down" type="submit" onClick={() => {
               localStorage.removeItem('accessToken');
               localStorage.removeItem('refreshToken');
@@ -115,7 +119,7 @@ const Layout = () => {
                 )}
                 <h2>Portal Guidlenes</h2>
               </header>
-              {tab === 'attendance' && (
+              {tab !== 'home' && (
                   <div className="form-row">
                     <Info/>
                     <img src="../stud_photo.jpg" width="140" height="180" className="images" alt="Profile"/>
@@ -128,6 +132,10 @@ const Layout = () => {
 
             {tab === 'attendance' && (
               <Attendance />
+            )}
+
+            {role === 'Student' && tab === 'check' && (
+              <Check />
             )}
         </div>
     </div>

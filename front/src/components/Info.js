@@ -5,7 +5,7 @@ const Info = () => {
     return (
         <div className="user-info">
             <div className="form-row">
-                <div className="td-info">Name Surname:</div>
+                <div className="td-info">Surname Name:</div>
                 <div className="td-info">{user.name}</div>
             </div>
             

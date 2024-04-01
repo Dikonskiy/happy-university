@@ -163,8 +163,7 @@ const Attendance = () => {
                 <div className="choose">
                     <div className='form-row'>
                         <span className="ct">Year and term:</span>
-                        <select className="select-term" type="role" id="role" name="role" required="" onChange={handleSelectChange}>
-                            <option value="none" selected disabled hidden>Select an Option</option> 
+                        <select className="select-term" type="role" id="role" name="role" required="" defaultValue={currentTerm} onChange={handleSelectChange}>
                             <option value="Term 2">2nd term</option>
                             <option value="Term 1">1st term</option>
                         </select>
