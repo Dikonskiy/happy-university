@@ -22,7 +22,7 @@ const Layout = () => {
       localStorage.setItem('accessToken', newAccessToken);
       setLoading(false);
     }
-    fetchRole();
+    checkAccessToken();
   }, []);
 
   if (loading) {

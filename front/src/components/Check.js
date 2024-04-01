@@ -19,10 +19,10 @@ const Check = () => {
             <div>
                 <span className="ct">Room: </span>
                 <select className="select-term" type="room" id="room" name="room" value={selectedOption} disabled={isDisabled} onChange={handleSelectChange}>
-                    <option value="none" selected disabled hidden>--Choose room--</option>
+                    <option value="none" disabled hidden>--Choose room--</option>
                     {rooms.map(room => (
-                        <option value={room}>{room}</option>
-                    ))}
+                        <option key={room} value={room}>{room}</option>
+                    ))} 
                 </select>
                 <Stopwatch isDisabled={isButtonDisabled} onButtonClick={setIsDisabled}/>
             </div> 

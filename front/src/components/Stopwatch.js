@@ -43,8 +43,8 @@ const Stopwatch = ({isDisabled, onButtonClick}) => {
     <div>
       <button onClick={handleToggle} disabled={isDisabled}>{isRunning ? 'Out' : 'Join'}</button>
       <button onClick={handleReset} disabled={isDisabled}>Reset</button>
-      <div class="circle">
-        <span class="time">{timeDisplay}</span>
+      <div className="circle">
+        <span className="time">{timeDisplay}</span>
       </div>
     </div>
   );
