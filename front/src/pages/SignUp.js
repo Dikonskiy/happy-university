@@ -1,28 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import Login from '../components/Login';
 import Registration from '../components/Registration';
+import { checkToken } from '../components/utils';
 import '../css/login.css'
 
 const SignUp = () => {
   const [tab, setTab] = useState(localStorage.getItem('tabActive')||'login')
   const [loading, setLoading] = useState(true);
-  const accessToken = localStorage.getItem('accessToken'); 
+  const [accessToken, setAccessToken] = useState(localStorage.getItem('accessToken'));
   const refreshToken = localStorage.getItem('refreshToken');
 
   useEffect(() => {
-    // Simulating an asynchronous operation (e.g., fetching data) that takes time
-    const fetchData = async () => {
-      // Replace this with your actual asynchronous operation
-      await new Promise(resolve => setTimeout(resolve, 1));
-      setLoading(false); // Set loading to false when the operation is complete
-    };
-
-    if (!accessToken) { // change there 
-      fetchData()
-    } else {
+    const checkAccessToken = async () => {
+      // refresh token
+      const newAccessToken = await checkToken(accessToken, refreshToken);
+      setAccessToken(newAccessToken)
+      localStorage.setItem('accessToken', newAccessToken);
       window.location.href = '/home';
+    };
+    
+    if (accessToken && ( typeof accessToken === 'string' && accessToken !== 'undefined')) {
+      checkAccessToken();
+    }else{
+      setLoading(false);
     }
-  }, [accessToken]); // and there
+  }, [accessToken, refreshToken]);
 
   const highlightButton = (tabName) => {
     setTab(tabName);
@@ -44,15 +46,11 @@ const SignUp = () => {
             </div>
 
             {tab === 'login' && (
-              <>
               <Login />
-              </>
             )}
 
             {tab === 'register' && (
-              <>
               <Registration />
-              </>
             )}
           </div>
       </div>

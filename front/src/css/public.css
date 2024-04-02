@@ -28,6 +28,7 @@ label {
 button {
     border-radius: 10px;
     font-size: 14px;
+    font-weight: 550;
     cursor: pointer;
     height: 56px;
 }
@@ -77,4 +78,13 @@ p {
 strong {
     color: #000000;
     font-weight: 600;
+}
+
+table {
+    border-spacing: 0;
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    margin: 0px;
+    border-color: #0000BB;
 }

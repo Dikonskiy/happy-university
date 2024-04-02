@@ -1,78 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import Home from '../components/Home'
 import Attendance from '../components/Attendance'
+import Check from '../components/Check'
 import Info from '../components/Info';
-import { getRole, takeUserData } from '../components/utils';
+import { checkToken } from '../components/utils';
 import '../css/profile.css'
-import { Person } from '../components/Models';
 
 
 const Layout = () => {
   const [tab, setTab] = useState(localStorage.getItem('activeTab')||'home')
   const [loading, setLoading] = useState(true);
-  const accessToken = localStorage.getItem('accessToken');
+  const role = localStorage.getItem('userRole');
+  const [accessToken, setAccessToken] = useState(localStorage.getItem('accessToken'));
   const refreshToken = localStorage.getItem('refreshToken');
-  // const userRole = localStorage.getItem('userRole');
-
-  getRole(accessToken)
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      } else {
-        throw new Error("Server error");
-      }
-    })
-    .then((data) => {
-      if (data && data.role) {
-        console.log(data)
-        // localStorage.setItem('userRole', data.role);
-      } else {
-        throw new Error('Invalid user data: ', data);
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-
-
-  // takeUserData(accessToken, refreshToken)
-  //   .then((response) => {
-  //     if (response.ok) {
-  //       return response.json();
-  //     } else {
-  //       throw new Error('Token check failed');
-  //     }
-  //   })
-  //   .then((userData) => {
-  //     if (userData && userData.userName && userData.userId && userData.userEmail) {
-  //       const userFullName = userData.userFullName;
-  //       const userId = userData.userId;
-  //       const userEmail = userData.userEmail;
-  //       const user = new Person(userFullName, userId, userEmail);
-  //       localStorage.setItem('userData', user); // ! for Arman => tut userData
-  //     } else{
-  //       throw new Error('Invalid user data: ', userData);
-  //     }
-  //   })
-  //   .catch((error) => {
-  //     console.error(error);
-  //   });
 
   useEffect(() => {
-    // Simulating an asynchronous operation (e.g., fetching data) that takes time
-    const fetchData = async () => {
-      // Replace this with your actual asynchronous operation
-      await new Promise(resolve => setTimeout(resolve, 1));
-      setLoading(false); // Set loading to false when the operation is complete
-    };
-    // console.log('test1:', isValid)
-    if (accessToken) { // change this 
-      // console.log('suuuuuuuuuuck')
-      fetchData();
-    } else {
-      window.location.href = '/login';
+    const checkAccessToken = async () => {
+      const newAccessToken = await checkToken(accessToken, refreshToken);
+      setAccessToken(newAccessToken);
+      localStorage.setItem('accessToken', newAccessToken);
+      setLoading(false);
     }
-  }, [accessToken]); // and these 
+    checkAccessToken();
+  }, [accessToken, refreshToken]);
 
   if (loading) {
     return (
@@ -89,28 +39,41 @@ const Layout = () => {
     <div className="layout">
         <div className="sidebar">
             <div className="conteiner">
-              <img src="https://cdn-icons-png.flaticon.com/512/6063/6063620.png " width="110px" height="110px" alt="Logo"/>
+              <img src="https://cdn-icons-png.flaticon.com/512/6063/6063620.png " width="110" height="110" alt="Logo"/>
               <h1 className="logo">Happy University</h1>
             </div>
             <button className={`sidebar-btn ${tab === 'home' ? 'active' : 'inactive'}`} onClick={() => highlightButton('home')} >Home</button>
             <button className={`sidebar-btn ${tab === 'attendance' ? 'active' : 'inactive'}`} onClick={() => highlightButton('attendance')} >Electronic Attendance</button>
+            {role === 'Student' && (
+              <button className={`sidebar-btn ${tab === 'check' ? 'active' : 'inactive'}`} onClick={() => highlightButton('check')} >Autocheck</button>
+            )}
             <button className="sidebar-btn-down" type="submit" onClick={() => {
               localStorage.removeItem('accessToken');
               localStorage.removeItem('refreshToken');
-              // history.push('/login');
+              localStorage.removeItem('activeTab');
+              localStorage.removeItem('userData');
+              localStorage.removeItem('userRole');
               window.location.href = '/login';
             }}>Sign Out</button>
         </div>
         <div className="main">
             <div className="top-bar">
               <header className="header">
-                <h2>Student Information<br/>System</h2>
+                {role === 'Student' && (
+                  <h2>Student Information<br/>System</h2>
+                )}
+                {role === 'Teacher' && (
+                  <h2>Teacher Information<br/>System</h2>
+                )}
+                {role === 'Admin' && (
+                  <h2>Admin Workspace<br/>System</h2>
+                )}
                 <h2>Portal Guidlenes</h2>
               </header>
-              {tab === 'attendance' && (
+              {tab !== 'home' && (
                   <div className="form-row">
                     <Info/>
-                    <img src="https://oldmy.sdu.edu.kz/stud_photo.php?ses=e69f85cc9b0d3a6f75a2a26b292a05f3&t=63" width="140" height="180" className="images" alt="Profile"/>
+                    <img src="../stud_photo.jpg" width="140" height="180" className="images" alt="Profile"/>
                   </div>
                 )}
             </div>
@@ -120,6 +83,10 @@ const Layout = () => {
 
             {tab === 'attendance' && (
               <Attendance />
+            )}
+
+            {role === 'Student' && tab === 'check' && (
+              <Check />
             )}
         </div>
     </div>
