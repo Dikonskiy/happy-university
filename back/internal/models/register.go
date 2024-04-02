@@ -1,5 +1,7 @@
 package models
 
+import "time"
+
 type RegisterRequest struct {
 	Name     string `json:"name"`
 	Email    string `json:"email"`
@@ -66,4 +68,14 @@ type GetUserDataResponse struct {
 	CardId string `json:"card_id"`
 	Name   string `json:"name"`
 	Email  string `json:"email"`
+}
+
+type GetAttendanceRequest struct {
+	CardId     string    `json:"card_id"`
+	CourseCode string    `json:"course_code"`
+	Date       time.Time `json:"date"`
+}
+
+type GetAttendanceResponse struct {
+	Status string `json:"status"`
 }

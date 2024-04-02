@@ -5,9 +5,7 @@ import (
 	"errors"
 	"math/rand"
 	"strconv"
-	"time"
 
-	"github.com/Dikonskiy/happy-university/back/internal/models"
 	tkn "github.com/Dikonskiy/happy-university/back/internal/token"
 	"github.com/dgrijalva/jwt-go"
 	"golang.org/x/crypto/bcrypt"
@@ -114,38 +112,6 @@ func generateCardID(role string) string {
 	return prefix + strconv.Itoa(randomNumber)
 }
 
-func (r *Repository) UpdateAttendance(studentID, course string) error {
-	var student models.Student
-	err := r.Db.QueryRow("SELECT student_id, student_name, student_id_card, email FROM Students WHERE student_id_card = ?", studentID).Scan(&student.ID, &student.Name, &student.IdCard, &student.Email)
-	if err != nil {
-		return err
-	}
-
-	currentDateTime := time.Now()
-	_, err = r.Db.Exec("INSERT INTO Attendance (student_id, course_id, check_in_time, attendance_date) VALUES (?, ?, ?, ?)", student.ID, course, currentDateTime, currentDateTime.Format("2006-01-02"))
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (r *Repository) AttendanceOut(studentID, course string) error {
-	var student models.Student
-	err := r.Db.QueryRow("SELECT student_id FROM Students WHERE student_id_card = ?", studentID).Scan(&student.ID)
-	if err != nil {
-		return err
-	}
-
-	currentDateTime := time.Now()
-	_, err = r.Db.Exec("UPDATE Attendance SET check_out_time = ? WHERE student_id = ? AND course_id = ?", currentDateTime, student.ID, course)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
 func (r *Repository) GetRoleFromToken(tokenString string) (string, error) {
 	token, err := jwt.ParseWithClaims(tokenString, &tkn.CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
 		return []byte("your_secret_key"), nil
@@ -214,5 +180,4 @@ func (r *Repository) GetUserData(cardId string) (string, string, error) {
 		}
 	}
 	return name, email, nil
-
 }

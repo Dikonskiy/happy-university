@@ -303,3 +303,31 @@ func (h *Handler) GetUserDataHandler(w http.ResponseWriter, r *http.Request) {
 	h.logerr.Log.Info("Get courses is successfull")
 
 }
+
+func (h *Handler) GetAttendanceHandler(w http.ResponseWriter, r *http.Request) {
+	var req models.GetAttendanceRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		h.logerr.Log.Error("Failed to decode request body", err)
+		http.Error(w, "failed to decode request body", http.StatusBadRequest)
+		return
+	}
+
+	status, err := h.Repo.GetAttendance(req.CardId, req.CourseCode, req.Date)
+	if err != nil {
+		h.logerr.Log.Error("failed to get status from Attendance", err)
+		http.Error(w, "failed to get status from Attendance", http.StatusInternalServerError)
+		return
+	}
+
+	res := models.GetAttendanceResponse{
+		Status: status,
+	}
+
+	if err := json.NewEncoder(w).Encode(res); err != nil {
+		h.logerr.Log.Error("failed to encode response", err)
+		http.Error(w, "failed to encode response", http.StatusInternalServerError)
+		return
+	}
+
+	h.logerr.Log.Info("Get attendance is successfull")
+}
