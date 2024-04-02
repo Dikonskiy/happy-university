@@ -1,5 +1,0 @@
-{
-    "listenPort": "8080",
-    "mysqlConnectionString": "root:dream@tcp(127.0.0.1:3306)/soft"
-  }
-  
