@@ -6,19 +6,27 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
+type TokenType string
+
+const (
+	AccessToken  TokenType = "access"
+	RefreshToken TokenType = "refresh"
+)
+
 type CustomClaims struct {
-	Email string `json:"email"`
-	Role  string `json:"role"`
+	CardId string    `json:"card_id"`
+	Role   string    `json:"role"`
+	Type   TokenType `json:"type"`
 	jwt.StandardClaims
 }
 
-func GenerateTokens(email, role string) (accessToken string, refreshToken string, err error) {
-	accessToken, err = generateToken(email, role, time.Minute*15)
+func GenerateTokens(cardId, role string) (accessToken string, refreshToken string, err error) {
+	accessToken, err = GenerateToken(cardId, role, AccessToken, time.Minute*1)
 	if err != nil {
 		return "", "", err
 	}
 
-	refreshToken, err = generateToken(email, role, time.Hour*24*7)
+	refreshToken, err = GenerateToken(cardId, role, RefreshToken, time.Hour*24*7)
 	if err != nil {
 		return "", "", err
 	}
@@ -26,10 +34,11 @@ func GenerateTokens(email, role string) (accessToken string, refreshToken string
 	return accessToken, refreshToken, nil
 }
 
-func generateToken(email, role string, expiration time.Duration) (string, error) {
+func GenerateToken(cardId, role string, tokenType TokenType, expiration time.Duration) (string, error) {
 	claims := CustomClaims{
-		Email: email,
-		Role:  role,
+		CardId: cardId,
+		Role:   role,
+		Type:   tokenType,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(expiration).Unix(),
 		},

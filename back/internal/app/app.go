@@ -1,11 +1,11 @@
 package app
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 	"time"
 
@@ -14,6 +14,8 @@ import (
 	"github.com/Dikonskiy/happy-university/back/internal/logger"
 	"github.com/Dikonskiy/happy-university/back/internal/models"
 	"github.com/Dikonskiy/happy-university/back/internal/repository"
+	tkn "github.com/Dikonskiy/happy-university/back/internal/token"
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 )
@@ -40,20 +42,25 @@ func init() {
 		return
 	}
 
-	fmt.Println(Cnfg.MysqlConnectionString)
 	Logger = logger.NewLogerr()
 	Repo = repository.NewRepository(Cnfg.MysqlConnectionString, Logger)
-	Hand = handlers.NewHandler(Repo)
+	Hand = handlers.NewHandler(Repo, Logger)
 }
 
 func (a *Application) StartServer() {
 	r := mux.NewRouter()
 
 	r.Use(cors.AllowAll().Handler)
+	r.Use(TokenMiddleware)
 
 	r.HandleFunc("/login", Hand.LoginHandler)
 	r.HandleFunc("/register", Hand.RegisterHandler)
-	r.HandleFunc("/card-entry", Hand.ReadCardHandler)
+	r.HandleFunc("/access-token", Hand.RefreshTokenHandler)
+	r.HandleFunc("/card-entry-in", Hand.ReadCardInHandler)
+	r.HandleFunc("/card-entry-out", Hand.ReadCardOutHandler)
+	r.HandleFunc("/get-role", Hand.GetRoleHandler)
+	r.HandleFunc("/get-courses", Hand.GetCoursesHandler)
+	r.HandleFunc("/get-user-data", Hand.GetUserDataHandler)
 
 	server := &http.Server{
 		Addr:         ":" + Cnfg.ListenPort,
@@ -78,4 +85,40 @@ func shutdown(quit chan os.Signal, logger logger.Logger) {
 		"signal", s.String(),
 	)
 	os.Exit(0)
+}
+
+func TokenMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path == "/login" || r.URL.Path == "/register" || r.URL.Path == "/access-token" {
+			next.ServeHTTP(w, r)
+			return
+		}
+
+		tokenString := r.Header.Get("Authorization")
+		if tokenString == "" {
+			Logger.Log.Error("tokenString is missing")
+			http.Error(w, "Authorization token is missing", http.StatusUnauthorized)
+			return
+		}
+		tokenString = strings.TrimPrefix(tokenString, "Bearer")
+
+		token, err := jwt.ParseWithClaims(tokenString, &tkn.CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
+			return []byte("your_secret_key"), nil
+		})
+
+		if err != nil {
+			Logger.Log.Error("invalid token ", err)
+			http.Error(w, "Invalid token", http.StatusUnauthorized)
+			return
+		}
+
+		_, ok := token.Claims.(*tkn.CustomClaims)
+		if !ok || !token.Valid {
+			Logger.Log.Error("invalid token claims")
+			http.Error(w, "Invalid token claims", http.StatusUnauthorized)
+			return
+		}
+
+		next.ServeHTTP(w, r)
+	})
 }

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import '../css/resetPassword.css';
 
 const ResetPassword = () => {
   const [newPassword, setNewPassword] = useState('');
@@ -18,25 +17,27 @@ const ResetPassword = () => {
             <input
               type="password"
               id="newPassword"
+              placeholder="must be 8 characters"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}  
             />
-            <p>Must be 8 characters.</p>
           </div>
           <div className="input-field">
             <label htmlFor="confirmPassword">Confirm new password</label>
             <input
               type="password"
               id="confirmPassword"
+              placeholder="repeat password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
           </div>
+          <br/> <br/>
           <button type="submit" disabled={!isFormValid()}>
             Reset password
           </button>
           <p>
-            Already have an account? <a href="/">Log in</a>
+            Already have an account? <a href="/login">Log in</a>
           </p>
         </form>
       </div>
