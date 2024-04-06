@@ -7,8 +7,8 @@ import (
 )
 
 func TestGenerateTokens(t *testing.T) {
-	cardId := " "
-	role := " "
+	cardId := "12345"
+	role := "admin"
 
 	accessToken, refreshToken, err := token.GenerateTokens(cardId, role)
 	if err != nil {
