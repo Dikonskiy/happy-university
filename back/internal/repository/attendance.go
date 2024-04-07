@@ -44,7 +44,7 @@ func (r *Repository) AttendanceOut(studentID, course string) error {
 	return nil
 }
 
-func (r *Repository) GetAttendance(studentID, course string, date time.Time) (string, error) {
+func (r *Repository) GetAttendance(studentID, course, room string, date time.Time) (string, error) {
 	var student models.Student
 	err := r.Db.QueryRow("SELECT student_id FROM Students WHERE student_id_card = ?", studentID).Scan(&student.ID)
 	if err != nil {

@@ -28,6 +28,7 @@ CREATE TABLE IF NOT EXISTS Courses (
     course_name VARCHAR(255) NOT NULL,
     teacher_id INT,
     term int,
+    room varchar(7),
     FOREIGN KEY (teacher_id) REFERENCES Teachers(teacher_id)
 );
 
@@ -39,6 +40,7 @@ CREATE TABLE IF NOT EXISTS Attendance (
     check_out_time DATETIME,
     attendance_date DATE NOT NULL,
     status ENUM('attend', 'absent') NOT NULL,
+    room varchar(7),
     FOREIGN KEY (student_id) REFERENCES Students(student_id)
 );
 
@@ -53,6 +55,7 @@ CREATE TABLE IF NOT EXISTS Schedule (
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
     day_of_week ENUM('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday') NOT NULL,
+    room varchar(7),
     start_time TIME NOT NULL,
     end_time TIME NOT NULL
 );

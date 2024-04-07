@@ -73,6 +73,7 @@ type GetUserDataResponse struct {
 type GetAttendanceRequest struct {
 	CardId     string    `json:"card_id"`
 	CourseCode string    `json:"course_code"`
+	Room       string    `json:"room"`
 	Date       time.Time `json:"date"`
 }
 
