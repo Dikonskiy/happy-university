@@ -15,6 +15,7 @@ type RegisterResponse struct {
 
 type AttendanceRequest struct {
 	CardId string `json:"card_id"`
+	Room   string `json:"room"`
 	Course string `json:"course"`
 }
 
