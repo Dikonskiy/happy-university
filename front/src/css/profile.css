@@ -47,19 +47,27 @@
 .main {
   flex: 1;
   padding: 20px;
-  position: relative;
 }
 
 .top-bar {
+  position: relative;
   display: flex;
   flex-direction: row;
   height: 30%;
-  width: 100%;
+  width: 80%;
+  align-items: center;
 }
 
-.top-bar div{
-  width: 60%;
+.top-bar header{
+  position: relative;
+  left: 0;
+}
+
+.profile{
+  display: flex;
   align-items: center;
+  position: absolute;
+  right: 0;
 }
 
 .header {
@@ -129,9 +137,9 @@
 }
 
 .user-info {
-  display: flex;
-  flex-direction: column;
+  display: block;
   align-items: center;
+  width: auto;
 }
 
 .td-info {

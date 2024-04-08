@@ -71,7 +71,7 @@ const Layout = () => {
                 <h2>Portal Guidlenes</h2>
               </header>
               {tab !== 'home' && (
-                  <div className="form-row">
+                  <div className="profile">
                     <Info/>
                     <img src="../stud_photo.jpg" width="140" height="180" className="images" alt="Profile"/>
                   </div>

@@ -179,9 +179,6 @@ const Attendance = () => {
                             <option value="Term 1">1st term</option>
                         </select>
                         <input className="show-button" type='button' value='Show' onClick={handleButtonClick}></input>
-                        {role === 'Teacher' && (
-                            <input className="show-button" type='button' value='Check'></input>
-                        )}
                     </div>  
                     <label className='gray-label'>{ term }</label>
                     <TableAtt courses={courses} handleCourseClick={handleCourseClick} /> 
