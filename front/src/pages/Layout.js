@@ -3,7 +3,7 @@ import Home from '../components/Home'
 import Attendance from '../components/Attendance'
 import Check from '../components/Check'
 import Info from '../components/Info';
-import { checkToken } from '../components/utils';
+import { checkToken } from '../components/fetches';
 import '../css/profile.css'
 
 

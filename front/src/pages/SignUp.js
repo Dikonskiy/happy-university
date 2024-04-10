@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Login from '../components/Login';
 import Registration from '../components/Registration';
-import { checkToken } from '../components/utils';
+import { checkToken } from '../components/fetches';
 import '../css/login.css'
 
 const SignUp = () => {

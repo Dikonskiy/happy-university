@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { takeUserData, checkToken } from '../components/utils';
+import { takeUserData, checkToken } from '../components/fetches';
 
 const Info = () => {
     const [userData, setUser] = useState();
@@ -52,12 +52,12 @@ const Info = () => {
                 </div>
                 
                 <div className="form-row">
-                    <div className="td-info">ID:</div> 
+                    <div className="td-info">ID: </div> 
                     <div className="td-info">{user.card_id}</div>
                 </div>
         
                 <div className="form-row">
-                    <div className="td-info">Email:</div>
+                    <div className="td-info">Email: </div>
                     <div className="td-info">{user.email}</div>
                 </div>
             </div>
