@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/../library/lib" />
+          <root url="file://$MODULE_DIR$/../library/ng" />
+          <root url="jar://$MODULE_DIR$/../library/selenium-api-4.13.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/../library/selenium-chrome-driver-4.13.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/../library/selenium-chromium-driver-4.13.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/../library/selenium-devtools-v85-4.13.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/../library/selenium-devtools-v115-4.13.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/../library/selenium-devtools-v116-4.13.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/../library/selenium-devtools-v117-4.13.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/../library/selenium-edge-driver-4.13.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/../library/selenium-firefox-driver-4.13.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/../library/selenium-http-4.13.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/../library/selenium-ie-driver-4.13.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/../library/selenium-java-4.13.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/../library/selenium-json-4.13.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/../library/selenium-manager-4.13.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/../library/selenium-os-4.13.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/../library/selenium-remote-driver-4.13.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/../library/selenium-safari-driver-4.13.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/../library/selenium-support-4.13.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/../library/selenium-api-4.13.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/../library/selenium-chrome-driver-4.13.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/../library/selenium-chromium-driver-4.13.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/../library/selenium-devtools-v85-4.13.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/../library/selenium-devtools-v115-4.13.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/../library/selenium-devtools-v116-4.13.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/../library/selenium-devtools-v117-4.13.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/../library/selenium-edge-driver-4.13.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/../library/selenium-firefox-driver-4.13.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/../library/selenium-http-4.13.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/../library/selenium-ie-driver-4.13.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/../library/selenium-json-4.13.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/../library/selenium-manager-4.13.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/../library/selenium-os-4.13.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/../library/selenium-remote-driver-4.13.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/../library/selenium-safari-driver-4.13.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/../library/selenium-support-4.13.0-sources.jar!/" />
+        </SOURCES>
+        <jarDirectory url="file://$MODULE_DIR$/../library/lib" recursive="false" />
+        <jarDirectory url="file://$MODULE_DIR$/../library/ng" recursive="false" />
+      </library>
+    </orderEntry>
+  </component>
+</module>
