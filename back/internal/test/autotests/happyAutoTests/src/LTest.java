@@ -15,13 +15,11 @@ public class LTest {
     public void setUp() {
 
         driver = new ChromeDriver();
-        // Открытие страницы логина
         driver.get("http://localhost:3000/");
     }
 
     @Test
     public void testLoginPageTitle() {
-        // Проверка заголовка страницы
         String expectedTitle = "Happy";
         String actualTitle = driver.findElement(By.tagName("h1")).getText();
 
@@ -30,7 +28,6 @@ public class LTest {
 
     @Test
     public void testLoginFormElements() {
-        // Проверка наличия элементов формы входа
         WebElement cardIdField = driver.findElement(By.id("card_id"));
         WebElement passwordField = driver.findElement(By.id("password"));
         WebElement forgotPasswordLink = driver.findElement(By.xpath("//a[@href='/forgotpassword']"));
@@ -44,7 +41,6 @@ public class LTest {
 
     @AfterClass
     public void tearDown() {
-        // Закрытие браузера после выполнения всех тестов
         driver.quit();
     }
 }
