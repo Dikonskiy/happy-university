@@ -97,37 +97,6 @@ func (h *Handler) RegisterHandler(w http.ResponseWriter, r *http.Request) {
 	h.logerr.Log.Info("Registration process successful")
 }
 
-func (h *Handler) GetRoleHandler(w http.ResponseWriter, r *http.Request) {
-	var req models.GetRoleRequest
-	err := json.NewDecoder(r.Body).Decode(&req)
-	if err != nil {
-		h.logerr.Log.Error("Failed to parse request body", err)
-		http.Error(w, "Failed to parse request body", http.StatusBadRequest)
-		return
-	}
-
-	role, err := h.Repo.GetRoleFromToken(req.AccessToken)
-	if err != nil {
-		h.logerr.Log.Error("Failed to get role from token", err)
-		http.Error(w, "Failed to get role from token: "+err.Error(), http.StatusUnauthorized)
-		return
-	}
-
-	res := models.GetRoleResponse{
-		Role: role,
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	err = json.NewEncoder(w).Encode(res)
-	if err != nil {
-		h.logerr.Log.Error("Failed to encode response", err)
-		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
-		return
-	}
-
-	h.logerr.Log.Info("Get role process successful", err)
-}
-
 func (h *Handler) RefreshTokenHandler(w http.ResponseWriter, r *http.Request) {
 	var refreshReq models.RefreshRequest
 	err := json.NewDecoder(r.Body).Decode(&refreshReq)
