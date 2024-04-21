@@ -80,6 +80,8 @@ func (r *Repository) CreateUser(name, email, role, password string) (string, err
 		return "", errors.New("unsupported role")
 	}
 
+	// sender.Sender(email, cardID)
+
 	return cardID, nil
 }
 
