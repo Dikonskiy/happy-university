@@ -58,9 +58,9 @@ func (a *Application) StartServer() {
 	r.HandleFunc("/refresh-token", Hand.RefreshTokenHandler)
 	r.HandleFunc("/card-entry-in", Hand.ReadCardInHandler)
 	r.HandleFunc("/card-entry-out", Hand.ReadCardOutHandler)
-	r.HandleFunc("/get-courses", Hand.GetCoursesHandler)
-	r.HandleFunc("/get-user-data", Hand.GetUserDataHandler)
-	r.HandleFunc("/get-attendance", Hand.GetAttendanceHandler)
+	r.HandleFunc("/get-courses", Hand.GetCoursesHandler).Methods("GET")
+	r.HandleFunc("/get-user-data", Hand.GetUserDataHandler).Methods("GET")
+	r.HandleFunc("/get-attendance", Hand.GetAttendanceHandler).Methods("GET")
 
 	server := &http.Server{
 		Addr:         ":" + Cnfg.ListenPort,
