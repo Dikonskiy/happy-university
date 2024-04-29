@@ -6,8 +6,6 @@ import (
 	"math/rand"
 	"strconv"
 
-	tkn "github.com/Dikonskiy/happy-university/back/internal/token"
-	"github.com/dgrijalva/jwt-go"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -80,6 +78,8 @@ func (r *Repository) CreateUser(name, email, role, password string) (string, err
 		return "", errors.New("unsupported role")
 	}
 
+	// sender.Sender(email, cardID)
+
 	return cardID, nil
 }
 
@@ -110,25 +110,6 @@ func generateCardID(role string) string {
 	randomNumber := rand.Intn(9000000) + 1000000
 
 	return prefix + strconv.Itoa(randomNumber)
-}
-
-func (r *Repository) GetRoleFromToken(tokenString string) (string, error) {
-	token, err := jwt.ParseWithClaims(tokenString, &tkn.CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
-		return []byte("your_secret_key"), nil
-	})
-	if err != nil {
-		return "", err
-	}
-
-	if !token.Valid {
-		return "", errors.New("invalid token")
-	}
-
-	if claims, ok := token.Claims.(*tkn.CustomClaims); ok {
-		return claims.Role, nil
-	}
-
-	return "", errors.New("invalid token claims")
 }
 
 func (r *Repository) GetCourses(studentIDCard string) ([]string, error) {
