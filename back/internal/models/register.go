@@ -14,7 +14,6 @@ type RegisterResponse struct {
 }
 
 type AttendanceRequest struct {
-	CardId string `json:"card_id"`
 	Room   string `json:"room"`
 	Course string `json:"course"`
 }
@@ -53,16 +52,8 @@ type RefreshResponse struct {
 	AccessToken string `json:"access_token"`
 }
 
-type GetCoursesRequest struct {
-	CardId string `json:"card_id"`
-}
-
 type GetCoursesResponse struct {
 	Courses []string `json:"card_id"`
-}
-
-type GetUserDataRequest struct {
-	CardId string `json:"card_id"`
 }
 
 type GetUserDataResponse struct {
@@ -72,7 +63,6 @@ type GetUserDataResponse struct {
 }
 
 type GetAttendanceRequest struct {
-	CardId     string    `json:"card_id"`
 	CourseCode string    `json:"course_code"`
 	Room       string    `json:"room"`
 	Date       time.Time `json:"date"`
