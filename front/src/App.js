@@ -4,6 +4,7 @@ import './css/App.css';
 import './css/public.css'
 import './css/login.css'
 import SignUp from './pages/SignUp.js';
+import AftReg from './pages/AftReg.js';
 import ForgotPasswordForm from './pages/ForgotPasswordForm.js';
 import SendCode from './pages/SendCode.js';
 import ResetPassword from './pages/ResetPassword.js';
@@ -21,6 +22,7 @@ const App = () => {
           <Route exact path='/sendcode' component={SendCode} />
           <Route exact path='/resetpassword' component={ResetPassword} />
           <Route exact path='/home' component={Layout} />
+          <Route exact path='/aftereg' component={AftReg} />
         </Switch>
       </div>
     </Router>
