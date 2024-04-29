@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import Info from "./Info";
+import Info from "../components/Info";
 import avatar from "../elements/stud_photo.jpg";
-import { checkToken } from "./fetches";
-import Layout from "../pages/Layout";
+import { checkToken } from "../components/fetches";
+import Sidebar from "../components/Sidebar";
+import Topbar from "../components/Topbar";
 
 const Home = () => {
-  const role = localStorage.getItem("userRole");
   const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
   const refreshToken = localStorage.getItem("refreshToken");
   const [loading, setLoading] = useState(true);
@@ -26,34 +26,9 @@ const Home = () => {
 
   return (
     <div className="layout">
-      <Layout />
+      <Sidebar />
       <div className="main">
-        <div className="top-bar">
-          <header className="header">
-            {role === "Student" && (
-              <h2>
-                Student Information
-                <br />
-                System
-              </h2>
-            )}
-            {role === "Teacher" && (
-              <h2>
-                Teacher Information
-                <br />
-                System
-              </h2>
-            )}
-            {role === "Admin" && (
-              <h2>
-                Admin Workspace
-                <br />
-                System
-              </h2>
-            )}
-            <h2>Portal Guidlenes</h2>
-          </header>
-        </div>
+      <Topbar />
         <div className="box">
           <div>
             <h2 className="home-h2">Home Page</h2>

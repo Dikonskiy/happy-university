@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import TableAtt from "./TableAtt";
-import CourseDetails from "./CourseDetails";
+import TableAtt from "../components/TableAtt";
+import CourseDetails from "../components/CourseDetails";
 import { getCoursesStudent, checkToken } from "../components/fetches";
-import Layout from "../pages/Layout";
-import Info from "./Info";
+import Sidebar from "../components/Sidebar";
+import Info from "../components/Info";
+import Topbar from "../components/Topbar";
 
 const Attendance = () => {
   // logic for define current term
@@ -157,38 +158,9 @@ const Attendance = () => {
 
   return (
     <div className="layout">
-      <Layout />
+      <Sidebar />
       <div className="main">
-        <div className="top-bar">
-          <header className="header">
-            {role === "Student" && (
-              <h2>
-                Student Information
-                <br />
-                System
-              </h2>
-            )}
-            {role === "Teacher" && (
-              <h2>
-                Teacher Information
-                <br />
-                System
-              </h2>
-            )}
-            {role === "Admin" && (
-              <h2>
-                Admin Workspace
-                <br />
-                System
-              </h2>
-            )}
-            <h2>Portal Guidlenes</h2>
-          </header>
-          <div className="profile">
-            <Info />
-            <img src="../stud_photo.jpg" width="140" height="180" className="images" alt="Profile" />
-          </div>
-        </div>
+        <Topbar />
         <div className="attendance-box">
           {selectedCourse ? (
             <div>

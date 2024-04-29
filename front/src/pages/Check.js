@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import Stopwatch from "./Stopwatch";
-import Info from "./Info";
-import Layout from "../pages/Layout";
-import { checkToken } from "./fetches";
+import Stopwatch from "../components/Stopwatch";
+import Info from "../components/Info";
+import Sidebar from "../components/Sidebar";
+import { checkToken } from "../components/fetches";
+import Topbar from "../components/Topbar";
 
 const Check = () => {
   const rooms = ["A1", "A2", "B1", "B2", "C1", "C2", "D1", "D2", "F101", "F102", "F103"];
@@ -37,38 +38,9 @@ const Check = () => {
 
   return (
         <div className="layout">
-        <Layout />
+        <Sidebar />
         <div className="main">
-          <div className="top-bar">
-            <header className="header">
-              {role === "Student" && (
-                <h2>
-                  Student Information
-                  <br />
-                  System
-                </h2>
-              )}
-              {role === "Teacher" && (
-                <h2>
-                  Teacher Information
-                  <br />
-                  System
-                </h2>
-              )}
-              {role === "Admin" && (
-                <h2>
-                  Admin Workspace
-                  <br />
-                  System
-                </h2>
-              )}
-              <h2>Portal Guidlenes</h2>
-            </header>
-            <div className="profile">
-              <Info />
-              <img src="../stud_photo.jpg" width="140" height="180" className="images" alt="Profile" />
-            </div>
-          </div>
+          <Topbar />
           <div className="attendance-box">
       <h2 className="home-h2">Automated Check-In</h2>
       <div>

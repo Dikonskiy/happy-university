@@ -1,27 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { checkToken } from "../components/fetches";
+import React, { useState } from "react";
 import "../css/profile.css";
 
-const Layout = () => {
+const Sidebar = () => {
   const [tab, setTab] = useState(localStorage.getItem("activeTab") || "home");
-  const [loading, setLoading] = useState(true);
   const role = localStorage.getItem("userRole");
-  const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
-  const refreshToken = localStorage.getItem("refreshToken");
-
-  useEffect(() => {
-    const checkAccessToken = async () => {
-      const newAccessToken = await checkToken(accessToken, refreshToken);
-      setAccessToken(newAccessToken);
-      localStorage.setItem("accessToken", newAccessToken);
-      setLoading(false);
-    };
-    checkAccessToken();
-  }, [accessToken, refreshToken]);
-
-  if (loading) {
-    return <div className="loader"></div>;
-  }
 
   const highlightButton = (tabName) => {
     setTab(tabName);
@@ -66,4 +48,4 @@ const Layout = () => {
   );
 };
 
-export default Layout;
+export default Sidebar;

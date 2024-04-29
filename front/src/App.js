@@ -8,10 +8,9 @@ import AftReg from './pages/AftReg.js';
 import ForgotPasswordForm from './pages/ForgotPasswordForm.js';
 import SendCode from './pages/SendCode.js';
 import ResetPassword from './pages/ResetPassword.js';
-import Layout from './pages/Layout.js';
-import Home from './components/Home.js';
-import Attendance from './components/Attendance.js';
-import Check from './components/Check.js';
+import Home from './pages/Home.js';
+import Attendance from './pages/Attendance.js';
+import Check from './pages/Check.js';
 
 
 const App = () => {
