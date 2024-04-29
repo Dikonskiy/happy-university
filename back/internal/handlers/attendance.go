@@ -180,7 +180,7 @@ func (h *Handler) GetAttendanceHandler(w http.ResponseWriter, r *http.Request) {
 
 func extractCardIDFromToken(r *http.Request) (string, error) {
 	authHeader := r.Header.Get("Authorization")
-	tokenString := strings.Replace(authHeader, "Bearer ", "", 1)
+	tokenString := strings.Replace(authHeader, "Bearer", "", 1)
 
 	token, err := jwt.ParseWithClaims(tokenString, &tkn.CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
 		return []byte("your_secret_key"), nil
