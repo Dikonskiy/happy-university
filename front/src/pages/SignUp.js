@@ -3,12 +3,16 @@ import Login from '../components/Login';
 import Registration from '../components/Registration';
 import { checkToken } from '../components/fetches';
 import '../css/login.css'
+import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 
 const SignUp = () => {
   const [tab, setTab] = useState(localStorage.getItem('tabActive')||'login')
   const [loading, setLoading] = useState(true);
   const [accessToken, setAccessToken] = useState(localStorage.getItem('accessToken'));
   const refreshToken = localStorage.getItem('refreshToken');
+  const signTab = useParams()
+
+  
 
   useEffect(() => {
     const checkAccessToken = async () => {
