@@ -21,7 +21,7 @@ const Info = () => {
                     return response.json();
                 } else if (response.status === 401){
                     localStorage.clear();
-                    window.location.href = '/login';
+                    window.location.href = '/sign';
                 } else {
                     throw new Error('Token check failed');
                 }

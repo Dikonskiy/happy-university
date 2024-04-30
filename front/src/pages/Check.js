@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Stopwatch from "../components/Stopwatch";
-import Info from "../components/Info";
 import Sidebar from "../components/Sidebar";
 import { checkToken } from "../components/fetches";
 import Topbar from "../components/Topbar";

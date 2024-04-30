@@ -6,14 +6,13 @@ const JWT_EXP_BUFFER_MINUTES = 5; // buffer time in minutes before the token exp
 // utils.js
 
 export const checkToken = async (accessToken, refreshToken) => {
-  // console.log(accessToken);
   const data = {
     refresh_token: refreshToken
   };
   
   if (typeof accessToken !== 'string' || accessToken === 'undefined') {
     localStorage.clear();
-    window.location.href = '/login';
+    window.location.href = '/sign';
   }
 
   const decodedAccessToken = jwtDecode(accessToken)
@@ -94,9 +93,6 @@ export const registration = (name, email, role, password) => {
 }
 
 export const takeUserData = (cardId) => {
-  const data = {
-    card_id: cardId
-  }
   let headers = new Headers();
   headers.append('Content-Type', 'application/json');
   headers.append('Accept', 'application/json');
@@ -104,9 +100,8 @@ export const takeUserData = (cardId) => {
   headers.append('Authorization', 'Bearer' + localStorage.getItem('accessToken'))
 
   return fetch('http://localhost:8080/get-user-data', {
-    method: 'POST',
+    method: 'GET',
     headers: headers,
-    body: JSON.stringify(data),
   })
 }
 
