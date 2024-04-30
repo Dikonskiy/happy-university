@@ -26,13 +26,13 @@ const Stopwatch = ({isDisabled, onButtonClick}) => {
   };
 
   const formatTime = (timer) => {
-    const minutes = Math.floor(timer / 60000).toString().padStart(2, "0");
-    const seconds = Math.floor((timer / 1000) % 60).toString().padStart(2, "0");
-    const milliseconds = Math.floor((timer % 1000) / 10).toString().padStart(2, "0");
-  
-    return `${minutes}:${seconds}:${milliseconds}`;
+    const hours = Math.floor(timer / 360000).toString().padStart(2, "0");
+    const minutes = Math.floor((timer % 360000) / 6000).toString().padStart(2, "0");
+    const seconds = Math.floor((timer % 6000) / 100).toString().padStart(2, "0");
+    const milliseconds = (timer % 100).toString().padStart(2, "0");
+    return `${hours!=="00"?(hours+':'):('')}${minutes}:${seconds}${hours==="00"?(':'+milliseconds):('')}`;
   };
-
+  
   useEffect(() => {
     setTimeDisplay(formatTime(timer));
   }, [timer]);

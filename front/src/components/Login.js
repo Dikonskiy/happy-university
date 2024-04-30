@@ -1,4 +1,4 @@
-import { authorization } from "./utils";
+import { authorization } from "./fetches";
 import { jwtDecode } from "jwt-decode";
 
 const Login = () => {

@@ -110,24 +110,24 @@ export const takeUserData = (cardId) => {
   })
 }
 
-export const getRole = (accessToken) => {
-  const data = {
-    access_token: accessToken
-  }
-  let headers = new Headers();
-  headers.append('Content-Type', 'application/json');
-  headers.append('Accept', 'application/json');
-  headers.append('Origin','http://localhost:3000');
-  headers.append('Authorization', 'Bearer'+ accessToken)
+// export const getRole = (accessToken) => {
+//   const data = {
+//     access_token: accessToken
+//   }
+//   let headers = new Headers();
+//   headers.append('Content-Type', 'application/json');
+//   headers.append('Accept', 'application/json');
+//   headers.append('Origin','http://localhost:3000');
+//   headers.append('Authorization', 'Bearer'+ accessToken)
 
-  return fetch('http://localhost:8080/get-role', {
-    method: 'POST',
-    headers: headers,
-    body: JSON.stringify(data),
-  })
-}
+//   return fetch('http://localhost:8080/get-role', {
+//     method: 'POST',
+//     headers: headers,
+//     body: JSON.stringify(data),
+//   })
+// }
 
-export const takeAttendanceDataForStudent = (term) => {
+export const getCoursesStudent = (term) => {
   const data = {
     term: term
   }

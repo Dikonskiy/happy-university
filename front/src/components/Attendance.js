@@ -1,7 +1,7 @@
 import React, { useEffect, useState} from 'react';
 import TableAtt from './TableAtt';
 import CourseDetails from './CourseDetails'
-import { takeAttendanceDataForStudent, checkToken } from '../components/utils'
+import { getCoursesStudent, checkToken } from '../components/fetches'
 
 const Attendance = () => {
 
@@ -42,7 +42,7 @@ const Attendance = () => {
         checkAccessToken();
 
     // ! backend dependency
-        // takeAttendanceDataForStudent(term)
+        // getCoursesStudent(term)
         //     .then((response) => {
         //         if(response.ok){
         //             return response.json();
@@ -108,7 +108,7 @@ const Attendance = () => {
           permission: 0
         }
     ];
-    // ! backend dependecy 
+    
     useEffect(() => {
         const checkAccessToken = async () => {
             const newAccessToken = await checkToken(accessToken, refreshToken);
@@ -117,8 +117,9 @@ const Attendance = () => {
             // setIsAuthenticated(true); // ? mb need
             // await fetchAttendanceData(); // ! backend dependecy 
         }
+    // ! backend dependecy 
     //     const fetchAttendanceData = async () => {
-    //         takeAttendanceDataForStudent(term)
+    //         getCoursesStudent(term)
     //             .then((response) => {
     //                 if(response.ok){
     //                     return response.json();
@@ -146,7 +147,7 @@ const Attendance = () => {
     //     
        checkAccessToken();
     }, []);
-
+    // ! backend dependecy 
     // if (loading) {
     //     return (
     //         <div className="loader"></div>
@@ -179,9 +180,6 @@ const Attendance = () => {
                             <option value="Term 1">1st term</option>
                         </select>
                         <input className="show-button" type='button' value='Show' onClick={handleButtonClick}></input>
-                        {role === 'Teacher' && (
-                            <input className="show-button" type='button' value='Check'></input>
-                        )}
                     </div>  
                     <label className='gray-label'>{ term }</label>
                     <TableAtt courses={courses} handleCourseClick={handleCourseClick} /> 

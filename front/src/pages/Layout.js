@@ -3,7 +3,7 @@ import Home from '../components/Home'
 import Attendance from '../components/Attendance'
 import Check from '../components/Check'
 import Info from '../components/Info';
-import { checkToken } from '../components/utils';
+import { checkToken } from '../components/fetches';
 import '../css/profile.css'
 
 
@@ -71,7 +71,7 @@ const Layout = () => {
                 <h2>Portal Guidlenes</h2>
               </header>
               {tab !== 'home' && (
-                  <div className="form-row">
+                  <div className="profile">
                     <Info/>
                     <img src="../stud_photo.jpg" width="140" height="180" className="images" alt="Profile"/>
                   </div>

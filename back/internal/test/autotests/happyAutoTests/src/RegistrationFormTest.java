@@ -57,8 +57,8 @@ public class RegistrationFormTest extends MainSuperTest{
         WebElement checkbox = driver.findElement(By.xpath("//input[@id=\"terms-and-privacy-policy\"]"));
         WebElement submitButton = driver.findElement(By.xpath("//button[text()='Commit']"));
 
-        emailFill.sendKeys("example1@send");
-        fullNameFill.sendKeys("Karina Nazarava");
+        emailFill.sendKeys("iamloxj1j1@sendnudes");
+        fullNameFill.sendKeys("Abdibek Aidos");
         drop.selectByVisibleText("Student");
         passwordFill.sendKeys(password);
         checkbox.click();
@@ -70,9 +70,9 @@ public class RegistrationFormTest extends MainSuperTest{
 
         Assert.assertNotEquals(beforeEntry, afterEntry);
 
-        Assert.assertEquals(compare.email, "example1@send");
+        Assert.assertEquals(compare.email, "iamaidosj1j1@sendexs.com");
 
-        Assert.assertEquals(compare.name, "Karina Nazarava");
+        Assert.assertEquals(compare.name, "Abdibek Aidos");
 
     }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { registration } from './utils';
+import { registration } from './fetches';
 
 const Registration = () => {
   const [agreeToTerms, setAgreeToTerms] = React.useState(false);
