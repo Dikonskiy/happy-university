@@ -4,10 +4,13 @@ import './css/App.css';
 import './css/public.css'
 import './css/login.css'
 import SignUp from './pages/SignUp.js';
+import AftReg from './pages/AftReg.js';
 import ForgotPasswordForm from './pages/ForgotPasswordForm.js';
 import SendCode from './pages/SendCode.js';
 import ResetPassword from './pages/ResetPassword.js';
-import Layout from './pages/Layout.js';
+import Home from './pages/Home.js';
+import Attendance from './pages/Attendance.js';
+import Check from './pages/Check.js';
 
 
 const App = () => {
@@ -15,12 +18,15 @@ const App = () => {
     <Router>
       <div className='App'>
         <Switch>
-          <Route exact path='/' component={Layout} />
-          <Route exact path='/login' component={SignUp} />
-          <Route exact path='/forgotpassword' component={ForgotPasswordForm} />
-          <Route exact path='/sendcode' component={SendCode} />
-          <Route exact path='/resetpassword' component={ResetPassword} />
-          <Route exact path='/home' component={Layout} />
+          <Route exact path='/' component={Home} />
+          <Route exact path='/sign' component={SignUp} />
+          <Route exact path='/sign/forgotpassword' component={ForgotPasswordForm} />
+          <Route exact path='/sign/forgotpassword/sendcode' component={SendCode} />
+          <Route exact path='/sign/forgotpassword/sendcode/resetpassword' component={ResetPassword} />
+          <Route exact path='/sign/aftereg' component={AftReg} />
+          <Route exact path='/home' component={Home} />
+          <Route exact path='/attendance' component={Attendance} />
+          <Route exact path='/check' component={Check} />
         </Switch>
       </div>
     </Router>

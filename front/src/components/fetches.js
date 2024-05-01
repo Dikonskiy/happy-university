@@ -6,14 +6,13 @@ const JWT_EXP_BUFFER_MINUTES = 5; // buffer time in minutes before the token exp
 // utils.js
 
 export const checkToken = async (accessToken, refreshToken) => {
-  // console.log(accessToken);
   const data = {
     refresh_token: refreshToken
   };
   
   if (typeof accessToken !== 'string' || accessToken === 'undefined') {
     localStorage.clear();
-    window.location.href = '/login';
+    window.location.href = '/sign';
   }
 
   const decodedAccessToken = jwtDecode(accessToken)
@@ -29,7 +28,7 @@ export const checkToken = async (accessToken, refreshToken) => {
   headers.append('Accept', 'application/json');
   headers.append('Origin','http://localhost:3000');
   try{
-    const response = await fetch('http://localhost:8080/access-token', {
+    const response = await fetch('http://localhost:8080/refresh-token', {
       method: 'POST',
       headers: headers,
       body: JSON.stringify(data),
@@ -93,20 +92,51 @@ export const registration = (name, email, role, password) => {
     })
 }
 
-export const takeUserData = (cardId) => {
+export const checkPinCode = (card_id, password) => {
   const data = {
-    card_id: cardId
+    card_id: card_id,
+    password: password
   }
   let headers = new Headers();
   headers.append('Content-Type', 'application/json');
   headers.append('Accept', 'application/json');
   headers.append('Origin','http://localhost:3000');
-  headers.append('Authorization', 'Bearer' + localStorage.getItem('accessToken'))
 
-  return fetch('http://localhost:8080/get-user-data', {
+  return fetch('http://localhost:8080/check-pincode', {
     method: 'POST',
     headers: headers,
     body: JSON.stringify(data),
+  })
+}
+
+export const updatePassword = (card_id, new_password) => {
+  const data = {
+    card_id: card_id,
+    password: new_password
+  }
+  let headers = new Headers();
+  headers.append('Content-Type', 'application/json');
+  headers.append('Accept', 'application/json');
+  headers.append('Origin','http://localhost:3000');
+
+  return fetch('http://localhost:8080/update-password', {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify(data),
+  })
+}
+
+export const takeUserData = () => {
+  let headers = new Headers();
+  headers.append('Content-Type', 'application/json');
+  headers.append('Accept', 'application/json');
+  headers.append('Origin','http://localhost:3000');
+  headers.append('Access-Control-Allow-Origin', 'http://localhost:3000');
+  headers.append('Authorization', 'Bearer' + localStorage.getItem('accessToken'))
+
+  return fetch('http://localhost:8080/get-user-data', {
+    method: 'GET',
+    headers: headers,
   })
 }
 

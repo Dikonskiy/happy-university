@@ -191,7 +191,7 @@ func extractCardIDFromToken(r *http.Request) (string, error) {
 
 	claims, ok := token.Claims.(*tkn.CustomClaims)
 	if !ok || !token.Valid {
-		return "", errors.New("invalid token")
+		return "", errors.New("extract token invalid token")
 	}
 
 	cardID := claims.CardId
