@@ -50,17 +50,29 @@ func init() {
 func (a *Application) StartServer() {
 	r := mux.NewRouter()
 
+	optionsHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With")
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+	})
+	r.Methods("OPTIONS").Handler(optionsHandler)
 	r.Use(cors.AllowAll().Handler)
 	r.Use(TokenMiddleware)
 
 	r.HandleFunc("/login", Hand.LoginHandler)
 	r.HandleFunc("/register", Hand.RegisterHandler)
-	r.HandleFunc("/access-token", Hand.RefreshTokenHandler)
+	r.HandleFunc("/refresh-token", Hand.RefreshTokenHandler)
 	r.HandleFunc("/card-entry-in", Hand.ReadCardInHandler)
 	r.HandleFunc("/card-entry-out", Hand.ReadCardOutHandler)
-	r.HandleFunc("/get-courses", Hand.GetCoursesHandler)
-	r.HandleFunc("/get-user-data", Hand.GetUserDataHandler)
-	r.HandleFunc("/get-attendance", Hand.GetAttendanceHandler)
+	r.HandleFunc("/get-courses", Hand.GetCoursesHandler).Methods("GET")
+	r.HandleFunc("/get-user-data", Hand.GetUserDataHandler).Methods("GET")
+	r.HandleFunc("/get-attendance", Hand.GetAttendanceHandler).Methods("GET")
+	r.HandleFunc("/check-pincode", Hand.CheckPinCodeHandler)
+	r.HandleFunc("/update-password", Hand.UpdatePasswordHandler)
 
 	server := &http.Server{
 		Addr:         ":" + Cnfg.ListenPort,
@@ -89,7 +101,7 @@ func shutdown(quit chan os.Signal, logger logger.Logger) {
 
 func TokenMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path == "/login" || r.URL.Path == "/register" || r.URL.Path == "/access-token" {
+		if r.URL.Path == "/login" || r.URL.Path == "/register" || r.URL.Path == "/refresh-token" || r.URL.Path == "/check-pincode" || r.URL.Path == "/update-password" {
 			next.ServeHTTP(w, r)
 			return
 		}

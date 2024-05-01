@@ -15,7 +15,7 @@ const Info = () => {
             await fetchInfo();
         }
         const fetchInfo = async () => {
-            await takeUserData(cardId)
+            await takeUserData()
                 .then((response) => {
                 if (response.ok) {
                     return response.json();
