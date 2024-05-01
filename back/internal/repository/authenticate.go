@@ -186,3 +186,66 @@ func (r *Repository) SavePinCode(pinCode int, cardId string) error {
 
 	return nil
 }
+
+func (r *Repository) CheckPinCode(cardID string, pinCode int) (bool, error) {
+	var storedPinCode int
+
+	switch cardID[0] {
+	case '1':
+		err := r.Db.QueryRow("SELECT pin_code FROM Students WHERE student_id_card = ?", cardID).Scan(&storedPinCode)
+		if err != nil {
+			if err == sql.ErrNoRows {
+				return false, err
+			}
+			panic(err)
+		}
+
+	case '2':
+		err := r.Db.QueryRow("SELECT pin_code FROM Teachers WHERE teacher_id_card = ?", cardID).Scan(&storedPinCode)
+		if err != nil {
+			if err == sql.ErrNoRows {
+				return false, err
+			}
+			panic(err)
+		}
+	case '3':
+		err := r.Db.QueryRow("SELECT pin_code FROM Admins WHERE admin_id_card = ?", cardID).Scan(&storedPinCode)
+		if err != nil {
+			if err == sql.ErrNoRows {
+				return false, err
+			}
+			panic(err)
+		}
+	}
+
+	return storedPinCode == pinCode, nil
+}
+
+func (r *Repository) UpdatePassword(cardID, newPassword string) error {
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(newPassword), bcrypt.DefaultCost)
+	if err != nil {
+		return err
+	}
+
+	switch cardID[0] {
+	case '1':
+		_, err := r.Db.Exec("UPDATE Students SET password = ? WHERE student_id_card = ?", hashedPassword, cardID)
+		if err != nil {
+			return err
+		}
+	case '2':
+		_, err := r.Db.Exec("UPDATE Teachers SET password = ? WHERE teacher_id_card = ?", hashedPassword, cardID)
+		if err != nil {
+			return err
+		}
+	case '3':
+		_, err := r.Db.Exec("UPDATE Admins SET password = ? WHERE admin_id_card = ?", hashedPassword, cardID)
+		if err != nil {
+			return err
+		}
+	default:
+		return errors.New("invalid card ID")
+	}
+
+	return nil
+}

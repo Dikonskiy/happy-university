@@ -74,5 +74,10 @@ type GetAttendanceResponse struct {
 }
 
 type CheckPinCode struct {
-	PinCode int `json:"pin_code"`
+	CardId  string `json:"card_id"`
+	PinCode int    `json:"pin_code"`
+}
+
+type CheckPinCodeResponse struct {
+	Correct bool `json:"correct"`
 }
