@@ -81,3 +81,8 @@ type CheckPinCode struct {
 type CheckPinCodeResponse struct {
 	Correct bool `json:"correct"`
 }
+
+type UpdatePassword struct {
+	CardId   string `json:"card_id"`
+	Password string `json:"password"`
+}
