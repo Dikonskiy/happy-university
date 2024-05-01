@@ -43,7 +43,7 @@ export const checkToken = async (accessToken, refreshToken) => {
     } 
     else if (response.statusCode === 401){
       localStorage.clear();
-      window.location.href = '/login';
+      window.location.href = '/sign';
     } 
     else {
       throw new Error("Failed to refresh access token");
@@ -66,7 +66,7 @@ export const authorization = (id, password) => {
   headers.append('Authorization', 'Basic ' + encode(id + ":" +  password));
   headers.append('Origin','http://localhost:3000');
 
-  return fetch('http://localhost:8080/login', {
+  return fetch('http://localhost:8080/sign', {
     method: 'POST',
     headers: headers,
     body: JSON.stringify(data),

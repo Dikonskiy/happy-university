@@ -3,7 +3,6 @@ import "../css/profile.css";
 
 const Sidebar = () => {
   const [tab, setTab] = useState(localStorage.getItem("activeTab") || "home");
-  const role = localStorage.getItem("userRole");
 
   const highlightButton = (tabName) => {
     setTab(tabName);
@@ -24,11 +23,9 @@ const Sidebar = () => {
         <button className={`sidebar-btn ${tab === "attendance" ? "active" : "inactive"}`} onClick={() => highlightButton("attendance")}>
           Electronic Attendance
         </button>
-        {role === "Student" && (
-          <button className={`sidebar-btn ${tab === "check" ? "active" : "inactive"}`} onClick={() => highlightButton("check")}>
-            Autocheck
-          </button>
-        )}
+        <button className={`sidebar-btn ${tab === "check" ? "active" : "inactive"}`} onClick={() => highlightButton("check")}>
+          Autocheck
+        </button>
         <button
           className="sidebar-btn-down"
           type="submit"

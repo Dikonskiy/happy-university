@@ -58,6 +58,12 @@ const Registration = () => {
                 <div className="icon"></div>
                 <div className="eye"></div>
             </div>
+            <div className="input-field">
+                <label htmlFor="pin">Pin for password reconstruction:</label>
+                <input type="code" id="pin" name="pin" placeholder="Your pincode" />
+                <div className="icon"></div>
+                <div className="eye"></div>
+            </div>
             <div className="checkbox-container">
                 <input
                 type="checkbox"
