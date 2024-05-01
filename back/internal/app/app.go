@@ -51,7 +51,7 @@ func (a *Application) StartServer() {
 	r := mux.NewRouter()
 
 	r.Use(cors.AllowAll().Handler)
-	// r.Use(TokenMiddleware)
+	r.Use(TokenMiddleware)
 
 	r.HandleFunc("/login", Hand.LoginHandler)
 	r.HandleFunc("/register", Hand.RegisterHandler)
@@ -91,7 +91,7 @@ func shutdown(quit chan os.Signal, logger logger.Logger) {
 
 func TokenMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path == "/login" || r.URL.Path == "/register" || r.URL.Path == "/access-token" {
+		if r.URL.Path == "/login" || r.URL.Path == "/register" || r.URL.Path == "/access-token" || r.URL.Path == "/check-pincode" || r.URL.Path == "/update-password" {
 			next.ServeHTTP(w, r)
 			return
 		}
