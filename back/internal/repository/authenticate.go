@@ -162,3 +162,27 @@ func (r *Repository) GetUserData(cardId string) (string, string, error) {
 	}
 	return name, email, nil
 }
+
+func (r *Repository) SavePinCode(pinCode int, cardId string) error {
+	switch cardId[0] {
+	case '1':
+		_, err := r.Db.Exec("UPDATE Students SET pin_code = ? WHERE student_id_card = ?", pinCode, cardId)
+		if err != nil {
+			return err
+		}
+	case '2':
+		_, err := r.Db.Exec("UPDATE Teachers SET pin_code = ? WHERE teacher_id_card = ?", pinCode, cardId)
+		if err != nil {
+			return err
+		}
+	case '3':
+		_, err := r.Db.Exec("UPDATE Admins SET pin_code = ? WHERE admin_id_card = ?", pinCode, cardId)
+		if err != nil {
+			return err
+		}
+	default:
+		return errors.New("invalid card ID")
+	}
+
+	return nil
+}
