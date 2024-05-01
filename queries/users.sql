@@ -3,7 +3,8 @@ CREATE TABLE IF NOT EXISTS Students (
     student_name VARCHAR(255) NOT NULL,
     student_id_card VARCHAR(20) NOT NULL UNIQUE,
     email VARCHAR(255) NOT NULL,
-    password VARCHAR(255) not null
+    password VARCHAR(255) not null,
+    pin_code int not null
 );
 
 CREATE TABLE IF NOT EXISTS Teachers (
@@ -11,7 +12,8 @@ CREATE TABLE IF NOT EXISTS Teachers (
     teacher_name VARCHAR(255) NOT NULL,
     teacher_id_card VARCHAR(20) NOT NULL UNIQUE,
     email VARCHAR(255) NOT NULL,
-    password VARCHAR(255) not null
+    password VARCHAR(255) not null,
+    pin_code int not null
 );
 
 CREATE TABLE IF NOT EXISTS Admins (
@@ -19,7 +21,8 @@ CREATE TABLE IF NOT EXISTS Admins (
     admin_name VARCHAR(255) NOT NULL,
     admin_id_card VARCHAR(20) NOT NULL UNIQUE,
     email VARCHAR(255) NOT NULL,
-    password VARCHAR(255) not null
+    password VARCHAR(255) not null,
+    pin_code int not null
 );
 
 CREATE TABLE IF NOT EXISTS Courses (
