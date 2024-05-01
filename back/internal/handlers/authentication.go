@@ -81,6 +81,13 @@ func (h *Handler) RegisterHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	err = h.Repo.SavePinCode(person.PinCode, cardID)
+	if err != nil {
+		h.logerr.Log.Error("Failed to save pinCode", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
 	response := models.RegisterResponse{
 		CardId: cardID,
 	}
@@ -153,3 +160,8 @@ func (h *Handler) RefreshTokenHandler(w http.ResponseWriter, r *http.Request) {
 
 	h.logerr.Log.Info("Access token generated successfully")
 }
+
+// func (h *Handler) CheckPinCodeHandler(w http.ResponseWriter, r *http.Request) {
+// 	var req models.SavePinCode
+
+// }

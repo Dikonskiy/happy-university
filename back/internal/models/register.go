@@ -7,6 +7,7 @@ type RegisterRequest struct {
 	Email    string `json:"email"`
 	Role     string `json:"role"`
 	Password string `json:"password"`
+	PinCode  int    `json:"pin_code"`
 }
 
 type RegisterResponse struct {
@@ -70,4 +71,8 @@ type GetAttendanceRequest struct {
 
 type GetAttendanceResponse struct {
 	Status string `json:"status"`
+}
+
+type CheckPinCode struct {
+	PinCode int `json:"pin_code"`
 }
