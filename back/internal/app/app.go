@@ -61,6 +61,7 @@ func (a *Application) StartServer() {
 	r.HandleFunc("/get-courses", Hand.GetCoursesHandler).Methods("GET")
 	r.HandleFunc("/get-user-data", Hand.GetUserDataHandler).Methods("GET")
 	r.HandleFunc("/get-attendance", Hand.GetAttendanceHandler).Methods("GET")
+	r.HandleFunc("/check-pincode", Hand.CheckPinCodeHandler)
 
 	server := &http.Server{
 		Addr:         ":" + Cnfg.ListenPort,
