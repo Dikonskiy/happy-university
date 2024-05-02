@@ -44,7 +44,7 @@ const Registration = () => {
         .then((data) => {
             console.log(data)
             if(data && data.card_id){
-                localStorage.setItem('userId', JSON.stringify(data));
+                localStorage.setItem('userId', JSON.stringify(data.card_id));
                 console.log(localStorage.getItem('userId'));
                 window.location.href = '/sign/aftereg';
             } else {
