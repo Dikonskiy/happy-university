@@ -323,16 +323,14 @@ func (h *Handler) GetBirthdayHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	imageData, err := h.Repo.GetBirthday(cardID)
+	birthday, err := h.Repo.GetBirthday(cardID)
 	if err != nil {
 		h.logerr.Log.Error("Failed to get image data from database", err)
 		http.Error(w, "Failed to get image data from database", http.StatusInternalServerError)
 		return
 	}
 
-	encodedImage := base64.StdEncoding.EncodeToString(imageData)
-
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(map[string]string{"image": encodedImage})
+	json.NewEncoder(w).Encode(map[string]string{"birthday": birthday})
 
 }
