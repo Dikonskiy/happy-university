@@ -294,14 +294,14 @@ func (h *Handler) AfterRegHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) GetImageHandler(w http.ResponseWriter, r *http.Request) {
-	cardID, err := extractCardIDFromToken(r)
-	if err != nil {
-		h.logerr.Log.Error("Failed to extract card ID from token", err)
-		http.Error(w, "Failed to extract card ID from token", http.StatusUnauthorized)
+	var req models.RegisterResponse
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		h.logerr.Log.Error("Failed to decode request body", err)
+		http.Error(w, "failed to decode request body", http.StatusBadRequest)
 		return
 	}
 
-	imageData, err := h.Repo.GetImageData(cardID)
+	imageData, err := h.Repo.GetImageData(req.CardId)
 	if err != nil {
 		h.logerr.Log.Error("Failed to get image data from database", err)
 		http.Error(w, "Failed to get image data from database", http.StatusInternalServerError)
@@ -316,14 +316,14 @@ func (h *Handler) GetImageHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) GetBirthdayHandler(w http.ResponseWriter, r *http.Request) {
-	cardID, err := extractCardIDFromToken(r)
-	if err != nil {
-		h.logerr.Log.Error("Failed to extract card ID from token", err)
-		http.Error(w, "Failed to extract card ID from token", http.StatusUnauthorized)
+	var req models.RegisterResponse
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		h.logerr.Log.Error("Failed to decode request body", err)
+		http.Error(w, "failed to decode request body", http.StatusBadRequest)
 		return
 	}
 
-	birthday, err := h.Repo.GetBirthday(cardID)
+	birthday, err := h.Repo.GetBirthday(req.CardId)
 	if err != nil {
 		h.logerr.Log.Error("Failed to get image data from database", err)
 		http.Error(w, "Failed to get image data from database", http.StatusInternalServerError)
