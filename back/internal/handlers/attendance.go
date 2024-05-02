@@ -259,13 +259,6 @@ func extractCardIDFromToken(r *http.Request) (string, error) {
 // }
 
 func (h *Handler) AfterRegHandler(w http.ResponseWriter, r *http.Request) {
-	cardID, err := extractCardIDFromToken(r)
-	if err != nil {
-		h.logerr.Log.Error("Failed to extract card ID from token", err)
-		http.Error(w, "Failed to extract card ID from token", http.StatusUnauthorized)
-		return
-	}
-
 	var req models.AfterRegRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		h.logerr.Log.Error("Failed to decode request body", err)
@@ -281,7 +274,7 @@ func (h *Handler) AfterRegHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Save image data to the database
-	err = h.Repo.AfterReg(cardID, imageData, req.Birthday)
+	err = h.Repo.AfterReg(req.CardID, imageData, req.Birthday)
 	if err != nil {
 		h.logerr.Log.Error("Failed to save image data to database", err)
 		http.Error(w, "Failed to save image data to database", http.StatusInternalServerError)

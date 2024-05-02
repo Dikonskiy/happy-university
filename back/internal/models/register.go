@@ -98,6 +98,7 @@ type CourseSchedule struct {
 }
 
 type AfterRegRequest struct {
+	CardID   string `json:"card_id"`
 	Birthday string `json:"birthday"`
 	Image    string `json:"image"`
 }
