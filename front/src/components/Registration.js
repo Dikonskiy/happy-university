@@ -82,8 +82,6 @@ const Registration = () => {
                     maxLength={4}
                     placeholder="Enter 4-digit PIN"
                 />
-                <div className="icon"></div>
-                <div className="eye"></div>
             </div>
             <div className="checkbox-container">
                 <input

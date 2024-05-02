@@ -1,105 +1,35 @@
-import React, { useState, useRef } from "react";
-import "../css/public.css";
-import img from "../elements/chooseImage.png"
+import React, { useState } from 'react';
 
-function ImageUpload() {
+const ImageUpload = () => {
   const [image, setImage] = useState(null);
-  const hiddenFileInput = useRef(null);
+  const [error, setError] = useState(null);
 
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    const imgname = event.target.files[0].name;
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = () => {
-      const img = new Image();
-      img.src = reader.result;
-      img.onload = () => {
-        const canvas = document.createElement("canvas");
-        const maxSize = Math.max(img.width, img.height);
-        canvas.width = maxSize;
-        canvas.height = maxSize;
-        const ctx = canvas.getContext("2d");
-        ctx.drawImage(
-          img,
-          (maxSize - img.width) / 2,
-          (maxSize - img.height) / 2
-        );
-        canvas.toBlob(
-          (blob) => {
-            const file = new File([blob], imgname, {
-              type: "image/png",
-              lastModified: Date.now(),
-            });
+  const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
 
-            console.log(file);
-            setImage(file);
-          },
-          "image/jpeg",
-          0.8
-        );
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+
+    // Check if the selected file is an image
+    if (file && allowedTypes.includes(file.type)) {
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        setImage(reader.result);
+        setError(null);
       };
-    };
-  };
 
-  const handleUploadButtonClick = (file) => {
-    var myHeaders = new Headers();
-    const token = "adhgsdaksdhk938742937423";
-    myHeaders.append("Authorization", `Bearer ${token}`);
-
-    var formdata = new FormData();
-    formdata.append("file", file);
-
-    var requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: formdata,
-      redirect: "follow",
-    };
-
-    fetch("https://trickuweb.com/upload/profile_pic", requestOptions)
-      .then((response) => response.text())
-      .then((result) => {
-        console.log(JSON.parse(result));
-        const profileurl = JSON.parse(result);
-        setImage(profileurl.img_url);
-      })
-      .catch((error) => console.log("error", error));
-  };
-
-  const handleClick = (event) => {
-    hiddenFileInput.current.click();
+      reader.readAsDataURL(file);
+    } else {
+      setImage(null);
+      setError('Please select a valid image file (JPEG, PNG, or GIF)');
+    }
   };
 
   return (
-    <div className="image-upload-container">
-      <div className="box-decoration">
-        <label htmlFor="image-upload-input" className="image-upload-label">
-          {image ? image.name : "Choose an image"}
-        </label>
-        <div onClick={handleClick} style={{ cursor: "pointer" }}>
-          {image ? (
-            <img src={URL.createObjectURL(image)} alt="upload image" className="img-display-after" />
-          ) : (
-            <img src={img} alt="upload image" className="img-display-before" />
-          )}
-
-          <input
-            id="image-upload-input"
-            type="file"
-            onChange={handleImageChange}
-            ref={hiddenFileInput}
-            style={{ display: "none" }}
-          />
-        </div>
-
-        <button
-          className="image-upload-button"
-          onClick={handleUploadButtonClick}
-        >
-          Upload
-        </button>
-      </div>
+    <div>
+      <input type="file" onChange={handleImageChange} accept="image/*" />
+      {error && <div style={{ color: 'red', marginTop: '5px' }}>{error}</div>}
+      {image && <img src={image} alt="Uploaded" style={{ width: '200px', height: '200px', marginTop: '10px' }} />}
     </div>
   );
 }

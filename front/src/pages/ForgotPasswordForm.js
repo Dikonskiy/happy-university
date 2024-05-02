@@ -10,7 +10,7 @@ const ForgotPasswordForm = () => {
   const handleFormSubmit = (e) => {
     e.preventDefault();
     // Implement your password reset logic here.
-    console.log('Email:', ID);
+    console.log('ID:', ID);
   };
 
   return (
@@ -19,7 +19,7 @@ const ForgotPasswordForm = () => {
       <p>Don't worry! It happens. Please enter the<br/> ID associated with your account.</p>
       <form onSubmit={handleFormSubmit}>
         <div className="input-field">
-          <label htmlFor="email">Your Card ID:</label>
+          <label htmlFor="id">Your Card ID:</label>
           <input
             type="number"
             id="id"

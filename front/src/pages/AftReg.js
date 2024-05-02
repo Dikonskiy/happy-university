@@ -31,6 +31,12 @@ const AftReg = () => {
   return (
     <div className="form-wrapper">
         <form onSubmit={handleSubmit} action="#">
+        <h1>Forgot password?</h1>
+      <p>Don't worry! It happens. Please enter the<br/> ID associated with your account.</p>
+            <div className="input-field">
+                <label htmlFor="birth">Birth Date:</label>
+                <input className="custom" type="date" id="birth" name="birth" placeholder="Your birth" defaultValue="2000-02-29"/>
+            </div>
             <div className="input-field">
                 <label htmlFor="birth">Birth Date:</label>
                 <input className="custom" type="date" id="birth" name="birth" placeholder="Your birth" defaultValue="2000-02-29"/>
