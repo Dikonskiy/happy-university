@@ -29,14 +29,26 @@ const Registration = () => {
     const fullName = event.target.fullName.value;
     const role = event.target.role.value;
     const password = event.target.password.value;
-    const pincode = event.target.pincode.value;
+    const pincode = parseInt(pin);
 
     // Send the data to your Go back-end
     registration(fullName, email, role, password, pincode)
         .then((response) => {
             // Handle successful login
             if (response.ok) {
-                return response;
+                return response.json();
+            } else {
+                throw new Error("Registration failed");
+            }
+        })
+        .then((data) => {
+            console.log(data)
+            if(data && data.card_id){
+                localStorage.setItem('userId', JSON.stringify(data));
+                console.log(localStorage.getItem('userId'));
+                window.location.href = '/sign/aftereg';
+            } else {
+                throw new Error('Invalid user data from back: ', data);
             }
         })
         .catch((error) => {
