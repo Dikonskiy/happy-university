@@ -292,3 +292,45 @@ func (h *Handler) AfterRegHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 
 }
+
+func (h *Handler) GetImageHandler(w http.ResponseWriter, r *http.Request) {
+	cardID, err := extractCardIDFromToken(r)
+	if err != nil {
+		h.logerr.Log.Error("Failed to extract card ID from token", err)
+		http.Error(w, "Failed to extract card ID from token", http.StatusUnauthorized)
+		return
+	}
+
+	imageData, err := h.Repo.GetImageData(cardID)
+	if err != nil {
+		h.logerr.Log.Error("Failed to get image data from database", err)
+		http.Error(w, "Failed to get image data from database", http.StatusInternalServerError)
+		return
+	}
+
+	encodedImage := base64.StdEncoding.EncodeToString(imageData)
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]string{"image": encodedImage})
+
+}
+
+func (h *Handler) GetBirthdayHandler(w http.ResponseWriter, r *http.Request) {
+	cardID, err := extractCardIDFromToken(r)
+	if err != nil {
+		h.logerr.Log.Error("Failed to extract card ID from token", err)
+		http.Error(w, "Failed to extract card ID from token", http.StatusUnauthorized)
+		return
+	}
+
+	birthday, err := h.Repo.GetBirthday(cardID)
+	if err != nil {
+		h.logerr.Log.Error("Failed to get image data from database", err)
+		http.Error(w, "Failed to get image data from database", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]string{"birthday": birthday})
+
+}
