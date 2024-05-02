@@ -75,6 +75,8 @@ func (a *Application) StartServer() {
 	r.HandleFunc("/update-password", Hand.UpdatePasswordHandler)
 	// r.HandleFunc("/get-courses-schedule", Hand.GetCourseScheduleHandler)
 	r.HandleFunc("/after-reg", Hand.AfterRegHandler)
+	r.HandleFunc("/get-image", Hand.GetImageHandler)
+	r.HandleFunc("/get-birthday", Hand.GetBirthdayHandler)
 
 	server := &http.Server{
 		Addr:         ":" + Cnfg.ListenPort,
