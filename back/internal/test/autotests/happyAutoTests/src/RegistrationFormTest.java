@@ -1,21 +1,11 @@
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.Wait;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.time.Duration;
 
 public class RegistrationFormTest extends MainSuperTest{
     @BeforeClass
@@ -57,7 +47,7 @@ public class RegistrationFormTest extends MainSuperTest{
         WebElement checkbox = driver.findElement(By.xpath("//input[@id=\"terms-and-privacy-policy\"]"));
         WebElement submitButton = driver.findElement(By.xpath("//button[text()='Commit']"));
 
-        emailFill.sendKeys("iamloxj1j1@sendnudes");
+        emailFill.sendKeys("iamaidosj1j1@example.com");
         fullNameFill.sendKeys("Abdibek Aidos");
         drop.selectByVisibleText("Student");
         passwordFill.sendKeys(password);
@@ -70,7 +60,7 @@ public class RegistrationFormTest extends MainSuperTest{
 
         Assert.assertNotEquals(beforeEntry, afterEntry);
 
-        Assert.assertEquals(compare.email, "iamaidosj1j1@sendexs.com");
+        Assert.assertEquals(compare.email, "iamaidosj1j1@example.com");
 
         Assert.assertEquals(compare.name, "Abdibek Aidos");
 

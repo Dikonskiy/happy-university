@@ -23,6 +23,7 @@ public class ForgotPasswordTest extends MainSuperTest{
 
     @Test
     public void submitTest(){
+        driver.get("http://localhost:3000/");
         WebElement link = driver.findElement(By.xpath("//a[text()='Forgot password?']"));
         link.click();
 

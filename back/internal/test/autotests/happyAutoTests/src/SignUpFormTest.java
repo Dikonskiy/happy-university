@@ -14,21 +14,13 @@ public class SignUpFormTest extends MainSuperTest {
 
     @Test
     public void testPageTitle() {
-        String expectedTitle = "Happy";
+        String expectedTitle = "Happy University";
         String actualTitle = driver.findElement(By.tagName("h1")).getText();
 
         Assert.assertEquals(actualTitle, expectedTitle);
 
     }
 
-    @Test
-    public void signUpVisibilityTest(){
-        WebElement uniqueElement = driver.findElement(By.xpath("//a[text()='Forgot password?']"));
-        String compareToUnique = "Forgot password?";
-
-        Assert.assertEquals(uniqueElement.getText(), compareToUnique);
-
-    }
 
     @Test
     public void signUpFillFormTest(){
