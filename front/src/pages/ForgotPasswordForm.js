@@ -1,38 +1,38 @@
 import React, { useState } from 'react';
 
 const ForgotPasswordForm = () => {
-  const [email, setEmail] = useState('');
+  const [ID, setID] = useState('');
 
   const handleInputChange = (e) => {
-    setEmail(e.target.value);
+    setID(e.target.value);
   };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
     // Implement your password reset logic here.
-    console.log('Email:', email);
+    console.log('Email:', ID);
   };
 
   return (
     <div className="form-wrapper">
       <h1>Forgot password?</h1>
-      <p>Don't worry! It happens. Please enter the<br/> email associated with your account.</p>
+      <p>Don't worry! It happens. Please enter the<br/> ID associated with your account.</p>
       <form onSubmit={handleFormSubmit}>
         <div className="input-field">
-          <label htmlFor="email">Email address:</label>
+          <label htmlFor="email">Your Card ID:</label>
           <input
-            type="email"
-            id="email"
-            name="email"
-            value={email}
+            type="number"
+            id="id"
+            name="id"
+            value={ID}
             onChange={handleInputChange}
-            placeholder="Email address"
+            placeholder="Card ID"
             required
           />
         </div> <br/><br/><br/>
         <button type="submit">Send code</button>
         <p>
-            Remember password? <a href="/login">Log in</a>
+            Remember password? <a href="/sign">Log in</a>
         </p>
       </form>
     </div>

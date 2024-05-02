@@ -51,7 +51,8 @@ input[type="email"],
 input[type="card_id"],
 input[type="password"],
 input[type="text"],
-input[type="code"] {
+input[type="code"],
+input[type="number"] {
     width: 353px;
     padding: 16px;
     border: 1px solid #ccc;
@@ -59,6 +60,10 @@ input[type="code"] {
     height: 56px;
     font-size: 14px;
     box-sizing: border-box;
+}
+
+input[type="number"]:hover {
+    user-select: none;
 }
 
 input[type="date"]{

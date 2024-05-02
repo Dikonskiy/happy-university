@@ -73,12 +73,13 @@ export const authorization = (id, password) => {
   })
 };
 
-export const registration = (name, email, role, password) => {
+export const registration = (name, email, role, password, pincode) => {
   const data = {
     name: name,
     email: email,
     role: role,
-    password: password
+    password: password,
+    pin_code: pincode
   };
   let headers = new Headers();
   headers.append('Content-Type', 'application/json');

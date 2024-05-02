@@ -1,7 +1,22 @@
+import { useState } from "react";
 import { authorization } from "./fetches";
 import { jwtDecode } from "jwt-decode";
 
 const Login = () => {
+  const [ID, setID] = useState('');
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+
+    // Allow only numbers
+    const onlyNums = value.replace(/[^0-9]/g, '');
+
+    // Limit to 8 digits
+    const limitedNums = onlyNums.slice(0, 8);
+
+    setID(limitedNums);
+  };
+
   //handle submit from Login form
   const handleSubmit = (e) => {
     //stay page dont refresh
@@ -53,7 +68,7 @@ const Login = () => {
     <form onSubmit={handleSubmit} action="#">
       <div className="input-field">
         <label htmlFor="card_id">Card Id:</label>
-        <input type="card_id" id="card_id" name="card_id" placeholder="ID"></input>
+        <input type="card_id" id="card_id" name="card_id" placeholder="ID" value={ID} onChange={handleChange}></input>
       </div>
       <div className="input-field">
         <label htmlFor="password">Password:</label>

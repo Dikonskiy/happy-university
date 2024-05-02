@@ -24,7 +24,7 @@ const SendCode = () => {
     console.log('Email:', email);
     console.log('Code:', code);
   };
-
+  
   const sendCodeAgain = () => {
     // Реализуйте здесь логику отправки кода повторно.
     console.log('Code resent.');
