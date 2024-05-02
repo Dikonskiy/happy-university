@@ -192,3 +192,27 @@ func (r *Repository) AfterReg(cardId string, image []byte, birthday string) erro
 	return nil
 
 }
+
+func (r *Repository) GetImageData(cardID string) ([]byte, error) {
+	var imageData []byte
+	err := r.Db.QueryRow("SELECT Image FROM UserImages WHERE id_card = ?", cardID).Scan(&imageData)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
+		return nil, err
+	}
+	return imageData, nil
+}
+
+func (r *Repository) GetBirthday(cardID string) (string, error) {
+	var birthday string
+	err := r.Db.QueryRow("SELECT Birthday FROM UserImages WHERE id_card = ?", cardID).Scan(&birthday)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return "", nil
+		}
+		return "", err
+	}
+	return birthday, nil
+}
