@@ -66,7 +66,7 @@ export const authorization = (id, password) => {
   headers.append('Authorization', 'Basic ' + encode(id + ":" +  password));
   headers.append('Origin','http://localhost:3000');
 
-  return fetch('http://localhost:8080/sign', {
+  return fetch('http://localhost:8080/login', {
     method: 'POST',
     headers: headers,
     body: JSON.stringify(data),
