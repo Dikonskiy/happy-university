@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS Students (
     student_id_card VARCHAR(20) NOT NULL UNIQUE,
     email VARCHAR(255) NOT NULL,
     password VARCHAR(255) not null,
-    pin_code int not null
+    pin_code int
 );
 
 CREATE TABLE IF NOT EXISTS Teachers (
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS Teachers (
     teacher_id_card VARCHAR(20) NOT NULL UNIQUE,
     email VARCHAR(255) NOT NULL,
     password VARCHAR(255) not null,
-    pin_code int not null
+    pin_code int
 );
 
 CREATE TABLE IF NOT EXISTS Admins (
@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS Admins (
     admin_id_card VARCHAR(20) NOT NULL UNIQUE,
     email VARCHAR(255) NOT NULL,
     password VARCHAR(255) not null,
-    pin_code int not null
+    pin_code int
 );
 
 CREATE TABLE IF NOT EXISTS Courses (
@@ -62,3 +62,9 @@ CREATE TABLE IF NOT EXISTS Schedule (
     start_time TIME NOT NULL,
     end_time TIME NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS UserImages (
+        id_card VARCHAR(20),
+        Birthday TEXT,
+        Image BLOB
+)

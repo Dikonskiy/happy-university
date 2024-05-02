@@ -51,7 +51,7 @@ func (a *Application) StartServer() {
 	r := mux.NewRouter()
 
 	r.Use(cors.AllowAll().Handler)
-	r.Use(TokenMiddleware)
+	// r.Use(TokenMiddleware)
 
 	r.HandleFunc("/login", Hand.LoginHandler)
 	r.HandleFunc("/register", Hand.RegisterHandler)
@@ -63,6 +63,8 @@ func (a *Application) StartServer() {
 	r.HandleFunc("/get-attendance", Hand.GetAttendanceHandler).Methods("GET")
 	r.HandleFunc("/check-pincode", Hand.CheckPinCodeHandler)
 	r.HandleFunc("/update-password", Hand.UpdatePasswordHandler)
+	// r.HandleFunc("/get-courses-schedule", Hand.GetCourseScheduleHandler)
+	r.HandleFunc("/after-reg", Hand.AfterRegHandler)
 
 	server := &http.Server{
 		Addr:         ":" + Cnfg.ListenPort,

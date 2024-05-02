@@ -1,6 +1,8 @@
 package models
 
-import "time"
+import (
+	"time"
+)
 
 type RegisterRequest struct {
 	Name     string `json:"name"`
@@ -85,4 +87,17 @@ type CheckPinCodeResponse struct {
 type UpdatePassword struct {
 	CardId   string `json:"card_id"`
 	Password string `json:"password"`
+}
+
+type CourseSchedule struct {
+	CardID     string `json:"card_id"`
+	CourseName string `json:"course_name"`
+	Date       string `json:"date"`
+	Time       string `json:"time"`
+	Status     string `json:"status"`
+}
+
+type AfterRegRequest struct {
+	Birthday string `json:"birthday"`
+	Image    string `json:"image"`
 }
