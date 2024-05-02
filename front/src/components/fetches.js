@@ -93,6 +93,23 @@ export const registration = (name, email, role, password, pincode) => {
     })
 }
 
+export const afterRegistration = (birth_date, image) => {
+  const data = {
+    birthday: birth_date,
+    image: image
+  };
+  let headers = new Headers();
+  headers.append('Content-Type', 'application/json');
+  headers.append('Accept', 'application/json');
+  headers.append('Origin','http://localhost:3000');
+
+  return fetch('http://localhost:8080/after-reg', {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify(data),
+  })
+}
+
 export const checkPinCode = (card_id, password) => {
   const data = {
     card_id: card_id,
