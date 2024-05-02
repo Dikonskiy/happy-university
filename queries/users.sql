@@ -62,3 +62,9 @@ CREATE TABLE IF NOT EXISTS Schedule (
     start_time TIME NOT NULL,
     end_time TIME NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS UserImages (
+        id_card VARCHAR(20),
+        Birthday TEXT,
+        Image BLOB
+)
