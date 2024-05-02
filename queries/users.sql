@@ -66,5 +66,5 @@ CREATE TABLE IF NOT EXISTS Schedule (
 CREATE TABLE IF NOT EXISTS UserImages (
         id_card VARCHAR(20),
         Birthday TEXT,
-        Image BLOB
+        Image longblob
 )

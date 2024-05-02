@@ -93,8 +93,9 @@ export const registration = (name, email, role, password, pincode) => {
     })
 }
 
-export const afterRegistration = (birth_date, image) => {
+export const afterRegistration = (card_id, birth_date, image) => {
   const data = {
+    card_id: card_id,
     birthday: birth_date,
     image: image
   };
@@ -104,6 +105,23 @@ export const afterRegistration = (birth_date, image) => {
   headers.append('Origin','http://localhost:3000');
 
   return fetch('http://localhost:8080/after-reg', {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify(data),
+  })
+}
+
+export const getImage = (card_id) => {
+  const data = {
+    card_id: card_id
+  };
+
+  let headers = new Headers();
+  headers.append('Content-Type', 'application/json');
+  headers.append('Accept', 'application/json');
+  headers.append('Origin','http://localhost:3000');
+
+  return fetch('http://localhost:8080/get-image', {
     method: 'POST',
     headers: headers,
     body: JSON.stringify(data),

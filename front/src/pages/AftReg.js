@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { afterRegistration } from '../components/fetches';
 
 const AftReg = () => {
   const id = localStorage.getItem('userId').replaceAll("\"", "")
@@ -28,31 +29,18 @@ const AftReg = () => {
   const handleSubmit = (event) => {
     event.preventDefault(); 
     localStorage.clear();
-    console.log(localStorage.getItem('userId'));
-    console.log(event.target.birth.value)
-    console.log(image)
-    window.location.href = '/sign/aftereg';
-    // Implement your password reset logic here.
 
-    // const email = event.target.email.value;
-    // const fullName = event.target.fullName.value;
-    // const role = event.target.role.value;
-    // const password = event.target.password.value;
-
-    // // Send the data to your Go back-end
-    // registration(fullName, email, role, password)
-    //     .then((response) => {
-    //         // Handle successful login
-    //         if (response.ok) {
-    //             return response;
-    //         }
-    //     })
-    //     .catch((error) => {
-    //         // Handle error
-    //         console.error(error);
-    //         // Show error message to user
-    //         alert(error.message)
-    //     });
+    afterRegistration(id, event.target.birth.value, image.split(',')[1])
+        .then((response) => {
+            if (response.ok) {
+              return response;
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+          
+    window.location.href = '/sign';
 
   };
 
