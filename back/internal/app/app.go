@@ -61,7 +61,7 @@ func (a *Application) StartServer() {
 	})
 	r.Methods("OPTIONS").Handler(optionsHandler)
 	r.Use(cors.AllowAll().Handler)
-	// r.Use(TokenMiddleware)
+	r.Use(TokenMiddleware)
 
 	r.HandleFunc("/login", Hand.LoginHandler)
 	r.HandleFunc("/register", Hand.RegisterHandler)
@@ -108,7 +108,7 @@ func shutdown(quit chan os.Signal, logger logger.Logger) {
 
 func TokenMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path == "/login" || r.URL.Path == "/register" || r.URL.Path == "/refresh-token" || r.URL.Path == "/check-pincode" || r.URL.Path == "/update-password" || r.URL.Path == "/after-reg" {
+		if r.URL.Path == "/login" || r.URL.Path == "/register" || r.URL.Path == "/refresh-token" || r.URL.Path == "/check-pincode" || r.URL.Path == "/update-password" || r.URL.Path == "/after-reg" || r.URL.Path == "/get-students" || r.URL.Path == "/get-dates" {
 			next.ServeHTTP(w, r)
 			return
 		}
