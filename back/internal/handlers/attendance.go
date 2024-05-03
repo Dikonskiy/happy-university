@@ -28,7 +28,7 @@ func (h *Handler) ReadCardInHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = h.Repo.UpdateAttendance(cardID, request.Course, request.Room)
+	err = h.Repo.UpdateAttendance(cardID, request.Course, request.Room, request.GeneratedCode)
 	if err != nil {
 		h.logerr.Log.Error("Failed to update attendance", err)
 		http.Error(w, "Failed to update attendance", http.StatusInternalServerError)
