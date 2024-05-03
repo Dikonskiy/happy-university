@@ -218,11 +218,21 @@ func (r *Repository) GenerateAttendanceCode(cardID string, courseCode string) (i
 		return 0, fmt.Errorf("only teachers are allowed to generate attendance codes")
 	}
 
+	var teacherIDCard string
+	err := r.Db.QueryRow("SELECT teacher_id_card FROM Courses WHERE course_code = ?", courseCode).Scan(&teacherIDCard)
+	if err != nil {
+		return 0, fmt.Errorf("failed to retrieve teacher ID card for the specified course: %v", err)
+	}
+
+	if teacherIDCard != cardID {
+		return 0, fmt.Errorf("teacher is not assigned to the specified course")
+	}
+
 	code := rand.Intn(900000) + 100000
 
 	today := time.Now().Format("2006-01-02")
 
-	_, err := r.Db.Exec("INSERT INTO TeacherCode (teacher_id_card, course_code, attendance_date, generated_code) VALUES (?, ?, ?, ?)", cardID, courseCode, today, code)
+	_, err = r.Db.Exec("INSERT INTO TeacherCode (teacher_id_card, course_code, attendance_date, generated_code) VALUES (?, ?, ?, ?)", cardID, courseCode, today, code)
 	if err != nil {
 		return 0, err
 	}
