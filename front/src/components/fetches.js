@@ -145,10 +145,10 @@ export const getBirthDate = (card_id) => {
   })  
 }
 
-export const checkPinCode = (card_id, password) => {
+export const checkPinCode = (card_id, pin_code) => {
   const data = {
-    card_id: card_id,
-    password: password
+    card_id: card_id, 
+    pin_code: parseInt(pin_code)
   }
   let headers = new Headers();
   headers.append('Content-Type', 'application/json');

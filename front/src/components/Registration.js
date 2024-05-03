@@ -85,7 +85,7 @@ const Registration = () => {
                 <div className="eye"></div>
             </div>
             <div className="input-field">
-                <p style={{ fontSize: '12px' }}>Please write down this pin or take a screenshot for the future</p>
+                <p style={{ fontSize: '12px', color: 'red' }}>Please write down this pin or take a screenshot for the future</p>
                 <label htmlFor="pin">Pin for password recovery:</label>
                 <input
                     type="text"

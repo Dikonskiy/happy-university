@@ -7,25 +7,40 @@ const AftReg = () => {
   const [error, setError] = useState(null);
 
   const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+  const minAspectRatio = 9 / 16;
+  const maxAspectRatio = 1;
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
 
-    // Check if the selected file is an image
-    if (file && allowedTypes.includes(file.type)) {
+    if (file) {
       const reader = new FileReader();
 
       reader.onloadend = () => {
-        setImage(reader.result);
-        setError(null);
+        const img = new Image();
+        img.src = reader.result;
+
+        img.onload = () => {
+          const aspectRatio = img.width / img.height;
+          const sizeInMB = file.size / (1024 * 1024);
+
+          if (!allowedTypes.includes(file.type)) {
+            setError('Please select a valid image file (JPEG, PNG, or GIF)');
+          } else if (aspectRatio < minAspectRatio || aspectRatio > maxAspectRatio) {
+            setError('Please upload an image with a profile aspect ratio between 9:16 and 1:1.');
+          } else if (sizeInMB > 5) {
+            setError('Please upload an image that is less than 5MB in size.');
+          } else {
+            setImage(reader.result);
+            setError(null);
+          }
+        };
       };
 
       reader.readAsDataURL(file);
-    } else {
-      setImage(null);
-      setError('Please select a valid image file (JPEG, PNG, or GIF)');
     }
   };
+  
   const handleSubmit = (event) => {
     event.preventDefault(); 
     localStorage.clear();
@@ -47,11 +62,10 @@ const AftReg = () => {
   return (
     <div className="form-wrapper">
         <form onSubmit={handleSubmit} action="#">
-            <h1 className='logo'>Account Created<br/> 
-            Successfully</h1>
-                <p>Here you can see your Card ID. Remember, write <br/>down or save it.</p>
+            <h1 className='logo'>Account Created<br/>Successfully</h1>
+                <p style={{color: 'red'}}>Here you can see your Card ID. Remember, write <br/>down, take screenshot and somehow save it.</p>                
                 <div className="form-row" style={{fontWeight: '600'}}>
-                    <div className="td-info">Your ID: {id}</div>
+                  <div className="td-info">Your ID: {id}</div>
                 </div>
             <div className="input-field">
                 <label htmlFor="image">Profile Image:</label>

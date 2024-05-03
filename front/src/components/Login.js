@@ -69,7 +69,7 @@ const Login = () => {
       <div className="input-field">
         <label htmlFor="card_id">Card Id:</label>
         <input type="card_id" id="card_id" name="card_id" placeholder="ID" value={ID} onChange={handleChange}></input>
-      </div>
+      </div> 
       <div className="input-field">
         <label htmlFor="password">Password:</label>
         <input type="password" id="password" name="password" placeholder="Password"></input>
