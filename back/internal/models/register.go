@@ -1,12 +1,15 @@
 package models
 
-import "time"
+import (
+	"time"
+)
 
 type RegisterRequest struct {
 	Name     string `json:"name"`
 	Email    string `json:"email"`
 	Role     string `json:"role"`
 	Password string `json:"password"`
+	PinCode  int    `json:"pin_code"`
 }
 
 type RegisterResponse struct {
@@ -14,7 +17,6 @@ type RegisterResponse struct {
 }
 
 type AttendanceRequest struct {
-	CardId string `json:"card_id"`
 	Room   string `json:"room"`
 	Course string `json:"course"`
 }
@@ -53,16 +55,8 @@ type RefreshResponse struct {
 	AccessToken string `json:"access_token"`
 }
 
-type GetCoursesRequest struct {
-	CardId string `json:"card_id"`
-}
-
 type GetCoursesResponse struct {
 	Courses []string `json:"card_id"`
-}
-
-type GetUserDataRequest struct {
-	CardId string `json:"card_id"`
 }
 
 type GetUserDataResponse struct {
@@ -72,7 +66,6 @@ type GetUserDataResponse struct {
 }
 
 type GetAttendanceRequest struct {
-	CardId     string    `json:"card_id"`
 	CourseCode string    `json:"course_code"`
 	Room       string    `json:"room"`
 	Date       time.Time `json:"date"`
@@ -80,4 +73,32 @@ type GetAttendanceRequest struct {
 
 type GetAttendanceResponse struct {
 	Status string `json:"status"`
+}
+
+type CheckPinCode struct {
+	CardId  string `json:"card_id"`
+	PinCode int    `json:"pin_code"`
+}
+
+type CheckPinCodeResponse struct {
+	Correct bool `json:"correct"`
+}
+
+type UpdatePassword struct {
+	CardId   string `json:"card_id"`
+	Password string `json:"password"`
+}
+
+type CourseSchedule struct {
+	CardID     string `json:"card_id"`
+	CourseName string `json:"course_name"`
+	Date       string `json:"date"`
+	Time       string `json:"time"`
+	Status     string `json:"status"`
+}
+
+type AfterRegRequest struct {
+	CardID   string `json:"card_id"`
+	Birthday string `json:"birthday"`
+	Image    string `json:"image"`
 }

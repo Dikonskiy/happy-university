@@ -3,7 +3,8 @@ CREATE TABLE IF NOT EXISTS Students (
     student_name VARCHAR(255) NOT NULL,
     student_id_card VARCHAR(20) NOT NULL UNIQUE,
     email VARCHAR(255) NOT NULL,
-    password VARCHAR(255) not null
+    password VARCHAR(255) not null,
+    pin_code int
 );
 
 CREATE TABLE IF NOT EXISTS Teachers (
@@ -11,7 +12,8 @@ CREATE TABLE IF NOT EXISTS Teachers (
     teacher_name VARCHAR(255) NOT NULL,
     teacher_id_card VARCHAR(20) NOT NULL UNIQUE,
     email VARCHAR(255) NOT NULL,
-    password VARCHAR(255) not null
+    password VARCHAR(255) not null,
+    pin_code int
 );
 
 CREATE TABLE IF NOT EXISTS Admins (
@@ -19,7 +21,8 @@ CREATE TABLE IF NOT EXISTS Admins (
     admin_name VARCHAR(255) NOT NULL,
     admin_id_card VARCHAR(20) NOT NULL UNIQUE,
     email VARCHAR(255) NOT NULL,
-    password VARCHAR(255) not null
+    password VARCHAR(255) not null,
+    pin_code int
 );
 
 CREATE TABLE IF NOT EXISTS Courses (
@@ -46,7 +49,7 @@ CREATE TABLE IF NOT EXISTS Attendance (
 
 CREATE TABLE IF NOT EXISTS Student_Courses (
     student_id_card varchar(255),
-    course_code varchar(7),
+    course_code varchar(7)
 );
 
 CREATE TABLE IF NOT EXISTS Schedule (
@@ -59,3 +62,9 @@ CREATE TABLE IF NOT EXISTS Schedule (
     start_time TIME NOT NULL,
     end_time TIME NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS UserImages (
+        id_card VARCHAR(20),
+        Birthday TEXT,
+        Image longblob
+)

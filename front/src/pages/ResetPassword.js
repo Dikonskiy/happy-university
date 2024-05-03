@@ -37,7 +37,7 @@ const ResetPassword = () => {
             Reset password
           </button>
           <p>
-            Already have an account? <a href="/login">Log in</a>
+            Already have an account? <a href="/sign">Log in</a>
           </p>
         </form>
       </div>

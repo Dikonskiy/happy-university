@@ -50,7 +50,9 @@ button[type="submit"]:hover {
 input[type="email"],
 input[type="card_id"],
 input[type="password"],
-input[type="text"] {
+input[type="text"],
+input[type="code"],
+input[type="number"] {
     width: 353px;
     padding: 16px;
     border: 1px solid #ccc;
@@ -59,6 +61,73 @@ input[type="text"] {
     font-size: 14px;
     box-sizing: border-box;
 }
+
+input[type="number"]:hover {
+    user-select: none;
+}
+
+input[type="date"]{
+    width: 353px;
+    padding: 16px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+
+.image-upload-container {
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.box-decoration {
+    border: 2px dashed #ccc;
+    border-radius: 5px;
+    padding: 30px 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-upload-label {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    cursor: pointer;
+}
+
+.image-upload-input {
+    display: none;
+}
+
+.image-upload-button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 0.8rem 1.2rem;
+    margin-top: 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.image-upload-button:hover {
+    background-color: #3e8e41;
+}
+
+.img-display-before {
+    height: 200px;
+    width: 200px;
+    margin-left: 35px;
+}
+
+.img-display-after {
+    height: 200px;
+    width: 200px;
+    border-radius: 100%;
+}
+
 
 a { /* Style for forgot password link */
     margin-top: 70px;

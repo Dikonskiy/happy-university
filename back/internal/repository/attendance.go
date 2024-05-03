@@ -132,3 +132,87 @@ func (r *Repository) GetAttendance(studentID, course, room string, date time.Tim
 
 	return status, nil
 }
+
+func (r *Repository) GetCourseSchedule(courseCode string, date time.Time) ([]models.CourseSchedule, error) {
+	var schedule []models.CourseSchedule
+
+	// Calculate startDate and endDate based on the provided date
+	startDate := date.AddDate(0, 0, -int(date.Weekday())+2) // Monday of the current week
+	endDate := startDate.AddDate(0, 0, 6)                   // Tuesday of the next week
+
+	rows, err := r.Db.Query("SELECT student_id_card, course_code, start_date, end_date, day_of_week, room, start_time, end_time FROM Schedule WHERE course_code = ? AND start_date >= ? AND end_date <= ?", courseCode, startDate, endDate)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var cardID, courseName, room string
+		var startDate, endDate, startTime, endTime time.Time
+		var dayOfWeek string
+
+		err := rows.Scan(&cardID, &courseName, &startDate, &endDate, &dayOfWeek, &room, &startTime, &endTime)
+		if err != nil {
+			return nil, err
+		}
+
+		// Check if the current day matches the day of the week in the schedule
+		if dayOfWeek == "Tuesday" {
+			// Format the date and time strings
+			dateStr := startDate.Format("2006-01-02")
+			startTimeStr := startTime.Format("15:04:05")
+			endTimeStr := endTime.Format("15:04:05")
+
+			// Create a CourseSchedule instance
+			scheduleItem := models.CourseSchedule{
+				CardID:     cardID,
+				CourseName: courseName,
+				Date:       dateStr,
+				Time:       fmt.Sprintf("%s - %s", startTimeStr, endTimeStr),
+				Status:     "", // Status will be determined later based on attendance
+			}
+
+			// Append the schedule item to the result
+			schedule = append(schedule, scheduleItem)
+		}
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return schedule, nil
+}
+
+func (r *Repository) AfterReg(cardId string, image []byte, birthday string) error {
+	_, err := r.Db.Exec("INSERT INTO UserImages (id_card, Image, Birthday) VALUES (?, ?, ?)", cardId, image, birthday)
+	if err != nil {
+		return err
+	}
+	return nil
+
+}
+
+func (r *Repository) GetImageData(cardID string) ([]byte, error) {
+	var imageData []byte
+	err := r.Db.QueryRow("SELECT Image FROM UserImages WHERE id_card = ?", cardID).Scan(&imageData)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
+		return nil, err
+	}
+	return imageData, nil
+}
+
+func (r *Repository) GetBirthday(cardID string) (string, error) {
+	var birthday string
+	err := r.Db.QueryRow("SELECT Birthday FROM UserImages WHERE id_card = ?", cardID).Scan(&birthday)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return "", nil
+		}
+		return "", err
+	}
+	return birthday, nil
+}

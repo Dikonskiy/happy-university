@@ -6,8 +6,6 @@ import (
 	"math/rand"
 	"strconv"
 
-	tkn "github.com/Dikonskiy/happy-university/back/internal/token"
-	"github.com/dgrijalva/jwt-go"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -80,6 +78,8 @@ func (r *Repository) CreateUser(name, email, role, password string) (string, err
 		return "", errors.New("unsupported role")
 	}
 
+	// sender.Sender(email, cardID)
+
 	return cardID, nil
 }
 
@@ -110,25 +110,6 @@ func generateCardID(role string) string {
 	randomNumber := rand.Intn(9000000) + 1000000
 
 	return prefix + strconv.Itoa(randomNumber)
-}
-
-func (r *Repository) GetRoleFromToken(tokenString string) (string, error) {
-	token, err := jwt.ParseWithClaims(tokenString, &tkn.CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
-		return []byte("your_secret_key"), nil
-	})
-	if err != nil {
-		return "", err
-	}
-
-	if !token.Valid {
-		return "", errors.New("invalid token")
-	}
-
-	if claims, ok := token.Claims.(*tkn.CustomClaims); ok {
-		return claims.Role, nil
-	}
-
-	return "", errors.New("invalid token claims")
 }
 
 func (r *Repository) GetCourses(studentIDCard string) ([]string, error) {
@@ -180,4 +161,91 @@ func (r *Repository) GetUserData(cardId string) (string, string, error) {
 		}
 	}
 	return name, email, nil
+}
+
+func (r *Repository) SavePinCode(pinCode int, cardId string) error {
+	switch cardId[0] {
+	case '1':
+		_, err := r.Db.Exec("UPDATE Students SET pin_code = ? WHERE student_id_card = ?", pinCode, cardId)
+		if err != nil {
+			return err
+		}
+	case '2':
+		_, err := r.Db.Exec("UPDATE Teachers SET pin_code = ? WHERE teacher_id_card = ?", pinCode, cardId)
+		if err != nil {
+			return err
+		}
+	case '3':
+		_, err := r.Db.Exec("UPDATE Admins SET pin_code = ? WHERE admin_id_card = ?", pinCode, cardId)
+		if err != nil {
+			return err
+		}
+	default:
+		return errors.New("invalid card ID")
+	}
+
+	return nil
+}
+
+func (r *Repository) CheckPinCode(cardID string, pinCode int) (bool, error) {
+	var storedPinCode int
+
+	switch cardID[0] {
+	case '1':
+		err := r.Db.QueryRow("SELECT pin_code FROM Students WHERE student_id_card = ?", cardID).Scan(&storedPinCode)
+		if err != nil {
+			if err == sql.ErrNoRows {
+				return false, err
+			}
+			panic(err)
+		}
+
+	case '2':
+		err := r.Db.QueryRow("SELECT pin_code FROM Teachers WHERE teacher_id_card = ?", cardID).Scan(&storedPinCode)
+		if err != nil {
+			if err == sql.ErrNoRows {
+				return false, err
+			}
+			panic(err)
+		}
+	case '3':
+		err := r.Db.QueryRow("SELECT pin_code FROM Admins WHERE admin_id_card = ?", cardID).Scan(&storedPinCode)
+		if err != nil {
+			if err == sql.ErrNoRows {
+				return false, err
+			}
+			panic(err)
+		}
+	}
+
+	return storedPinCode == pinCode, nil
+}
+
+func (r *Repository) UpdatePassword(cardID, newPassword string) error {
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(newPassword), bcrypt.DefaultCost)
+	if err != nil {
+		return err
+	}
+
+	switch cardID[0] {
+	case '1':
+		_, err := r.Db.Exec("UPDATE Students SET password = ? WHERE student_id_card = ?", hashedPassword, cardID)
+		if err != nil {
+			return err
+		}
+	case '2':
+		_, err := r.Db.Exec("UPDATE Teachers SET password = ? WHERE teacher_id_card = ?", hashedPassword, cardID)
+		if err != nil {
+			return err
+		}
+	case '3':
+		_, err := r.Db.Exec("UPDATE Admins SET password = ? WHERE admin_id_card = ?", hashedPassword, cardID)
+		if err != nil {
+			return err
+		}
+	default:
+		return errors.New("invalid card ID")
+	}
+
+	return nil
 }

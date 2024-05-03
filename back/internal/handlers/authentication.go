@@ -81,6 +81,13 @@ func (h *Handler) RegisterHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	err = h.Repo.SavePinCode(person.PinCode, cardID)
+	if err != nil {
+		h.logerr.Log.Error("Failed to save pinCode", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
 	response := models.RegisterResponse{
 		CardId: cardID,
 	}
@@ -95,37 +102,6 @@ func (h *Handler) RegisterHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(responseJSON)
 	h.logerr.Log.Info("Registration process successful")
-}
-
-func (h *Handler) GetRoleHandler(w http.ResponseWriter, r *http.Request) {
-	var req models.GetRoleRequest
-	err := json.NewDecoder(r.Body).Decode(&req)
-	if err != nil {
-		h.logerr.Log.Error("Failed to parse request body", err)
-		http.Error(w, "Failed to parse request body", http.StatusBadRequest)
-		return
-	}
-
-	role, err := h.Repo.GetRoleFromToken(req.AccessToken)
-	if err != nil {
-		h.logerr.Log.Error("Failed to get role from token", err)
-		http.Error(w, "Failed to get role from token: "+err.Error(), http.StatusUnauthorized)
-		return
-	}
-
-	res := models.GetRoleResponse{
-		Role: role,
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	err = json.NewEncoder(w).Encode(res)
-	if err != nil {
-		h.logerr.Log.Error("Failed to encode response", err)
-		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
-		return
-	}
-
-	h.logerr.Log.Info("Get role process successful", err)
 }
 
 func (h *Handler) RefreshTokenHandler(w http.ResponseWriter, r *http.Request) {
@@ -183,4 +159,59 @@ func (h *Handler) RefreshTokenHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	h.logerr.Log.Info("Access token generated successfully")
+}
+
+func (h *Handler) CheckPinCodeHandler(w http.ResponseWriter, r *http.Request) {
+	var req models.CheckPinCode
+	err := json.NewDecoder(r.Body).Decode(&req)
+	if err != nil {
+		h.logerr.Log.Error("Failed to decode request body", err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	isCorrect, err := h.Repo.CheckPinCode(req.CardId, req.PinCode)
+	if err != nil {
+		h.logerr.Log.Error("Failed to check the pin code", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	response := models.CheckPinCodeResponse{
+		Correct: isCorrect,
+	}
+
+	responseJSON, err := json.Marshal(response)
+	if err != nil {
+		h.logerr.Log.Error("Failed to marshal response", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(responseJSON)
+}
+
+func (h *Handler) UpdatePasswordHandler(w http.ResponseWriter, r *http.Request) {
+	var req models.UpdatePassword
+	err := json.NewDecoder(r.Body).Decode(&req)
+	if err != nil {
+		h.logerr.Log.Error("Failed to decode request body", err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	err = h.Repo.UpdatePassword(req.CardId, req.Password)
+	if err != nil {
+		h.logerr.Log.Error("Failed to update password", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	h.logerr.Log.Info("Password changed successfully")
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("Password changed successfully"))
 }
