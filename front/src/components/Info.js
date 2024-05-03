@@ -51,14 +51,13 @@ const Info = () => {
                         }
                     }) 
                     .then((data) => {
-                        console.log(data)
                         setBirthDate(data.birthday);
                     });
             }
         }
 
         checkAccessToken();
-    }, [accessToken, refreshToken, cardId, userData]);
+    }, [accessToken, refreshToken, cardId, userData, tab]);
 
     if (userData){
         const user = JSON.parse(userData);

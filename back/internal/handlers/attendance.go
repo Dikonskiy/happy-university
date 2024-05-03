@@ -208,7 +208,14 @@ func (h *Handler) AfterRegHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err := h.Repo.AfterReg(req.CardID, []byte(req.Image), req.Birthday)
+	imageData, err := base64.StdEncoding.DecodeString(req.Image)
+	if err != nil {
+		h.logerr.Log.Error("Failed to decode base64 image data", err)
+		http.Error(w, "Failed to decode base64 image data", http.StatusBadRequest)
+		return
+	}
+
+	err = h.Repo.AfterReg(req.CardID, imageData, req.Birthday)
 	if err != nil {
 		h.logerr.Log.Error("Failed to save image data to database", err)
 		http.Error(w, "Failed to save image data to database", http.StatusInternalServerError)
