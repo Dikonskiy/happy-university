@@ -17,8 +17,9 @@ type RegisterResponse struct {
 }
 
 type AttendanceRequest struct {
-	Room   string `json:"room"`
-	Course string `json:"course"`
+	GeneratedCode string `json:"generated_code"`
+	Room          string `json:"room"`
+	Course        string `json:"course"`
 }
 
 type SuccessResponse struct {

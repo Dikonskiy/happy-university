@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"math/rand"
+	"strconv"
 	"time"
 
 	"github.com/Dikonskiy/happy-university/back/internal/models"
@@ -14,17 +15,46 @@ const (
 	attendPercentage = 0.6
 )
 
-func (r *Repository) UpdateAttendance(studentID, course, room string) error {
-	var student models.Student
-	err := r.Db.QueryRow("SELECT student_id, student_name, student_id_card, email FROM Students WHERE student_id_card = ?", studentID).Scan(&student.ID, &student.Name, &student.IdCard, &student.Email)
-	if err != nil {
-		return err
-	}
+func (r *Repository) UpdateAttendance(studentID, course, room, generatedCode string) error {
+	if generatedCode == "" {
+		var studentIDFromDB int
+		err := r.Db.QueryRow("SELECT student_id FROM Students WHERE student_id_card = ?", studentID).Scan(&studentIDFromDB)
+		if err != nil {
+			return err
+		}
 
-	currentDateTime := time.Now()
-	_, err = r.Db.Exec("INSERT INTO Attendance (student_id, course_code, check_in_time, attendance_date, room) VALUES (?, ?, ?, ?, ?)", student.ID, course, currentDateTime, currentDateTime.Format("2006-01-02"), room)
-	if err != nil {
-		return err
+		currentDateTime := time.Now()
+		_, err = r.Db.Exec("INSERT INTO Attendance (student_id, course_code, check_in_time, attendance_date, room) VALUES (?, ?, ?, ?, ?)", studentIDFromDB, course, currentDateTime, currentDateTime.Format("2006-01-02"), room)
+		if err != nil {
+			return err
+		}
+	} else {
+		var expectedGeneratedCode int
+		err := r.Db.QueryRow("SELECT generated_code FROM TeacherCode WHERE course_code = ?", course).Scan(&expectedGeneratedCode)
+		if err != nil {
+			return err
+		}
+
+		var studentIDFromDB int
+		err = r.Db.QueryRow("SELECT student_id FROM Students WHERE student_id_card = ?", studentID).Scan(&studentIDFromDB)
+		if err != nil {
+			return err
+		}
+
+		generatedCodeInt, err := strconv.Atoi(generatedCode)
+		if err != nil {
+			return fmt.Errorf("failed to convert generated code to integer: %v", err)
+		}
+
+		if generatedCodeInt != expectedGeneratedCode {
+			return fmt.Errorf("generated code does not match the expected code for the course")
+		}
+
+		currentDateTime := time.Now()
+		_, err = r.Db.Exec("INSERT INTO Attendance (student_id, course_code, check_in_time, attendance_date, room) VALUES (?, ?, ?, ?, ?)", studentIDFromDB, course, currentDateTime, currentDateTime.Format("2006-01-02"), room)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil
