@@ -200,64 +200,6 @@ func extractCardIDFromToken(r *http.Request) (string, error) {
 	return cardID, nil
 }
 
-// func (h *Handler) GetCourseScheduleHandler(w http.ResponseWriter, r *http.Request) {
-// 	var req models.GetAttendanceRequest
-// 	err := json.NewDecoder(r.Body).Decode(&req)
-// 	if err != nil {
-// 		h.logerr.Log.Error("failed to parse request body", err)
-// 		http.Error(w, "failed to parse request body", http.StatusBadRequest)
-// 		return
-// 	}
-
-// 	if req.CourseCode == "" || req.Room == "" {
-// 		http.Error(w, "course code and room are required fields", http.StatusBadRequest)
-// 		return
-// 	}
-
-// 	var schedule []models.CourseSchedule
-// 	if !req.Date.IsZero() {
-// 		// If date is not zero value, use the provided date for querying schedules
-// 		dateStr := req.Date.Format("2006-01-02") // Format the date as "YYYY-MM-DD"
-// 		date, err := time.Parse("2006-01-02", dateStr)
-// 		if err != nil {
-// 			http.Error(w, "failed to parse date: "+err.Error(), http.StatusBadRequest)
-// 			return
-// 		}
-
-// 		schedule, err = h.Repo.GetCourseSchedule(req.CourseCode, date)
-// 		if err != nil {
-// 			http.Error(w, "failed to get course schedule: "+err.Error(), http.StatusInternalServerError)
-// 			return
-// 		}
-// 	} else {
-// 		// If date is zero value, return schedules for the entire week
-// 		// Get the current date
-// 		currentDate := time.Now()
-
-// 		// Calculate the start date (Monday) of the current week
-// 		monday := currentDate.AddDate(0, 0, -int(currentDate.Weekday())+1)
-
-// 		// Get schedules for the entire week (Monday to Tuesday of the next week)
-// 		schedule, err = h.Repo.GetCourseSchedule(req.CourseCode, monday)
-// 		if err != nil {
-// 			http.Error(w, "failed to get course schedule: "+err.Error(), http.StatusInternalServerError)
-// 			return
-// 		}
-// 	}
-
-// 	// Convert the schedule to JSON
-// 	scheduleJSON, err := json.Marshal(schedule)
-// 	if err != nil {
-// 		http.Error(w, "failed to marshal schedule to JSON: "+err.Error(), http.StatusInternalServerError)
-// 		return
-// 	}
-
-// 	// Write the JSON response
-// 	w.Header().Set("Content-Type", "application/json")
-// 	w.WriteHeader(http.StatusOK)
-// 	w.Write(scheduleJSON)
-// }
-
 func (h *Handler) AfterRegHandler(w http.ResponseWriter, r *http.Request) {
 	var req models.AfterRegRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -266,22 +208,13 @@ func (h *Handler) AfterRegHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	imageData, err := base64.StdEncoding.DecodeString(req.Image)
-	if err != nil {
-		h.logerr.Log.Error("Failed to decode base64 image data", err)
-		http.Error(w, "Failed to decode base64 image data", http.StatusBadRequest)
-		return
-	}
-
-	// Save image data to the database
-	err = h.Repo.AfterReg(req.CardID, imageData, req.Birthday)
+	err := h.Repo.AfterReg(req.CardID, []byte(req.Image), req.Birthday)
 	if err != nil {
 		h.logerr.Log.Error("Failed to save image data to database", err)
 		http.Error(w, "Failed to save image data to database", http.StatusInternalServerError)
 		return
 	}
 
-	// Respond with success
 	w.WriteHeader(http.StatusOK)
 
 }
@@ -326,4 +259,33 @@ func (h *Handler) GetBirthdayHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]string{"birthday": birthday})
 
+}
+
+func (h *Handler) GenerateAttendanceCodeHandler(w http.ResponseWriter, r *http.Request) {
+	cardID, err := extractCardIDFromToken(r)
+	if err != nil {
+		h.logerr.Log.Error("Failed to extract card ID from token", err)
+		http.Error(w, "Failed to extract card ID from token", http.StatusUnauthorized)
+		return
+	}
+
+	var req models.GenerateAttendanceCodeRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	code, err := h.Repo.GenerateAttendanceCode(cardID, req.CourseCode)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	response := struct {
+		Code int `json:"code"`
+	}{
+		Code: code,
+	}
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(response)
 }

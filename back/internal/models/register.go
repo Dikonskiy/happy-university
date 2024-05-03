@@ -102,3 +102,7 @@ type AfterRegRequest struct {
 	Birthday string `json:"birthday"`
 	Image    string `json:"image"`
 }
+
+type GenerateAttendanceCodeRequest struct {
+	CourseCode string `json:"course_code"`
+}
