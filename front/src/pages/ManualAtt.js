@@ -4,8 +4,7 @@ import Sidebar from "../components/Sidebar";
 import { checkToken } from "../components/fetches";
 import Topbar from "../components/Topbar";
 
-const Check = () => {
-  const rooms = ["A1", "A2", "B1", "B2", "C1", "C2", "D1", "D2", "F101", "F102", "F103"];
+const ManualAtt = () => {
   const [isDisabled, setIsDisabled] = useState(false);
   const [selectedOption, setSelectedOption] = useState("none");
 
@@ -35,33 +34,35 @@ const Check = () => {
     return <div className="loader"></div>;
   }
 
+
+  const handleButtonClick = (e) => {
+    e.preventDefault();
+  };
   return (
     <div className="layout">
-    <Sidebar />
-    <div className="main">
-    <Topbar />
-    <div className="attendance-box">
-    {role === "Teacher" && <h2 className="home-h2">Start Class</h2>}
-    {role === "Student" && <h2 className="home-h2">Manual Attendance</h2>}
-    {role === "Admin" && <h2 className="home-h2">Work with Attendance</h2>}
-    <div>
-    <span className="ct">Room: </span>
-    <select className="select-term" type="room" id="room" name="room" value={selectedOption} disabled={isDisabled} onChange={handleSelectChange}>
-      <option value="none" disabled hidden>
-        --Choose room--
-      </option>
-      {rooms.map((room) => (
-        <option key={room} value={room}>
-          {room}
-        </option>
-      ))}
-    </select>
-    <Stopwatch isDisabled={isButtonDisabled} onButtonClick={setIsDisabled} />
-    </div>
-    </div>
+        <Sidebar />
+        <div className="main">
+            <Topbar />
+            <div className="attendance-box">
+                {role === "Teacher" && <h2 className="home-h2">Start Class</h2>}
+                {role === "Student" && <h2 className="home-h2">Manual Attendance</h2>}
+                {role === "Admin" && <h2 className="home-h2">Work with Attendance</h2>}
+                <p>Enter your code from teacher for participate to class</p>
+                <div>
+                    <span className="ct">Code: </span>
+                    <input 
+                    className="select-term" 
+                    type="" id="code" 
+                    name="code" 
+                    onChange={handleSelectChange}
+                    placeholder="Enter code here">
+                    </input>
+                    <input className="show-button" type="button" value="Enter" onClick={handleButtonClick}></input>
+                </div>
+            </div>
         </div>
-      </div>
+    </div>
   );
 };
 
-export default Check;
+export default ManualAtt;

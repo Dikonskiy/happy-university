@@ -4,6 +4,7 @@ import avatar from "../elements/stud_photo.jpg";
 import { checkToken } from "../components/fetches";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
+import Avatar from "../components/Avatar";
 
 const Home = () => {
   const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
@@ -35,7 +36,7 @@ const Home = () => {
           </div>
 
           <div className="form-row">
-            <img src={avatar} width="300" height="500" className="images" alt="Profile" />
+            <Avatar width={300} height={500}/>
             <Info />
           </div>
         </div>

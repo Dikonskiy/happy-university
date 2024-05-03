@@ -106,8 +106,8 @@
 
 .box img {
   display: block;
-  height: auto;
-  margin-bottom: px;
+  width: 250px;
+  height: 400px;
 }
 
 .attendance-box {
@@ -149,6 +149,8 @@
 .images {
   border-radius: 15px;
   margin: 10px;
+  width: 130px;
+  height: 180px;
 }
 
 .ct {

@@ -128,6 +128,23 @@ export const getImage = (card_id) => {
   })
 }
 
+export const getBirthDate = (card_id) => {
+  const data = {
+    card_id: card_id
+  };
+
+  let headers = new Headers();
+  headers.append('Content-Type', 'application/json'); 
+  headers.append('Accept', 'application/json'); 
+  headers.append('Origin','http://localhost:3000'); 
+  
+  return fetch('http://localhost:8080/get-birthday', { 
+    method: 'POST', 
+    headers: headers, 
+    body: JSON.stringify(data), 
+  })  
+}
+
 export const checkPinCode = (card_id, password) => {
   const data = {
     card_id: card_id,

@@ -12,6 +12,7 @@ import Home from './pages/Home.js';
 import Attendance from './pages/Attendance.js';
 import Check from './pages/Check.js';
 import Test from './pages/Test.js';
+import ManualAtt from './pages/ManualAtt.js';
 
 
 const App = () => {
@@ -27,6 +28,7 @@ const App = () => {
           <Route exact path='/sign/aftereg' component={AftReg} />
           <Route exact path='/home' component={Home} />
           <Route exact path='/attendance' component={Attendance} />
+          <Route exact path='/manual' component={ManualAtt} />
           <Route exact path='/check' component={Check} />
           <Route exact path='/test' component={Test} />
         </Switch>

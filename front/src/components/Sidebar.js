@@ -23,6 +23,9 @@ const Sidebar = () => {
         <button className={`sidebar-btn ${tab === "attendance" ? "active" : "inactive"}`} onClick={() => highlightButton("attendance")}>
           Electronic Attendance
         </button>
+        <button className={`sidebar-btn ${tab === "manual" ? "active" : "inactive"}`} onClick={() => highlightButton("manual")}>
+          Manual Attendance
+        </button>
         <button className={`sidebar-btn ${tab === "check" ? "active" : "inactive"}`} onClick={() => highlightButton("check")}>
           Autocheck
         </button>

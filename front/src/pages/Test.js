@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { getImage } from '../components/fetches';
+import { getImage, getBirthDate } from '../components/fetches';
 
 const Test = () => {
     const [image, setImage] = useState(null);
+    const [birthDate, setBirthDate] = useState(null);
 
     const handleButtonClick = async () => {
         try {
             
-            getImage("23386263")
+            getImage("13367869")
                 .then((response) => {
                     if (response.ok) {
                         return response.json();
@@ -17,6 +18,17 @@ const Test = () => {
                     const imageUrl = "data:image/png;base64,"+blob.image;
                     console.log(imageUrl)
                     setImage(imageUrl);
+                });
+
+            getBirthDate("13367869")
+                .then((response) => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                }) 
+                .then((data) => {
+                    console.log(data)
+                    setBirthDate(data.birthday);
                 });
                 
                 // const imageUrl = URL.createObjectURL(await getImage(23935007));
@@ -30,6 +42,7 @@ const Test = () => {
     return (
         <div>
             <button onClick={handleButtonClick}>Fetch Image</button>
+            {birthDate && <p>Birth Date: {birthDate}</p>}
             {image && <img src={image} alt="Fetched Image" />}
         </div>
     );
