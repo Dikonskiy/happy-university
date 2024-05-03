@@ -34,20 +34,25 @@ const ManualAtt = () => {
         <div className="main">
             <Topbar />
             <div className="attendance-box">
-                {role === "Teacher" && <h2 className="home-h2">Start Class</h2>}
-                {role === "Student" && <h2 className="home-h2">Manual Attendance</h2>}
-                {role === "Admin" && <h2 className="home-h2">Work with Attendance</h2>}
-                <p>Enter your code from teacher for participate to class</p>
+                {role === "Student" && 
                 <div>
-                    <span className="ct">Code: </span>
-                    <input 
-                    className="select-term" 
-                    type="" id="code" 
-                    name="code"
-                    placeholder="Enter code here">
-                    </input>
-                    <input className="show-button" type="button" value="Enter" onClick={handleButtonClick}></input>
+                  <h2 className="home-h2">Manual Attendance</h2>
+                  <p>Enter your code from teacher for participate to class</p>
+                  <div>
+                      <span className="ct">Code: </span>
+                      <input 
+                      className="select-term" 
+                      type="" id="code" 
+                      name="code"
+                      placeholder="Enter code here">
+                      </input>
+                      <input className="show-button" type="button" value="Enter" onClick={handleButtonClick}></input>
+                  </div>
                 </div>
+                }
+                {role === "Teacher" && <h2 className="home-h2">Start Class</h2>}
+                {role === "Admin" && <h2 className="home-h2">Work with Attendance</h2>}
+                
             </div>
         </div>
     </div>
