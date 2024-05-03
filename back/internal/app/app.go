@@ -61,7 +61,7 @@ func (a *Application) StartServer() {
 	})
 	r.Methods("OPTIONS").Handler(optionsHandler)
 	r.Use(cors.AllowAll().Handler)
-	// r.Use(TokenMiddleware)
+	r.Use(TokenMiddleware)
 
 	r.HandleFunc("/login", Hand.LoginHandler)
 	r.HandleFunc("/register", Hand.RegisterHandler)
@@ -77,6 +77,7 @@ func (a *Application) StartServer() {
 	r.HandleFunc("/after-reg", Hand.AfterRegHandler)
 	r.HandleFunc("/get-image", Hand.GetImageHandler)
 	r.HandleFunc("/get-birthday", Hand.GetBirthdayHandler)
+	r.HandleFunc("/generate-code", Hand.GenerateAttendanceCodeHandler)
 
 	server := &http.Server{
 		Addr:         ":" + Cnfg.ListenPort,
