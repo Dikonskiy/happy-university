@@ -327,7 +327,7 @@ func (r *Repository) GetLessonDatesByCourse(courseCode string) ([]string, error)
 		currentDate := startDate
 		for currentDate.Before(endDate) || currentDate.Equal(endDate) {
 			if currentDate.Weekday().String() == dayOfWeek {
-				lessonDates = append(lessonDates, currentDate.Format("01.02.2006"))
+				lessonDates = append(lessonDates, currentDate.Format("02.01.2006"))
 			}
 			currentDate = currentDate.AddDate(0, 0, 1)
 		}
