@@ -1,5 +1,6 @@
 import "../css/profile.css";
 import avatar from "../elements/stud_photo.jpg"
+import Avatar from "./Avatar";
 import Info from "./Info";
 
 const Topbar = () => {
@@ -38,7 +39,7 @@ const Topbar = () => {
         {tab !== 'home' && (
             <div className="profile">
             <Info/>
-            <img src={avatar} width="140" height="180" className="images" alt="Profile"/>
+            <Avatar/>
             </div>
         )}
     </div>

@@ -43,7 +43,7 @@ export const checkToken = async (accessToken, refreshToken) => {
     } 
     else if (response.statusCode === 401){
       localStorage.clear();
-      window.location.href = '/login';
+      window.location.href = '/sign';
     } 
     else {
       throw new Error("Failed to refresh access token");
@@ -73,12 +73,13 @@ export const authorization = (id, password) => {
   })
 };
 
-export const registration = (name, email, role, password) => {
+export const registration = (name, email, role, password, pincode) => {
   const data = {
     name: name,
     email: email,
     role: role,
-    password: password
+    password: password,
+    pin_code: pincode
   };
   let headers = new Headers();
   headers.append('Content-Type', 'application/json');
@@ -92,10 +93,64 @@ export const registration = (name, email, role, password) => {
     })
 }
 
-export const checkPinCode = (card_id, password) => {
+export const afterRegistration = (card_id, birth_date, image) => {
   const data = {
     card_id: card_id,
-    password: password
+    birthday: birth_date,
+    image: image
+  };
+  let headers = new Headers();
+  headers.append('Content-Type', 'application/json');
+  headers.append('Accept', 'application/json');
+  headers.append('Origin','http://localhost:3000');
+
+  return fetch('http://localhost:8080/after-reg', {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify(data),
+  })
+}
+
+export const getImage = (card_id) => {
+  const data = {
+    card_id: card_id
+  };
+
+  let headers = new Headers();
+  headers.append('Content-Type', 'application/json');
+  headers.append('Accept', 'application/json');
+  headers.append('Origin','http://localhost:3000');
+  headers.append('Authorization', 'Bearer'+ localStorage.getItem('accessToken'));
+
+  return fetch('http://localhost:8080/get-image', {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify(data),
+  })
+}
+
+export const getBirthDate = (card_id) => {
+  const data = {
+    card_id: card_id
+  };
+
+  let headers = new Headers();
+  headers.append('Content-Type', 'application/json'); 
+  headers.append('Accept', 'application/json'); 
+  headers.append('Origin','http://localhost:3000'); 
+  headers.append('Authorization', 'Bearer'+ localStorage.getItem('accessToken'));
+  
+  return fetch('http://localhost:8080/get-birthday', { 
+    method: 'POST', 
+    headers: headers, 
+    body: JSON.stringify(data), 
+  })  
+}
+
+export const checkPinCode = (card_id, pin_code) => {
+  const data = {
+    card_id: card_id, 
+    pin_code: parseInt(pin_code)
   }
   let headers = new Headers();
   headers.append('Content-Type', 'application/json');
@@ -140,23 +195,6 @@ export const takeUserData = () => {
   })
 }
 
-// export const getRole = (accessToken) => {
-//   const data = {
-//     access_token: accessToken
-//   }
-//   let headers = new Headers();
-//   headers.append('Content-Type', 'application/json');
-//   headers.append('Accept', 'application/json');
-//   headers.append('Origin','http://localhost:3000');
-//   headers.append('Authorization', 'Bearer'+ accessToken)
-
-//   return fetch('http://localhost:8080/get-role', {
-//     method: 'POST',
-//     headers: headers,
-//     body: JSON.stringify(data),
-//   })
-// }
-
 export const getCoursesStudent = (term) => {
   const data = {
     term: term
@@ -169,6 +207,23 @@ export const getCoursesStudent = (term) => {
 
   return fetch('http://localhost:8080/attendance', {
     method: 'GET',
+    headers: headers,
+    body: JSON.stringify(data),
+  })
+}
+
+export const generateCode = (course_code) => {
+  const data = {
+    course_code: course_code
+  }
+  let headers = new Headers();
+  headers.append('Content-Type', 'application/json');
+  headers.append('Accept', 'application/json');
+  headers.append('Origin','http://localhost:3000');
+  headers.append('Authorization', 'Bearer'+ localStorage.getItem('accessToken'))
+
+  return fetch('http://localhost:8080/generate-code', {
+    method: 'POST',
     headers: headers,
     body: JSON.stringify(data),
   })

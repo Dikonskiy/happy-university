@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { takeUserData, checkToken } from '../components/fetches';
+import { takeUserData, checkToken, getBirthDate } from '../components/fetches';
 
 const Info = () => {
     const [userData, setUser] = useState();
     const cardId = localStorage.getItem('cardId');
     const [accessToken, setAccessToken] = useState(localStorage.getItem('accessToken'));
     const refreshToken = localStorage.getItem('refreshToken');
+    const [birthDate, setBirthDate] = useState(null);
+
+    const path = window.location.pathname
+    .split("/").filter(path => path !== "");
+    const tab = path[path.length - 1];
 
     useEffect(() => {
         const checkAccessToken = async () => {
@@ -37,6 +42,19 @@ const Info = () => {
                 .catch((error) => {
                     console.error(error);
                 });
+
+            if (tab === 'home'){
+                await getBirthDate(cardId)
+                    .then((response) => {
+                        if (response.ok) {
+                            return response.json();
+                        }
+                    }) 
+                    .then((data) => {
+                        console.log(data)
+                        setBirthDate(data.birthday);
+                    });
+            }
         }
 
         checkAccessToken();
@@ -60,6 +78,10 @@ const Info = () => {
                     <div className="td-info">Email: </div>
                     <div className="td-info">{user.email}</div>
                 </div>
+                {tab === 'home' && <div className="form-row">
+                    <div className="td-info">Birth Date: </div>
+                    <div className="td-info">{birthDate}</div>
+                </div>}
             </div>
         );
     }
