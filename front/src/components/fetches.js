@@ -193,23 +193,6 @@ export const takeUserData = () => {
   })
 }
 
-// export const getRole = (accessToken) => {
-//   const data = {
-//     access_token: accessToken
-//   }
-//   let headers = new Headers();
-//   headers.append('Content-Type', 'application/json');
-//   headers.append('Accept', 'application/json');
-//   headers.append('Origin','http://localhost:3000');
-//   headers.append('Authorization', 'Bearer'+ accessToken)
-
-//   return fetch('http://localhost:8080/get-role', {
-//     method: 'POST',
-//     headers: headers,
-//     body: JSON.stringify(data),
-//   })
-// }
-
 export const getCoursesStudent = (term) => {
   const data = {
     term: term
@@ -222,6 +205,23 @@ export const getCoursesStudent = (term) => {
 
   return fetch('http://localhost:8080/attendance', {
     method: 'GET',
+    headers: headers,
+    body: JSON.stringify(data),
+  })
+}
+
+export const generateCode = (course_code) => {
+  const data = {
+    course_code: course_code
+  }
+  let headers = new Headers();
+  headers.append('Content-Type', 'application/json');
+  headers.append('Accept', 'application/json');
+  headers.append('Origin','http://localhost:3000');
+  headers.append('Authorization', 'Bearer'+ localStorage.getItem('accessToken'))
+
+  return fetch('http://localhost:8080/generate-code', {
+    method: 'POST',
     headers: headers,
     body: JSON.stringify(data),
   })

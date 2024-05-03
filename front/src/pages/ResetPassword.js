@@ -11,7 +11,6 @@ const ResetPassword = () => {
     e.preventDefault();
 
     // Implement your password reset logic here.
-    console.log(localStorage.getItem('cardId'))
     updatePassword(localStorage.getItem('cardId'), newPassword)
       .then((response) => {
         if(response.ok){
