@@ -269,3 +269,73 @@ func (r *Repository) GenerateAttendanceCode(cardID string, courseCode string) (i
 
 	return code, nil
 }
+
+func (r *Repository) GetStudentsByCourse(courseCode string) ([]string, error) {
+	rows, err := r.Db.Query("SELECT student_id_card FROM Student_Courses WHERE course_code = ?", courseCode)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var studentIDs []string
+
+	for rows.Next() {
+		var studentIDCard string
+		if err := rows.Scan(&studentIDCard); err != nil {
+			return nil, err
+		}
+		studentIDs = append(studentIDs, studentIDCard)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	if len(studentIDs) == 0 {
+		return nil, errors.New("no students found for the given course code")
+	}
+
+	return studentIDs, nil
+}
+
+func (r *Repository) GetLessonDatesByCourse(courseCode string) ([]string, error) {
+	rows, err := r.Db.Query("SELECT start_date, end_date, day_of_week FROM Schedule WHERE course_code = ?", courseCode)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var lessonDates []string
+
+	for rows.Next() {
+		var startDateStr, endDateStr, dayOfWeek string
+
+		if err := rows.Scan(&startDateStr, &endDateStr, &dayOfWeek); err != nil {
+			return nil, err
+		}
+
+		startDate, err := time.Parse("2006-01-02", startDateStr)
+		if err != nil {
+			return nil, err
+		}
+
+		endDate, err := time.Parse("2006-01-02", endDateStr)
+		if err != nil {
+			return nil, err
+		}
+
+		currentDate := startDate
+		for currentDate.Before(endDate) || currentDate.Equal(endDate) {
+			if currentDate.Weekday().String() == dayOfWeek {
+				lessonDates = append(lessonDates, currentDate.Format("01.02.2006"))
+			}
+			currentDate = currentDate.AddDate(0, 0, 1)
+		}
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return lessonDates, nil
+}
