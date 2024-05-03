@@ -47,11 +47,10 @@ const AftReg = () => {
   return (
     <div className="form-wrapper">
         <form onSubmit={handleSubmit} action="#">
-            <h1 className='logo'>Account Created<br/> 
-            Successfully</h1>
-                <p>Here you can see your Card ID. Remember, write <br/>down or save it.</p>
+            <h1 className='logo'>Account Created<br/>Successfully</h1>
+                <p style={{color: 'red'}}>Here you can see your Card ID. Remember, write <br/>down, take screenshot and somehow save it.</p>                
                 <div className="form-row" style={{fontWeight: '600'}}>
-                    <div className="td-info">Your ID: {id}</div>
+                  <div className="td-info">Your ID: {id}</div>
                 </div>
             <div className="input-field">
                 <label htmlFor="image">Profile Image:</label>

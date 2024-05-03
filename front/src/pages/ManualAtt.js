@@ -5,16 +5,6 @@ import { checkToken } from "../components/fetches";
 import Topbar from "../components/Topbar";
 
 const ManualAtt = () => {
-  const [isDisabled, setIsDisabled] = useState(false);
-  const [selectedOption, setSelectedOption] = useState("none");
-
-  const handleSelectChange = (event) => {
-    const selectedValue = event.target.value;
-    setSelectedOption(selectedValue);
-  };
-
-  const isButtonDisabled = selectedOption === "none";
-
   const role = localStorage.getItem("userRole");
   const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
   const refreshToken = localStorage.getItem("refreshToken");
@@ -53,8 +43,7 @@ const ManualAtt = () => {
                     <input 
                     className="select-term" 
                     type="" id="code" 
-                    name="code" 
-                    onChange={handleSelectChange}
+                    name="code"
                     placeholder="Enter code here">
                     </input>
                     <input className="show-button" type="button" value="Enter" onClick={handleButtonClick}></input>
