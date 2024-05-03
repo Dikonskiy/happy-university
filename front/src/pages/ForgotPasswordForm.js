@@ -36,6 +36,7 @@ const ForgotPasswordForm = () => {
     // Implement your password reset logic here.
     checkPinCode(ID, pin)
       .then((response) => {
+        console.log(response)
         if(response.ok){
           return response.json();
         } else {
@@ -43,13 +44,18 @@ const ForgotPasswordForm = () => {
         }
       })
       .then((data) => {
+        console.log(data)
         if(data && data.correct){
           localStorage.setItem('cardId', ID);
           window.location.href = '/sign/forgotpassword/resetpassword';
         } else {
           console.error('Invalid data:', data);
         }
-      })    
+      })
+      .catch((error) => {
+        // Handle error
+        console.error(error);
+      });
   }
 
   return (

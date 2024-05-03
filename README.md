@@ -31,7 +31,7 @@ cd front
 Execute the following command to run the application:
 
 ```bash
-npm start
+npm `start`
 ```
 
 ## Endpoints
