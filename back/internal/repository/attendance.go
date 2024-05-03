@@ -211,7 +211,7 @@ func (r *Repository) GetCourseSchedule(courseCode string, date time.Time) ([]mod
 }
 
 func (r *Repository) AfterReg(cardId string, image []byte, birthday string) error {
-	_, err := r.Db.Exec("INSERT INTO UserImages (CardId, Image, Birthday) VALUES (?, ?, ?)", cardId, image, birthday)
+	_, err := r.Db.Exec("INSERT INTO UserImages (id_card, Image, Birthday) VALUES (?, ?, ?)", cardId, image, birthday)
 	if err != nil {
 		return err
 	}

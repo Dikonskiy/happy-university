@@ -1,47 +1,83 @@
-import React from 'react';
-import ImageUpload from '../components/ImageUpload';
+import React, { useState } from 'react';
+import { afterRegistration } from '../components/fetches';
 
 const AftReg = () => {
+  const id = localStorage.getItem('userId').replaceAll("\"", "")
+  const [image, setImage] = useState(null);
+  const [error, setError] = useState(null);
+
+  const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+  const minAspectRatio = 9 / 16;
+  const maxAspectRatio = 1;
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        const img = new Image();
+        img.src = reader.result;
+
+        img.onload = () => {
+          const aspectRatio = img.width / img.height;
+          const sizeInMB = file.size / (1024 * 1024);
+
+          if (!allowedTypes.includes(file.type)) {
+            setError('Please select a valid image file (JPEG, PNG, or GIF)');
+          } else if (aspectRatio < minAspectRatio || aspectRatio > maxAspectRatio) {
+            setError('Please upload an image with a profile aspect ratio between 9:16 and 1:1.');
+          } else if (sizeInMB > 5) {
+            setError('Please upload an image that is less than 5MB in size.');
+          } else {
+            setImage(reader.result);
+            setError(null);
+          }
+        };
+      };
+
+      reader.readAsDataURL(file);
+    }
+  };
+  
   const handleSubmit = (event) => {
-    event.preventDefault();
-    // Implement your password reset logic here.
+    event.preventDefault(); 
+    localStorage.clear();
 
-    // const email = event.target.email.value;
-    // const fullName = event.target.fullName.value;
-    // const role = event.target.role.value;
-    // const password = event.target.password.value;
-
-    // // Send the data to your Go back-end
-    // registration(fullName, email, role, password)
-    //     .then((response) => {
-    //         // Handle successful login
-    //         if (response.ok) {
-    //             return response;
-    //         }
-    //     })
-    //     .catch((error) => {
-    //         // Handle error
-    //         console.error(error);
-    //         // Show error message to user
-    //         alert(error.message)
-    //     });
+    afterRegistration(id, event.target.birth.value, image.split(',')[1])
+        .then((response) => {
+            if (response.ok) {
+              return response;
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+          
+    window.location.href = '/sign';
 
   };
 
   return (
     <div className="form-wrapper">
         <form onSubmit={handleSubmit} action="#">
+            <h1 className='logo'>Account Created<br/>Successfully</h1>
+                <p style={{color: 'red'}}>Here you can see your Card ID. Remember, write <br/>down, take screenshot and somehow save it.</p>                
+                <div className="form-row" style={{fontWeight: '600'}}>
+                  <div className="td-info">Your ID: {id}</div>
+                </div>
+            <div className="input-field">
+                <label htmlFor="image">Profile Image:</label>
+                <div>
+                  <input type="file" onChange={handleImageChange} accept="image/*" />
+                  {error && <div style={{ color: 'red', marginTop: '5px' }}>{error}</div>}
+                  {image && <img src={image} alt="Uploaded" style={{ width: '200px', height: '200px', marginTop: '10px' }} />}
+                </div>
+            </div>
             <div className="input-field">
                 <label htmlFor="birth">Birth Date:</label>
                 <input className="custom" type="date" id="birth" name="birth" placeholder="Your birth" defaultValue="2000-02-29"/>
-            </div>
-            <div className="input-field">   
-                <label htmlFor="address">Address:</label>
-                <input type="text" id="address" name="address" placeholder="Your address" />
-            </div>
-            <div className="input-field">
-                <label htmlFor="image">Image:</label>
-                <ImageUpload/>
             </div>
             <button type="submit">
                 Join

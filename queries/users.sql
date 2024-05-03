@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS Attendance (
 
 CREATE TABLE IF NOT EXISTS Student_Courses (
     student_id_card varchar(255),
-    course_code varchar(7),
+    course_code varchar(7)
 );
 
 CREATE TABLE IF NOT EXISTS Schedule (
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS Schedule (
 CREATE TABLE IF NOT EXISTS UserImages (
         id_card VARCHAR(20),
         Birthday TEXT,
-        Image BLOB
+        Image longblob
 )
 
 CREATE TABLE IF NOT EXISTS TeacherCode (
