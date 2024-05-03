@@ -29,10 +29,9 @@ CREATE TABLE IF NOT EXISTS Courses (
     course_id INT AUTO_INCREMENT PRIMARY KEY,
     course_code varchar(7) not null,
     course_name VARCHAR(255) NOT NULL,
-    teacher_id INT,
+    teacher_id_card VARCHAR(20),
     term int,
-    room varchar(7),
-    FOREIGN KEY (teacher_id) REFERENCES Teachers(teacher_id)
+    room varchar(7)
 );
 
 CREATE TABLE IF NOT EXISTS Attendance (
@@ -67,4 +66,11 @@ CREATE TABLE IF NOT EXISTS UserImages (
         id_card VARCHAR(20),
         Birthday TEXT,
         Image BLOB
+)
+
+CREATE TABLE IF NOT EXISTS TeacherCode (
+        teacher_id_card VARCHAR(20) not null,
+        course_code varchar(7) NOT NULL,
+        attendance_date date not null, 
+        generated_code int
 )
