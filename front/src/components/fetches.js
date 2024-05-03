@@ -120,6 +120,7 @@ export const getImage = (card_id) => {
   headers.append('Content-Type', 'application/json');
   headers.append('Accept', 'application/json');
   headers.append('Origin','http://localhost:3000');
+  headers.append('Authorization', 'Bearer'+ localStorage.getItem('accessToken'));
 
   return fetch('http://localhost:8080/get-image', {
     method: 'POST',
@@ -137,6 +138,7 @@ export const getBirthDate = (card_id) => {
   headers.append('Content-Type', 'application/json'); 
   headers.append('Accept', 'application/json'); 
   headers.append('Origin','http://localhost:3000'); 
+  headers.append('Authorization', 'Bearer'+ localStorage.getItem('accessToken'));
   
   return fetch('http://localhost:8080/get-birthday', { 
     method: 'POST', 
