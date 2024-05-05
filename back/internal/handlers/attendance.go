@@ -343,3 +343,35 @@ func (h *Handler) GetDatesHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
+
+func (h *Handler) GetStatusHandler(w http.ResponseWriter, r *http.Request) {
+	cardID, err := extractCardIDFromToken(r)
+	if err != nil {
+		h.logerr.Log.Error("Failed to extract card ID from token", err)
+		http.Error(w, "Failed to extract card ID from token", http.StatusUnauthorized)
+		return
+	}
+
+	var req models.GenerateAttendanceCodeRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	statuses, err := h.Repo.GetStatus(cardID, req.CourseCode, req.CourseType)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	var resp []models.AttendanceStatus
+	for _, status := range statuses {
+		resp = append(resp, models.AttendanceStatus{
+			Date:   status.Date,
+			Status: status.Status,
+		})
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(resp)
+}

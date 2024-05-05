@@ -42,7 +42,8 @@ CREATE TABLE IF NOT EXISTS Attendance (
     check_out_time DATETIME,
     attendance_date DATE NOT NULL,
     status ENUM('attend', 'absent', 'manual', 'permitted'),
-    room varchar(7)
+    room varchar(7),
+    course_type ENUM('N', 'P') NOT NULL DEFAULT 'N'
 );
 
 CREATE TABLE IF NOT EXISTS Student_Courses (

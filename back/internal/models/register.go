@@ -128,3 +128,8 @@ type LessonDate struct {
 	StartTime  string `json:"start_time"`
 	CourseType string `json:"course_type"`
 }
+
+type AttendanceStatus struct {
+	Date   string `json:"date"`
+	Status string `json:"status"`
+}
