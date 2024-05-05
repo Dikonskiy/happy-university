@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"math/rand"
+	"strconv"
 	"time"
 
 	"github.com/Dikonskiy/happy-university/back/internal/models"
@@ -14,17 +15,46 @@ const (
 	attendPercentage = 0.6
 )
 
-func (r *Repository) UpdateAttendance(studentID, course, room string) error {
-	var student models.Student
-	err := r.Db.QueryRow("SELECT student_id, student_name, student_id_card, email FROM Students WHERE student_id_card = ?", studentID).Scan(&student.ID, &student.Name, &student.IdCard, &student.Email)
-	if err != nil {
-		return err
-	}
+func (r *Repository) UpdateAttendance(studentID, course, room, generatedCode string) error {
+	if generatedCode == "" {
+		var studentIDFromDB int
+		err := r.Db.QueryRow("SELECT student_id FROM Students WHERE student_id_card = ?", studentID).Scan(&studentIDFromDB)
+		if err != nil {
+			return err
+		}
 
-	currentDateTime := time.Now()
-	_, err = r.Db.Exec("INSERT INTO Attendance (student_id, course_code, check_in_time, attendance_date, room) VALUES (?, ?, ?, ?, ?)", student.ID, course, currentDateTime, currentDateTime.Format("2006-01-02"), room)
-	if err != nil {
-		return err
+		currentDateTime := time.Now()
+		_, err = r.Db.Exec("INSERT INTO Attendance (student_id, course_code, check_in_time, attendance_date, room) VALUES (?, ?, ?, ?, ?)", studentIDFromDB, course, currentDateTime, currentDateTime.Format("2006-01-02"), room)
+		if err != nil {
+			return err
+		}
+	} else {
+		var expectedGeneratedCode int
+		err := r.Db.QueryRow("SELECT generated_code FROM TeacherCode WHERE course_code = ?", course).Scan(&expectedGeneratedCode)
+		if err != nil {
+			return err
+		}
+
+		var studentIDFromDB int
+		err = r.Db.QueryRow("SELECT student_id FROM Students WHERE student_id_card = ?", studentID).Scan(&studentIDFromDB)
+		if err != nil {
+			return err
+		}
+
+		generatedCodeInt, err := strconv.Atoi(generatedCode)
+		if err != nil {
+			return fmt.Errorf("failed to convert generated code to integer: %v", err)
+		}
+
+		if generatedCodeInt != expectedGeneratedCode {
+			return fmt.Errorf("generated code does not match the expected code for the course")
+		}
+
+		currentDateTime := time.Now()
+		_, err = r.Db.Exec("INSERT INTO Attendance (student_id, course_code, check_in_time, attendance_date, room) VALUES (?, ?, ?, ?, ?)", studentIDFromDB, course, currentDateTime, currentDateTime.Format("2006-01-02"), room)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil
@@ -218,14 +248,94 @@ func (r *Repository) GenerateAttendanceCode(cardID string, courseCode string) (i
 		return 0, fmt.Errorf("only teachers are allowed to generate attendance codes")
 	}
 
+	var teacherIDCard string
+	err := r.Db.QueryRow("SELECT teacher_id_card FROM Courses WHERE course_code = ?", courseCode).Scan(&teacherIDCard)
+	if err != nil {
+		return 0, fmt.Errorf("failed to retrieve teacher ID card for the specified course: %v", err)
+	}
+
+	if teacherIDCard != cardID {
+		return 0, fmt.Errorf("teacher is not assigned to the specified course")
+	}
+
 	code := rand.Intn(900000) + 100000
 
 	today := time.Now().Format("2006-01-02")
 
-	_, err := r.Db.Exec("INSERT INTO TeacherCode (teacher_id_card, course_code, attendance_date, generated_code) VALUES (?, ?, ?, ?)", cardID, courseCode, today, code)
+	_, err = r.Db.Exec("INSERT INTO TeacherCode (teacher_id_card, course_code, attendance_date, generated_code) VALUES (?, ?, ?, ?)", cardID, courseCode, today, code)
 	if err != nil {
 		return 0, err
 	}
 
 	return code, nil
+}
+
+func (r *Repository) GetStudentsByCourse(courseCode string) ([]string, error) {
+	rows, err := r.Db.Query("SELECT student_id_card FROM Student_Courses WHERE course_code = ?", courseCode)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var studentIDs []string
+
+	for rows.Next() {
+		var studentIDCard string
+		if err := rows.Scan(&studentIDCard); err != nil {
+			return nil, err
+		}
+		studentIDs = append(studentIDs, studentIDCard)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	if len(studentIDs) == 0 {
+		return nil, errors.New("no students found for the given course code")
+	}
+
+	return studentIDs, nil
+}
+
+func (r *Repository) GetLessonDatesByCourse(courseCode string) ([]string, error) {
+	rows, err := r.Db.Query("SELECT start_date, end_date, day_of_week FROM Schedule WHERE course_code = ?", courseCode)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var lessonDates []string
+
+	for rows.Next() {
+		var startDateStr, endDateStr, dayOfWeek string
+
+		if err := rows.Scan(&startDateStr, &endDateStr, &dayOfWeek); err != nil {
+			return nil, err
+		}
+
+		startDate, err := time.Parse("2006-01-02", startDateStr)
+		if err != nil {
+			return nil, err
+		}
+
+		endDate, err := time.Parse("2006-01-02", endDateStr)
+		if err != nil {
+			return nil, err
+		}
+
+		currentDate := startDate
+		for currentDate.Before(endDate) || currentDate.Equal(endDate) {
+			if currentDate.Weekday().String() == dayOfWeek {
+				lessonDates = append(lessonDates, currentDate.Format("02.01.2006"))
+			}
+			currentDate = currentDate.AddDate(0, 0, 1)
+		}
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return lessonDates, nil
 }

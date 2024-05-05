@@ -17,8 +17,9 @@ type RegisterResponse struct {
 }
 
 type AttendanceRequest struct {
-	Room   string `json:"room"`
-	Course string `json:"course"`
+	GeneratedCode string `json:"generated_code"`
+	Room          string `json:"room"`
+	Course        string `json:"course"`
 }
 
 type SuccessResponse struct {
@@ -105,4 +106,12 @@ type AfterRegRequest struct {
 
 type GenerateAttendanceCodeRequest struct {
 	CourseCode string `json:"course_code"`
+}
+
+type GetStudentsByCourseResponse struct {
+	CardIds []string `json:"card_ids"`
+}
+
+type GetDatesResponse struct {
+	Dates []string `json:"dates"`
 }

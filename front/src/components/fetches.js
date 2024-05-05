@@ -1,7 +1,7 @@
 import { encode } from 'js-base64';
 import { jwtDecode } from 'jwt-decode';
 
-const JWT_EXP_BUFFER_MINUTES = 5; // buffer time in minutes before the token expires
+const JWT_EXP_BUFFER_MINUTES = 2; // buffer time in minutes before the token expires
 
 // utils.js
 
