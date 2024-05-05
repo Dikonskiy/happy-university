@@ -3,9 +3,11 @@ package repository
 import (
 	"database/sql"
 	"errors"
+	"fmt"
 	"math/rand"
 	"strconv"
 
+	"github.com/Dikonskiy/happy-university/back/internal/models"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -112,21 +114,37 @@ func generateCardID(role string) string {
 	return prefix + strconv.Itoa(randomNumber)
 }
 
-func (r *Repository) GetCourses(studentIDCard string) ([]string, error) {
-	rows, err := r.Db.Query("SELECT course_code FROM student_courses WHERE student_id_card LIKE ?", studentIDCard)
+func (r *Repository) GetCourses(cardId string) ([]models.GetCoursesResponse, error) {
+	var query string
+	var idType string
+
+	if cardId[0] == '1' {
+		query = `SELECT sc.course_code, c.course_name 
+		         FROM student_courses sc 
+		         JOIN Courses c ON sc.course_code = c.course_code
+		         WHERE sc.student_id_card LIKE ?`
+		idType = "student"
+	} else if cardId[0] == '2' {
+		query = "SELECT course_code, course_name FROM courses WHERE teacher_id_card LIKE ?"
+		idType = "teacher"
+	} else {
+		return nil, errors.New("invalid card ID")
+	}
+
+	rows, err := r.Db.Query(query, cardId)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
 
-	var courses []string
+	var courses []models.GetCoursesResponse
 
 	for rows.Next() {
-		var courseCode string
-		if err := rows.Scan(&courseCode); err != nil {
+		var course models.GetCoursesResponse
+		if err := rows.Scan(&course.Code, &course.Name); err != nil {
 			return nil, err
 		}
-		courses = append(courses, courseCode)
+		courses = append(courses, course)
 	}
 
 	if err := rows.Err(); err != nil {
@@ -134,7 +152,7 @@ func (r *Repository) GetCourses(studentIDCard string) ([]string, error) {
 	}
 
 	if len(courses) == 0 {
-		return nil, errors.New("no courses found for the given student ID card")
+		return nil, fmt.Errorf("no courses found for the given %s ID card", idType)
 	}
 
 	return courses, nil
