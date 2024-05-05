@@ -90,8 +90,6 @@ const ManualAtt = () => {
           .then((data) => {
             if (data && data.message) {
               setStatus(data.message);
-              console.log(data.message);
-              console.log(status);
             }
           })
           .catch((error) => {
@@ -105,7 +103,6 @@ const ManualAtt = () => {
   const handleSelectChange = (event) => {
     const selectedValue = event.target.value;
     setSelectedOption(selectedValue);
-    console.log(selectedOption);
   };
 
   const onChange = (e) => {

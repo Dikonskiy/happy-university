@@ -22,7 +22,7 @@ const Home = () => {
     }else{
       window.location.href = "/sign";
     }
-  })
+  }, [accessToken, refreshToken])
   if (loading) {
     return <div className="loader"></div>;
   } 

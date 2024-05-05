@@ -31,6 +31,7 @@ const AftReg = () => {
     if (id === null) {
       window.location.href = "/sign";
     } else {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       id = id.replaceAll('"', "");
       setLoading(false);
     }
