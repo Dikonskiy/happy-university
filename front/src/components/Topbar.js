@@ -1,5 +1,4 @@
 import "../css/profile.css";
-import avatar from "../elements/stud_photo.jpg"
 import Avatar from "./Avatar";
 import Info from "./Info";
 

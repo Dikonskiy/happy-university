@@ -16,7 +16,6 @@ const Check = () => {
 
   const isButtonDisabled = selectedOption === "none";
 
-  const role = localStorage.getItem("userRole");
   const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
   const refreshToken = localStorage.getItem("refreshToken");
   const [loading, setLoading] = useState(true);

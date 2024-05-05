@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import TableAtt from "../components/TableAtt";
 import CourseDetails from "../components/CourseDetails";
-import { getCoursesStudent, checkToken } from "../components/fetches";
+import { checkToken } from "../components/fetches";
 import Sidebar from "../components/Sidebar";
-import Info from "../components/Info";
 import Topbar from "../components/Topbar";
 
 const Attendance = () => {
