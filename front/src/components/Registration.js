@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { registration } from './fetches';
 
 const Registration = () => {
-  const [agreeToTerms, setAgreeToTerms] = React.useState(false);
+  const [agreeToTerms, setAgreeToTerms] = useState(false);
   const [pin, setPin] = useState('');
 
   const handleChange = (e) => {

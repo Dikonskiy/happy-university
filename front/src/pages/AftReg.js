@@ -21,18 +21,20 @@ const AftReg = () => {
       localStorage.setItem("accessToken", newAccessToken);
       window.location.href = "/home";
     };
-
+    
     if (accessToken && typeof accessToken === "string" && accessToken !== "undefined") {
       checkAccessToken();
+    }else{
+      setLoading(false)
     }
-  });
 
-  if (id === null) {
-    window.location.href = "/sign";
-  } else {
-    id = id.replaceAll('"', "");
-    setLoading(false);
-  }
+    if (id === null) {
+      window.location.href = "/sign";
+    } else {
+      id = id.replaceAll('"', "");
+      setLoading(false);
+    }
+  }, [accessToken, refreshToken]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -83,7 +85,7 @@ const AftReg = () => {
   };
   if (loading) {
     return <div className="loader"></div>;
-  } else {
+  } 
     return (
       <div className="form-wrapper">
         <form onSubmit={handleSubmit} action="#">
@@ -115,7 +117,7 @@ const AftReg = () => {
         </form>
       </div>
     );
-  }
+  
 };
 
 export default AftReg;
