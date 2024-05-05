@@ -58,7 +58,7 @@ const Info = () => {
         }
 
         checkAccessToken();
-    }, [accessToken, refreshToken, cardId, userData]);
+    }, [accessToken, refreshToken, cardId, userData, tab]);
 
     if (userData){
         const user = JSON.parse(userData);
