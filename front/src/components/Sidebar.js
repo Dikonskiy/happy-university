@@ -2,22 +2,21 @@ import React, { useState } from "react";
 import "../css/profile.css";
 
 const Sidebar = () => {
-  const [tab, setTab] = useState(localStorage.getItem("activeTab") || "home");
+  const [tab, setTab] = useState(window.location.pathname.split("/")[1]);
   const role = localStorage.getItem("userRole");
 
   const highlightButton = (tabName) => {
     setTab(tabName);
-    localStorage.setItem("activeTab", tabName);
     window.location.href = "/" + tabName;
   };
 
   return (
     <div className="layout">
       <div className="sidebar">
-        <div className="conteiner">
+        <a className="conteiner" href="/home">
           <img src="https://cdn-icons-png.flaticon.com/512/6063/6063620.png " width="110" height="110" alt="Logo" />
-          <h1 className="logo">Happy University</h1>
-        </div>
+          <h1 style={{color: "black"}} className="logo">Happy University</h1>
+        </a >
         <button className={`sidebar-btn ${tab === "home" ? "active" : "inactive"}`} onClick={() => highlightButton("home")} style={{ backgroundColor: tab === "home" ? "gray" : "white" }}>
           Home
         </button>
