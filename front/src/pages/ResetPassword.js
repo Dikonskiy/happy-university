@@ -26,7 +26,6 @@ const ResetPassword = () => {
   if (id === null) {
     window.location.href = "/sign";
   } else {
-    id = id.replaceAll('"', "");
     setLoading(false);
   }
 
