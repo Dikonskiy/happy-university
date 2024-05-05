@@ -17,26 +17,14 @@ const (
 
 func (r *Repository) UpdateAttendance(studentID, course, room, generatedCode string) error {
 	if generatedCode == "" {
-		var studentIDFromDB int
-		err := r.Db.QueryRow("SELECT student_id FROM Students WHERE student_id_card = ?", studentID).Scan(&studentIDFromDB)
-		if err != nil {
-			return err
-		}
-
 		currentDateTime := time.Now()
-		_, err = r.Db.Exec("INSERT INTO Attendance (student_id, course_code, check_in_time, attendance_date, room) VALUES (?, ?, ?, ?, ?)", studentIDFromDB, course, currentDateTime, currentDateTime.Format("2006-01-02"), room)
+		_, err := r.Db.Exec("INSERT INTO Attendance (student_id_card, course_code, check_in_time, attendance_date, room) VALUES (?, ?, ?, ?, ?)", studentID, course, currentDateTime, currentDateTime.Format("2006-01-02"), room)
 		if err != nil {
 			return err
 		}
 	} else {
 		var expectedGeneratedCode int
 		err := r.Db.QueryRow("SELECT generated_code FROM TeacherCode WHERE course_code = ?", course).Scan(&expectedGeneratedCode)
-		if err != nil {
-			return err
-		}
-
-		var studentIDFromDB int
-		err = r.Db.QueryRow("SELECT student_id FROM Students WHERE student_id_card = ?", studentID).Scan(&studentIDFromDB)
 		if err != nil {
 			return err
 		}
@@ -51,7 +39,7 @@ func (r *Repository) UpdateAttendance(studentID, course, room, generatedCode str
 		}
 
 		currentDateTime := time.Now()
-		_, err = r.Db.Exec("INSERT INTO Attendance (student_id, course_code, check_in_time, attendance_date, room) VALUES (?, ?, ?, ?, ?)", studentIDFromDB, course, currentDateTime, currentDateTime.Format("2006-01-02"), room)
+		_, err = r.Db.Exec("INSERT INTO Attendance (student_id_card, course_code, check_in_time, attendance_date, room) VALUES (?, ?, ?, ?, ?)", studentID, course, currentDateTime, currentDateTime.Format("2006-01-02"), room)
 		if err != nil {
 			return err
 		}
@@ -61,14 +49,8 @@ func (r *Repository) UpdateAttendance(studentID, course, room, generatedCode str
 }
 
 func (r *Repository) AttendanceOut(studentID, course, room string) error {
-	var student models.Student
-	err := r.Db.QueryRow("SELECT student_id FROM Students WHERE student_id_card = ?", studentID).Scan(&student.ID)
-	if err != nil {
-		return err
-	}
-
 	currentDateTime := time.Now()
-	_, err = r.Db.Exec("UPDATE Attendance SET check_out_time = ? WHERE student_id = ? AND course_code = ? AND room = ?", currentDateTime, student.ID, course, room)
+	_, err := r.Db.Exec("UPDATE Attendance SET check_out_time = ? WHERE student_id_card = ? AND course_code = ? AND room = ?", currentDateTime, studentID, course, room)
 	if err != nil {
 		return err
 	}
@@ -77,14 +59,8 @@ func (r *Repository) AttendanceOut(studentID, course, room string) error {
 }
 
 func (r *Repository) GetAttendance(studentID, course, room string, date time.Time) (string, error) {
-	var student models.Student
-	err := r.Db.QueryRow("SELECT student_id FROM Students WHERE student_id_card = ?", studentID).Scan(&student.ID)
-	if err != nil {
-		return "", err
-	}
-
 	var courseCode string
-	err = r.Db.QueryRow("SELECT course_code FROM Student_Courses WHERE student_id_card = ? AND course_code = ?", studentID, course).Scan(&courseCode)
+	err := r.Db.QueryRow("SELECT course_code FROM Student_Courses WHERE student_id_card = ? AND course_code = ?", studentID, course).Scan(&courseCode)
 	if err != nil {
 		return "", err
 	}
@@ -119,7 +95,7 @@ func (r *Repository) GetAttendance(studentID, course, room string, date time.Tim
 	formattedDate := date.Format("2006-01-02")
 
 	var checkInTimeStr, checkOutTimeStr, attendanceRoom string
-	err = r.Db.QueryRow("SELECT check_in_time, check_out_time, room FROM Attendance WHERE student_id = ? AND course_code = ? AND attendance_date = ?", student.ID, course, formattedDate).Scan(&checkInTimeStr, &checkOutTimeStr, &attendanceRoom)
+	err = r.Db.QueryRow("SELECT check_in_time, check_out_time, room FROM Attendance WHERE student_id_card = ? AND course_code = ? AND attendance_date = ?", studentID, course, formattedDate).Scan(&checkInTimeStr, &checkOutTimeStr, &attendanceRoom)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return "absent", nil
@@ -153,8 +129,7 @@ func (r *Repository) GetAttendance(studentID, course, room string, date time.Tim
 		status = "attend"
 	}
 
-	fmt.Println(status, student.ID, course, date)
-	_, err = r.Db.Exec("UPDATE Attendance SET status = ? WHERE student_id = ? AND course_code = ? AND attendance_date = ?", status, student.ID, course, date)
+	_, err = r.Db.Exec("UPDATE Attendance SET status = ? WHERE student_id_card = ? AND course_code = ? AND attendance_date = ?", status, studentID, course, date)
 	if err != nil {
 		return "", err
 	}
