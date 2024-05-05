@@ -57,7 +57,8 @@ type RefreshResponse struct {
 }
 
 type GetCoursesResponse struct {
-	Courses []string `json:"card_id"`
+	Code string `json:"course_code"`
+	Name string `json:"course_name"`
 }
 
 type GetUserDataResponse struct {
@@ -114,4 +115,15 @@ type GetStudentsByCourseResponse struct {
 
 type GetDatesResponse struct {
 	Dates []string `json:"dates"`
+}
+
+type GetStatusRequest struct {
+	CardIds string `json:"card_ids"`
+	Dates   string `json:"dates"`
+}
+
+type LessonDate struct {
+	Date       string `json:"date"`
+	StartTime  string `json:"start_time"`
+	CourseType string `json:"course_type"`
 }

@@ -87,6 +87,7 @@ func (h *Handler) ReadCardOutHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) GetCoursesHandler(w http.ResponseWriter, r *http.Request) {
+	h.logerr.Log.Info("Start Get Courses")
 	cardID, err := extractCardIDFromToken(r)
 	if err != nil {
 		h.logerr.Log.Error("Failed to extract card ID from token", err)
@@ -101,7 +102,10 @@ func (h *Handler) GetCoursesHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	res := models.GetCoursesResponse{Courses: courses}
+	var res []models.GetCoursesResponse
+	for _, course := range courses {
+		res = append(res, models.GetCoursesResponse{Code: course.Code, Name: course.Name})
+	}
 
 	if err := json.NewEncoder(w).Encode(res); err != nil {
 		h.logerr.Log.Error("failed to encode response", err)
@@ -331,10 +335,18 @@ func (h *Handler) GetDatesHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	resp := models.GetDatesResponse{
-		Dates: dates,
+	var resp []models.LessonDate
+	for _, date := range dates {
+		resp = append(resp, models.LessonDate{
+			Date:       date.Date,
+			StartTime:  date.StartTime,
+			CourseType: date.CourseType,
+		})
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(resp)
+	if err := json.NewEncoder(w).Encode(resp); err != nil {
+		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
+		return
+	}
 }
