@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from "react";
 import TableAtt from "../components/TableAtt";
 import CourseDetails from "../components/CourseDetails";
@@ -56,6 +57,10 @@ const Attendance = () => {
     checkAccessToken();
   }, [accessToken, refreshToken]);
 
+  const handleReturn = () => {
+    setSelectedCourse(null); // Сбросить выбранный курс при нажатии на кнопку "Назад"
+  };
+
   if (courses !== null){
     for (let i=0; i<courses.length; i++) {
       console.log(courses[i])
@@ -112,14 +117,8 @@ const Attendance = () => {
             <div>
               <nav className="nav">
                 <ul className="form-row">
-                  <li>
-                    <a style={{ color: "black" }} href="/home">
-                      Home
-                    </a>
-                  </li>
-                  <li>{">"}</li>
-                  <li>
-                    <a style={{ color: "black" }} href="/attendance">
+                  <li className="li-first">
+                    <a onClick={handleReturn} href="/attendance" className="link">
                       Attendance
                     </a>
                   </li>
@@ -137,6 +136,25 @@ const Attendance = () => {
               {role === "Student" && <h2 className="home-h2">Electronic Attendance</h2>}
 
               <div className="choose">
+                <ul className="form-row">
+                  <li>
+                    <i className="fas fa-check-circle"></i>
+                    <span>Attendance</span>
+                  </li>
+                  <li>
+                    <i className="fas fa-times-circle"></i>
+                    <span>Absent</span>
+                  </li>
+                  <li>
+                    <i className="fas fa-info-circle"></i>
+                    <span>Permission</span>
+                  </li>
+                  <li>
+                    <i className="fas fa-pencil-alt"></i>
+                    <span>Manual</span>
+                  </li>
+                  {/* Add more icon and definition pairs as needed */}
+                </ul>
                 <TableAtt courses={courses} handleCourseClick={handleCourseClick} />
               </div>
             </div>
