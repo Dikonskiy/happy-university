@@ -157,3 +157,13 @@ table {
     margin: 0px;
     border-color: #0000BB;
 }
+
+nav {
+    padding: 10px;
+}
+
+nav li{
+    margin-right: 10px;
+    font-weight: 700;
+    font-size: 14px;
+}

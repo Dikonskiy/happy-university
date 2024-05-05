@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Link } from "react";
 import TableAtt from "../components/TableAtt";
 import CourseDetails from "../components/CourseDetails";
 import { checkToken } from "../components/fetches";
@@ -163,9 +163,15 @@ const Attendance = () => {
         <div className="attendance-box">
           {selectedCourse ? (
             <div>
-              <button onClick={handleReturn} className="show-button">
-                {"< "}Back
-              </button>
+              <nav className="nav">
+                <ul className="form-row">
+                  <li><a style={{color:"black"}} href="/home">Home</a></li>
+                  <li>{'>'}</li>
+                  <li><a style={{color:"black"}} href="/attendance">Attendance</a></li>
+                  <li>{'>'}</li>
+                  <li>Course Details</li>
+                </ul> 
+              </nav>
               <h2 className="home-h2">{selectedCourse.code}</h2>
               <label className="gray-label">{selectedCourse.name}</label>
               <CourseDetails course={selectedCourse} />
@@ -176,14 +182,6 @@ const Attendance = () => {
               {role === "Student" && <h2 className="home-h2">Electronic Attendance</h2>}
 
               <div className="choose">
-                <div className="form-row">
-                  <span className="ct">Year and term:</span>
-                  <select className="select-term" type="role" id="role" name="role" required="" defaultValue={currentTerm} onChange={handleSelectChange}>
-                    <option value="Term 2">2nd term</option>
-                    <option value="Term 1">1st term</option>
-                  </select>
-                  <input className="show-button" type="button" value="Show" onClick={handleButtonClick}></input>
-                </div>
                 <label className="gray-label">{term}</label>
                 <TableAtt courses={courses} handleCourseClick={handleCourseClick} />
               </div>
