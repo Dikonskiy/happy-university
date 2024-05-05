@@ -26,10 +26,6 @@ const Sidebar = () => {
         <button className={`sidebar-btn ${tab === "manual" ? "active" : "inactive"}`} onClick={() => highlightButton("manual")} style={{ backgroundColor: tab === "manual" ? "gray" : "white" }}>
           Manual Attendance
         </button>
-        {role !== "Teacher" && 
-        (<button className={`sidebar-btn ${tab === "check" ? "active" : "inactive"}`} onClick={() => highlightButton("check")} style={{ backgroundColor: tab === "check" ? "gray" : "white" }}>
-          Autocheck
-        </button>)}
         
         <button
           className="sidebar-btn-down"
