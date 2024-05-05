@@ -32,17 +32,21 @@ func (r *Repository) UpdateAttendance(studentID, course, room, generatedCode str
 		var expectedGeneratedCode int
 		err := r.Db.QueryRow("SELECT generated_code FROM TeacherCode WHERE course_code = ?", course).Scan(&expectedGeneratedCode)
 		if err != nil {
+			println("1")
+			println(course, expectedGeneratedCode)
 			return err
 		}
 
 		var studentIDFromDB int
 		err = r.Db.QueryRow("SELECT student_id FROM Students WHERE student_id_card = ?", studentID).Scan(&studentIDFromDB)
 		if err != nil {
+			println("2")
 			return err
 		}
 
 		generatedCodeInt, err := strconv.Atoi(generatedCode)
 		if err != nil {
+			println("3")
 			return fmt.Errorf("failed to convert generated code to integer: %v", err)
 		}
 

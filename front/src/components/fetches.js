@@ -224,3 +224,22 @@ export const generateCode = (course_code) => {
     body: JSON.stringify(data),
   })
 }
+
+export const takeAttendance = (generateCode, course) => {
+  const data = {
+    generated_code: generateCode,
+    room: "",
+    course: course
+  }
+  let headers = new Headers();
+  headers.append('Content-Type', 'application/json');
+  headers.append('Accept', 'application/json');
+  headers.append('Origin','http://localhost:3000');
+  headers.append('Authorization', 'Bearer'+ localStorage.getItem('accessToken'))
+
+  return fetch('http://localhost:8080/card-entry-in', {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify(data),
+  })
+}

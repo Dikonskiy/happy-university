@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
-import { checkToken, generateCode, getCourses } from "../components/fetches";
+import { checkToken, generateCode, getCourses, takeAttendance } from "../components/fetches";
 import Topbar from "../components/Topbar";
 import {Course} from "../components/Models";
 
@@ -12,9 +12,9 @@ const ManualAtt = () => {
   const [selectedOption, setSelectedOption] = useState("none");
   const [generated, setGenerated] = useState(false);
   const [code, setCode] = useState();
-  const [course, setCourse] = useState("");
   const [status, setStatus] = useState();
   const [courses, setCourses] = useState([]);
+  const [studentCode, setStudentCode] = useState('');
 
   useEffect(() => {
     const checkAccessToken = async () => {
@@ -57,11 +57,10 @@ const ManualAtt = () => {
 
   
   const handleButtonClick = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     if (role === "Teacher"){
-      setCourse(selectedOption)
-      if (course!=="none"){
-        generateCode(course)
+      if (selectedOption!=="none"){
+        generateCode(selectedOption)
         .then((response) => {
           if (response.ok) {
             return response.json();
@@ -82,6 +81,32 @@ const ManualAtt = () => {
         });
       }
     }
+    else if (role === "Student"){
+      // setCourse(selectedOption)
+      console.log(studentCode)
+      console.log(selectedOption)
+      if (studentCode.length===6 && selectedOption!=='none'){
+        takeAttendance(studentCode, selectedOption)
+          .then((response) => {
+            if (response.ok) {
+              return response.json();
+            } else {
+              throw new Error("Failed to take attendance");
+            }
+          })
+          .then((data) => {
+            if (data && data.message){
+              setStatus(data.message);
+              console.log(data.message)
+              console.log(status)
+            }
+          })
+          .catch((error) => {
+            setStatus(error)
+            console.error(error);
+          });
+      }
+    }
     
       
   };
@@ -89,7 +114,21 @@ const ManualAtt = () => {
   const handleSelectChange = (event) => {
     const selectedValue = event.target.value;
     setSelectedOption(selectedValue);
-    setCourse(selectedOption)
+    console.log(selectedOption)
+  };
+
+  const onChange = (e) => {
+    const value = e.target.value;
+
+    // Allow only numbers
+    const onlyNums = value.replace(/[^0-9]/g, '');
+
+    // Limit to 8 digits
+    const limitedNums = onlyNums.slice(0, 6);
+
+    setStudentCode(limitedNums);
+
+
   };
     
     if (loading) {
@@ -107,13 +146,26 @@ const ManualAtt = () => {
                   <p>Enter your code from teacher for participate to class</p>
                   <div>
                       <span className="ct">Code: </span>
+                      <select className="select-term" type="course" id="course" name="course" defaultValue={"none"} onChange={handleSelectChange}>
+                      <option value="none" disabled hidden>
+                        --Choose course--
+                      </option>
+                      {courses.map(course => (
+                        <option key={course.code} value={course.code}>
+                          {course.code}
+                        </option>
+                      ))}   
+                      </select>
                       <input 
                       className="select-term" 
-                      type="code" id="code" 
-                      name="code"
+                      type="code" id="code" value={studentCode}
+                      name="code" onChange={onChange}
                       placeholder="Enter code here">
                       </input>
                       <input className="show-button" type="button" value="Enter" onClick={handleButtonClick}></input>
+                  </div>
+                  <div className="status">
+                      <p>{status}</p>
                   </div>
                 </div>
                 }
