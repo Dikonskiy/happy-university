@@ -7,6 +7,7 @@ const Info = () => {
     const [accessToken, setAccessToken] = useState(localStorage.getItem('accessToken'));
     const refreshToken = localStorage.getItem('refreshToken');
     const [birthDate, setBirthDate] = useState(null);
+    const role = localStorage.getItem('userRole');
 
     const path = window.location.pathname
     .split("/").filter(path => path !== "");
@@ -64,7 +65,7 @@ const Info = () => {
         return (
             <div className="user-info">
                 <div className="form-row">
-                    <div className="td-info">Name Surname:</div>
+                    <div className="td-info">Full Name:</div>
                     <div className="td-info">{user.name}</div>
                 </div>
                 
@@ -76,6 +77,10 @@ const Info = () => {
                 <div className="form-row">
                     <div className="td-info">Email: </div>
                     <div className="td-info">{user.email}</div>
+                </div>
+                <div className="form-row">
+                    <div className="td-info">Role: </div>
+                    <div className="td-info">{role}</div>
                 </div>
                 {tab === 'home' && <div className="form-row">
                     <div className="td-info">Birth Date: </div>

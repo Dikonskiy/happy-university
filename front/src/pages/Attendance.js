@@ -78,7 +78,7 @@ const Attendance = () => {
     setSelectedCourse(null); // Сбросить выбранный курс при нажатии на кнопку "Назад"
   };
 
-  const courses = [
+  var courses = [
     {
       code: "CSS 342",
       name: "Software Engineering",

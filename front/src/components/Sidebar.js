@@ -18,17 +18,17 @@ const Sidebar = () => {
           <img src="https://cdn-icons-png.flaticon.com/512/6063/6063620.png " width="110" height="110" alt="Logo" />
           <h1 className="logo">Happy University</h1>
         </div>
-        <button className={`sidebar-btn ${tab === "home" ? "active" : "inactive"}`} onClick={() => highlightButton("home")}>
+        <button className={`sidebar-btn ${tab === "home" ? "active" : "inactive"}`} onClick={() => highlightButton("home")} style={{ backgroundColor: tab === "home" ? "gray" : "white" }}>
           Home
         </button>
-        <button className={`sidebar-btn ${tab === "attendance" ? "active" : "inactive"}`} onClick={() => highlightButton("attendance")}>
+        <button className={`sidebar-btn ${tab === "attendance" ? "active" : "inactive"}`} onClick={() => highlightButton("attendance")} style={{ backgroundColor: tab === "attendance" ? "gray" : "white" }}>
           Electronic Attendance
         </button>
-        <button className={`sidebar-btn ${tab === "manual" ? "active" : "inactive"}`} onClick={() => highlightButton("manual")}>
+        <button className={`sidebar-btn ${tab === "manual" ? "active" : "inactive"}`} onClick={() => highlightButton("manual")} style={{ backgroundColor: tab === "manual" ? "gray" : "white" }}>
           Manual Attendance
         </button>
         {role !== "Teacher" && 
-        (<button className={`sidebar-btn ${tab === "check" ? "active" : "inactive"}`} onClick={() => highlightButton("check")}>
+        (<button className={`sidebar-btn ${tab === "check" ? "active" : "inactive"}`} onClick={() => highlightButton("check")} style={{ backgroundColor: tab === "check" ? "gray" : "white" }}>
           Autocheck
         </button>)}
         

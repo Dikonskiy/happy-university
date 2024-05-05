@@ -242,3 +242,21 @@ th, td {
   font-weight: 300;
   font-size: 48px;
 }
+
+.generated-code{
+  font-size: 24px;
+  font-weight: 700;
+  margin: auto;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+.status p{
+  font-size: 18px;
+  color: black;
+  margin: auto;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}

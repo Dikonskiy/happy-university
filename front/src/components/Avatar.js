@@ -1,26 +1,35 @@
 import { useEffect, useState } from "react";
-import { getImage } from "./fetches";
+import { checkToken, getImage } from "./fetches";
 
 const Avatar = () => {
     const cardId = localStorage.getItem('cardId');
     const [image, setImage] = useState(null);
 
     useEffect (() => {
-        try {
-            getImage(cardId)
-                .then((response) => {
-                    if (response.ok) {
-                        return response.json();
-                    }
-                })
-                .then((blob) => {
-                    const imageUrl = "data:image/png;base64,"+blob.image;
-                    setImage(imageUrl);
-                });
-
-        } catch (error) {
-            console.error('Error fetching image:', error);
+        const checkAccessToken = async () => {
+            const newAccessToken = await checkToken(localStorage.getItem("accessToken"), localStorage.getItem("refreshToken"));
+            localStorage.setItem('accessToken', newAccessToken);
+            await fetchImage();
         }
+        const fetchImage = async () => {
+            try {
+                await getImage(cardId)
+                    .then((response) => {
+                        if (response.ok) {
+                            return response.json();
+                        }
+                    })
+                    .then((blob) => {
+                        const imageUrl = "data:image/png;base64,"+blob.image;
+                        setImage(imageUrl);
+                    });
+
+            } catch (error) {
+                console.error('Error fetching image:', error);
+            }
+        }
+
+        checkAccessToken();
     });
 
 
@@ -29,4 +38,4 @@ const Avatar = () => {
     ); 
 }
 
-export default Avatar; 
+export default Avatar;
