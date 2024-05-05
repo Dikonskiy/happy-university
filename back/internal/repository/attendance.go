@@ -44,6 +44,12 @@ func (r *Repository) UpdateAttendance(studentID, course, room, generatedCode str
 		if err != nil {
 			return err
 		}
+
+		_, err = r.Db.Exec("UPDATE Attendance SET status = 'manual' WHERE student_id_card = ? AND course_code = ? AND attendance_date = ?", studentID, course, currentDateTime.Format("2006-01-02"))
+		if err != nil {
+			return err
+		}
+
 	}
 
 	return nil
@@ -323,4 +329,30 @@ func (r *Repository) GetLessonDatesByCourse(courseCode, courseType string) ([]mo
 	}
 
 	return lessonDates, nil
+}
+
+func (r *Repository) GetStatus(cardId, courseCode, courseType string) ([]models.AttendanceStatus, error) {
+	query := `SELECT attendance_date, status FROM Attendance WHERE student_id_card = ? AND course_code = ? AND course_type = ?`
+
+	rows, err := r.Db.Query(query, cardId, courseCode, courseType)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var statuses []models.AttendanceStatus
+
+	for rows.Next() {
+		var status models.AttendanceStatus
+		if err := rows.Scan(&status.Date, &status.Status); err != nil {
+			return nil, err
+		}
+		statuses = append(statuses, status)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return statuses, nil
 }
