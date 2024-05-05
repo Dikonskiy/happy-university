@@ -51,6 +51,33 @@ func (r *Repository) Authenticate(cardID, password string) bool {
 }
 
 func (r *Repository) CreateUser(name, email, role, password string) (string, error) {
+	var existingEmail string
+	switch role {
+	case "student":
+		err := r.Db.QueryRow("SELECT email FROM Students WHERE email = ?", email).Scan(&existingEmail)
+		if err == nil {
+			return "", errors.New("email already exists")
+		} else if err != sql.ErrNoRows {
+			return "", err
+		}
+	case "teacher":
+		err := r.Db.QueryRow("SELECT email FROM Teachers WHERE email = ?", email).Scan(&existingEmail)
+		if err == nil {
+			return "", errors.New("email already exists")
+		} else if err != sql.ErrNoRows {
+			return "", err
+		}
+	case "admin":
+		err := r.Db.QueryRow("SELECT email FROM Admins WHERE email = ?", email).Scan(&existingEmail)
+		if err == nil {
+			return "", errors.New("email already exists")
+		} else if err != sql.ErrNoRows {
+			return "", err
+		}
+	default:
+		return "", errors.New("unsupported role")
+	}
+
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
 		return "", err
@@ -79,8 +106,6 @@ func (r *Repository) CreateUser(name, email, role, password string) (string, err
 	default:
 		return "", errors.New("unsupported role")
 	}
-
-	// sender.Sender(email, cardID)
 
 	return cardID, nil
 }
