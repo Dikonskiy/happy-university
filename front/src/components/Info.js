@@ -63,29 +63,26 @@ const Info = () => {
     if (userData){
         const user = JSON.parse(userData);
         return (
-            <div className="user-info">
-                <div className="form-row">
+            <div className="form-row" style={{padding:"20px"}}>
+                <div className="form" style={{marginRight:"10px"}}>
                     <div className="td-info">Full Name:</div>
-                    <div className="td-info">{user.name}</div>
+                    <div className="td-info">ID: </div> 
+                    <div className="td-info">Email: </div>
+                    <div className="td-info">Role: </div>
+                    {tab === 'home' && 
+                    <div className="td-info">Birth Date: </div>
+                    }
                 </div>
                 
-                <div className="form-row">
-                    <div className="td-info">ID: </div> 
+                <div className="form">
+                    <div className="td-info">{user.name}</div>
                     <div className="td-info">{user.card_id}</div>
-                </div>
-        
-                <div className="form-row">
-                    <div className="td-info">Email: </div>
                     <div className="td-info">{user.email}</div>
-                </div>
-                <div className="form-row">
-                    <div className="td-info">Role: </div>
                     <div className="td-info">{role}</div>
-                </div>
-                {tab === 'home' && <div className="form-row">
-                    <div className="td-info">Birth Date: </div>
+                    {tab === 'home' && 
                     <div className="td-info">{birthDate}</div>
-                </div>}
+                    }
+                </div>
             </div>
         );
     }
