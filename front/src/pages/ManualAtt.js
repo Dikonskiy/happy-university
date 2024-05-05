@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
-import { checkToken } from "../components/fetches";
+import { checkToken, generateCode, getCourses } from "../components/fetches";
 import Topbar from "../components/Topbar";
+import {Course} from "../components/Models";
 
 const ManualAtt = () => {
   const role = localStorage.getItem("userRole");
@@ -13,14 +14,43 @@ const ManualAtt = () => {
   const [code, setCode] = useState("12131315");
   const [course, setCourse] = useState("");
   const [status, setStatus] = useState("status");
+  var courses=[];
 
   useEffect(() => {
     const checkAccessToken = async () => {
       const newAccessToken = await checkToken(accessToken, refreshToken);
       setAccessToken(newAccessToken);
       localStorage.setItem("accessToken", newAccessToken);
-      setLoading(false);
+      fetchCourses();
     };
+    
+    const fetchCourses = async () => {
+      getCourses()
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error("Failed to fetch courses");
+          }
+        })
+        .then((data) => {
+          console.log(data)
+          if (data.length !== 0){
+            for (let i = 0; i < data.length; i++){
+              courses.push(new Course(data[i].course_code, data[i].course_name, '2+1', '5','45'));
+            }
+            console.log(courses[0].code);
+          }
+          else {
+            throw new Error("No courses found");
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+      setLoading(false);
+    }
+
     checkAccessToken();
   }, [accessToken, refreshToken]);
 
@@ -37,38 +67,38 @@ const ManualAtt = () => {
     setSelectedOption(selectedValue);
   };
 
-  var courses = [
-    {
-      code: "CSS 342",
-      name: "Software Engineering",
-      credits: "2+1+0",
-      ects: 5,
-      hours: 45,
-      attendance: 12,
-      absence: 1,
-      permission: 2,
-    },
-    {
-      code: "CSS 152",
-      name: "Physics",
-      credits: "2+1+0",
-      ects: 5,
-      hours: 45,
-      attendance: 30,
-      absence: 10,
-      permission: 0,
-    },
-    {
-      code: "INF 423",
-      name: "Statistics",
-      credits: "2+1+0",
-      ects: 5,
-      hours: 45,
-      attendance: 28,
-      absence: 8,
-      permission: 0,
-    },
-  ];
+  // var courses = [
+  //   {
+  //     code: "CSS 342",
+  //     name: "Software Engineering",
+  //     credits: "2+1+0",
+  //     ects: 5,
+  //     hours: 45,
+  //     attendance: 12,
+  //     absence: 1,
+  //     permission: 2,
+  //   },
+  //   {
+  //     code: "CSS 152",
+  //     name: "Physics",
+  //     credits: "2+1+0",
+  //     ects: 5,
+  //     hours: 45,
+  //     attendance: 30,
+  //     absence: 10,
+  //     permission: 0,
+  //   },
+  //   {
+  //     code: "INF 423",
+  //     name: "Statistics",
+  //     credits: "2+1+0",
+  //     ects: 5,
+  //     hours: 45,
+  //     attendance: 28,
+  //     absence: 8,
+  //     permission: 0,
+  //   },
+  // ];
 
   return (
     <div className="layout">
@@ -102,10 +132,10 @@ const ManualAtt = () => {
                         --Choose course--
                       </option>
                       {courses.map((course) => (
-                        <option key={course.code} value={course.code}>
-                          {course.code}
+                        <option key={course.code}>
+                          {course.name.toString()}
                         </option>
-                      ))}
+                      ))}   
                     </select>
                     <input className="show-button" type="button" value="Generate" onClick={handleButtonClick}></input>
                   </div>

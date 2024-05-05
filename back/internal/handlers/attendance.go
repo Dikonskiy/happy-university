@@ -144,7 +144,7 @@ func (h *Handler) GetUserDataHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	h.logerr.Log.Info("Get courses is successfull")
+	h.logerr.Log.Info("Get user data is successfull")
 
 }
 
