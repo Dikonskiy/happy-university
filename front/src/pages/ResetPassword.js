@@ -1,9 +1,34 @@
-import React, { useState } from 'react';
-import { updatePassword } from '../components/fetches';
+import React, { useEffect, useState } from 'react';
+import { checkToken, updatePassword } from '../components/fetches';
 
 const ResetPassword = () => {
+  var id = localStorage.getItem('userId')
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [accessToken, setAccessToken] = useState(localStorage.getItem('accessToken'));
+  const refreshToken = localStorage.getItem('refreshToken');
+
+  useEffect(() => {
+    const checkAccessToken = async () => {
+      // refresh token
+      const newAccessToken = await checkToken(accessToken, refreshToken);
+      setAccessToken(newAccessToken)
+      localStorage.setItem('accessToken', newAccessToken);
+      window.location.href = '/home';
+    };
+
+    if (accessToken && ( typeof accessToken === 'string' && accessToken !== 'undefined')) {
+      checkAccessToken();
+    }
+  })
+
+  if (id===null){
+    window.location.href = '/sign';
+  }else{
+    id = id.replaceAll("\"", "")
+    setLoading(false)
+  }
 
   const isFormValid = () => newPassword.length >= 8 && newPassword === confirmPassword;
 
@@ -11,7 +36,7 @@ const ResetPassword = () => {
     e.preventDefault();
 
     // Implement your password reset logic here.
-    updatePassword(localStorage.getItem('cardId'), newPassword)
+    updatePassword(id, newPassword)
       .then((response) => {
         if(response.ok){
           return response.text();
@@ -33,7 +58,12 @@ const ResetPassword = () => {
         console.error(error); 
       });
   }
-
+  
+  if(loading){
+    return (
+      <div className="loader"></div>
+    );
+  }
   return (
     <div>
       <div className="form-wrapper">
