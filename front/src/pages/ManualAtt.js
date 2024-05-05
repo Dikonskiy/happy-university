@@ -60,8 +60,8 @@ const ManualAtt = () => {
     e.preventDefault();
     if (role === "Teacher"){
       setCourse(selectedOption)
-      if (selectedOption!=="none"){
-        generateCode(selectedOption)
+      if (course!=="none"){
+        generateCode(course)
         .then((response) => {
           if (response.ok) {
             return response.json();
@@ -89,6 +89,7 @@ const ManualAtt = () => {
   const handleSelectChange = (event) => {
     const selectedValue = event.target.value;
     setSelectedOption(selectedValue);
+    setCourse(selectedOption)
   };
     
     if (loading) {
