@@ -129,7 +129,7 @@ input[type="date"]{
 }
 
 
-a { /* Style for forgot password link */
+.link { /* Style for forgot password link */
     margin-top: 70px;
     margin-bottom: 10px;
     color: #000000;

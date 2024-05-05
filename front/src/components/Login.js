@@ -74,7 +74,7 @@ const Login = () => {
         <label htmlFor="password">Password:</label>
         <input type="password" id="password" name="password" placeholder="Password"></input>
       </div>
-      <a href="/sign/forgotpassword">Forgot password?</a>
+      <a className="link" href="/sign/forgotpassword">Forgot password?</a>
       <button type="submit">Log in</button>
     </form>
   );
