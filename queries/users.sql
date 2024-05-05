@@ -59,7 +59,8 @@ CREATE TABLE IF NOT EXISTS Schedule (
     day_of_week ENUM('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday') NOT NULL,
     room varchar(7),
     start_time TIME NOT NULL,
-    end_time TIME NOT NULL
+    end_time TIME NOT NULL,
+    course_type ENUM('N', 'P') NOT NULL DEFAULT 'N'
 );
 
 CREATE TABLE IF NOT EXISTS UserImages (
