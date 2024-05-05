@@ -3,13 +3,13 @@ import { authorization } from "./fetches";
 import { jwtDecode } from "jwt-decode";
 
 const Login = () => {
-  const [ID, setID] = useState('');
+  const [ID, setID] = useState("");
 
   const handleChange = (e) => {
     const value = e.target.value;
 
     // Allow only numbers
-    const onlyNums = value.replace(/[^0-9]/g, '');
+    const onlyNums = value.replace(/[^0-9]/g, "");
 
     // Limit to 8 digits
     const limitedNums = onlyNums.slice(0, 8);
@@ -46,13 +46,12 @@ const Login = () => {
           if (decodedAccessToken && decodedAccessToken.role) {
             localStorage.setItem("userRole", decodedAccessToken.role);
           }
-          if (decodedAccessToken && decodedAccessToken.card_id){
-            localStorage.setItem('cardId', decodedAccessToken.card_id)
+          if (decodedAccessToken && decodedAccessToken.card_id) {
+            localStorage.setItem("cardId", decodedAccessToken.card_id);
           }
 
           // Redirect to home page after successful login
-          window.location.href = "/home"; 
-          
+          window.location.href = "/home";
         } else {
           console.error("Invalid token data:", data);
         }
@@ -69,12 +68,14 @@ const Login = () => {
       <div className="input-field">
         <label htmlFor="card_id">Card Id:</label>
         <input type="card_id" id="card_id" name="card_id" placeholder="ID" value={ID} onChange={handleChange}></input>
-      </div> 
+      </div>
       <div className="input-field">
         <label htmlFor="password">Password:</label>
         <input type="password" id="password" name="password" placeholder="Password"></input>
       </div>
-      <a className="link" href="/sign/forgotpassword">Forgot password?</a>
+      <a className="link" href="/sign/forgotpassword">
+        Forgot password?
+      </a>
       <button type="submit">Log in</button>
     </form>
   );
