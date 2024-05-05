@@ -298,19 +298,19 @@ func (r *Repository) GetStudentsByCourse(courseCode string) ([]string, error) {
 	return studentIDs, nil
 }
 
-func (r *Repository) GetLessonDatesByCourse(courseCode string) ([]string, error) {
-	rows, err := r.Db.Query("SELECT start_date, end_date, day_of_week FROM Schedule WHERE course_code = ?", courseCode)
+func (r *Repository) GetLessonDatesByCourse(courseCode string) ([]models.LessonDate, error) {
+	rows, err := r.Db.Query("SELECT start_date, end_date, day_of_week, start_time, course_type FROM Schedule WHERE course_code = ?", courseCode)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
 
-	var lessonDates []string
+	var lessonDates []models.LessonDate
 
 	for rows.Next() {
-		var startDateStr, endDateStr, dayOfWeek string
+		var startDateStr, endDateStr, dayOfWeek, startTimeStr, courseType string
 
-		if err := rows.Scan(&startDateStr, &endDateStr, &dayOfWeek); err != nil {
+		if err := rows.Scan(&startDateStr, &endDateStr, &dayOfWeek, &startTimeStr, &courseType); err != nil {
 			return nil, err
 		}
 
@@ -324,10 +324,19 @@ func (r *Repository) GetLessonDatesByCourse(courseCode string) ([]string, error)
 			return nil, err
 		}
 
+		startTime, err := time.Parse("15:04:05", startTimeStr)
+		if err != nil {
+			return nil, err
+		}
+
 		currentDate := startDate
 		for currentDate.Before(endDate) || currentDate.Equal(endDate) {
 			if currentDate.Weekday().String() == dayOfWeek {
-				lessonDates = append(lessonDates, currentDate.Format("02.01.2006"))
+				lessonDates = append(lessonDates, models.LessonDate{
+					Date:       currentDate.Format("02.01.2006"),
+					StartTime:  startTime.Format("15:04"),
+					CourseType: courseType,
+				})
 			}
 			currentDate = currentDate.AddDate(0, 0, 1)
 		}
