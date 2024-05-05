@@ -243,3 +243,21 @@ export const takeAttendance = (generateCode, course) => {
     body: JSON.stringify(data),
   })
 }
+
+export const getStatus = (course_code, course_type) => {
+  const data = {
+    course_code: course_code,
+    course_type: course_type
+  }
+  let headers = new Headers();
+  headers.append('Content-Type', 'application/json');
+  headers.append('Accept', 'application/json');
+  headers.append('Origin','http://localhost:3000');
+  headers.append('Authorization', 'Bearer'+ localStorage.getItem('accessToken'))
+
+  return fetch('http://localhost:8080/get-status', {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify(data),
+  })
+}
