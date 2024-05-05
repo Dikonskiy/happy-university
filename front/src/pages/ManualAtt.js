@@ -81,10 +81,10 @@ const ManualAtt = () => {
       if (studentCode.length === 6 && selectedOption !== "none") {
         takeAttendance(studentCode, selectedOption)
           .then((response) => {
-            if (response.ok) {
+            if (response.status === 200) {
               return response.json();
             } else {
-              throw new Error("Failed to take attendance");
+              return new Error("Failed to take attendance");
             }
           })
           .then((data) => {
@@ -94,7 +94,6 @@ const ManualAtt = () => {
           })
           .catch((error) => {
             setStatus(error);
-            console.error(error);
           });
       }
     }
@@ -142,7 +141,7 @@ const ManualAtt = () => {
                     </option>
                   ))}
                 </select>
-                <input className="select-term" type="code" id="code" value={studentCode} name="code" onChange={onChange} placeholder="Enter code here"></input>
+                <input className="select-term" type="numeric" id="code" value={studentCode} name="code" onChange={onChange} placeholder="Enter code here"></input>
                 <input className="show-button" type="button" value="Enter" onClick={handleButtonClick}></input>
               </div>
               <div className="status">
