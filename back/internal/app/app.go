@@ -69,8 +69,8 @@ func (a *Application) StartServer() {
 	r.HandleFunc("/card-entry-in", Hand.ReadCardInHandler)
 	r.HandleFunc("/card-entry-out", Hand.ReadCardOutHandler)
 	r.HandleFunc("/get-courses", Hand.GetCoursesHandler)
-	r.HandleFunc("/get-user-data", Hand.GetUserDataHandler).Methods("GET")
-	r.HandleFunc("/get-attendance", Hand.GetAttendanceHandler).Methods("GET")
+	r.HandleFunc("/get-user-data", Hand.GetUserDataHandler)
+	r.HandleFunc("/get-attendance", Hand.GetAttendanceHandler)
 	r.HandleFunc("/check-pincode", Hand.CheckPinCodeHandler)
 	r.HandleFunc("/update-password", Hand.UpdatePasswordHandler)
 	// r.HandleFunc("/get-courses-schedule", Hand.GetCourseScheduleHandler)
@@ -80,6 +80,7 @@ func (a *Application) StartServer() {
 	r.HandleFunc("/generate-code", Hand.GenerateAttendanceCodeHandler)
 	r.HandleFunc("/get-students", Hand.GetStudentsByCourseHandler)
 	r.HandleFunc("/get-dates", Hand.GetDatesHandler)
+	r.HandleFunc("/get-status", Hand.GetStatusHandler)
 
 	server := &http.Server{
 		Addr:         ":" + Cnfg.ListenPort,
