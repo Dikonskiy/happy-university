@@ -124,8 +124,20 @@ nav {
     padding: 10px;
 }
 
-nav li{
-    margin-right: 10px;
+.li-first {
     font-weight: 700;
+}
+
+li{
+    margin-right: 10px;
     font-size: 14px;
+}
+
+img {
+    display: block;
+    margin: auto;
+}
+
+i {
+    margin-right: 5px;
 }
