@@ -3,7 +3,6 @@ import "../css/profile.css";
 
 const Sidebar = () => {
   const [tab, setTab] = useState(window.location.pathname.split("/")[1]);
-  const role = localStorage.getItem("userRole");
 
   const highlightButton = (tabName) => {
     setTab(tabName);
