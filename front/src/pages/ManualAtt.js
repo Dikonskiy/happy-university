@@ -11,21 +11,21 @@ const ManualAtt = () => {
   const [loading, setLoading] = useState(true);
   const [selectedOption, setSelectedOption] = useState("none");
   const [generated, setGenerated] = useState(false);
-  const [code, setCode] = useState("12131315");
+  const [code, setCode] = useState();
   const [course, setCourse] = useState("");
-  const [status, setStatus] = useState("status");
-  var courses=[];
+  const [status, setStatus] = useState();
+  const [courses, setCourses] = useState([]);
 
   useEffect(() => {
     const checkAccessToken = async () => {
       const newAccessToken = await checkToken(accessToken, refreshToken);
       setAccessToken(newAccessToken);
       localStorage.setItem("accessToken", newAccessToken);
-      fetchCourses();
+      await fetchCourses();
     };
-    
+  
     const fetchCourses = async () => {
-      getCourses()
+      await getCourses()
         .then((response) => {
           if (response.ok) {
             return response.json();
@@ -34,12 +34,12 @@ const ManualAtt = () => {
           }
         })
         .then((data) => {
-          console.log(data)
           if (data.length !== 0){
+            var getCourse = []; 
             for (let i = 0; i < data.length; i++){
-              courses.push(new Course(data[i].course_code, data[i].course_name, '2+1', '5','45'));
+              getCourse.push(new Course(data[i].course_code, data[i].course_name, '2+1', '5','45'));
             }
-            console.log(courses[0].code);
+            setCourses(getCourse)
           }
           else {
             throw new Error("No courses found");
@@ -50,58 +50,52 @@ const ManualAtt = () => {
         });
       setLoading(false);
     }
-
+  
     checkAccessToken();
   }, [accessToken, refreshToken]);
+  
 
-  if (loading) {
-    return <div className="loader"></div>;
-  }
-
+  
   const handleButtonClick = (e) => {
     e.preventDefault();
+    if (role === "Teacher"){
+      setCourse(selectedOption)
+      if (selectedOption!=="none"){
+        generateCode(selectedOption)
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error("Failed to generate code");
+          }
+        })
+        .then((data) => {
+          if (data && data.code){
+            setCode(data.code);
+            setStatus("Generated successfully!");
+            setGenerated(true);
+          }
+        })
+        .catch((error) => {
+          setStatus(error)
+          console.error(error);
+        });
+      }
+    }
+    
+      
   };
-
+  
   const handleSelectChange = (event) => {
     const selectedValue = event.target.value;
     setSelectedOption(selectedValue);
   };
-
-  // var courses = [
-  //   {
-  //     code: "CSS 342",
-  //     name: "Software Engineering",
-  //     credits: "2+1+0",
-  //     ects: 5,
-  //     hours: 45,
-  //     attendance: 12,
-  //     absence: 1,
-  //     permission: 2,
-  //   },
-  //   {
-  //     code: "CSS 152",
-  //     name: "Physics",
-  //     credits: "2+1+0",
-  //     ects: 5,
-  //     hours: 45,
-  //     attendance: 30,
-  //     absence: 10,
-  //     permission: 0,
-  //   },
-  //   {
-  //     code: "INF 423",
-  //     name: "Statistics",
-  //     credits: "2+1+0",
-  //     ects: 5,
-  //     hours: 45,
-  //     attendance: 28,
-  //     absence: 8,
-  //     permission: 0,
-  //   },
-  // ];
-
-  return (
-    <div className="layout">
+    
+    if (loading) {
+      return <div className="loader"></div>;
+    }
+    return (
+      <div className="layout">
         <Sidebar />
         <div className="main">
             <Topbar />
@@ -131,13 +125,13 @@ const ManualAtt = () => {
                       <option value="none" disabled hidden>
                         --Choose course--
                       </option>
-                      {courses.map((course) => (
-                        <option key={course.code}>
-                          {course.name.toString()}
+                      {courses.map(course => (
+                        <option key={course.code} value={course.code}>
+                          {course.code}
                         </option>
                       ))}   
                     </select>
-                    <input className="show-button" type="button" value="Generate" onClick={handleButtonClick}></input>
+                    <input className="show-button" type="button" value="Generate" disabled={generated} onClick={handleButtonClick}></input>
                   </div>
                   <div className="status">
                       <p>{status}</p>

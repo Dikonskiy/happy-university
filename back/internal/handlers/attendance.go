@@ -282,12 +282,14 @@ func (h *Handler) GenerateAttendanceCodeHandler(w http.ResponseWriter, r *http.R
 
 	var req models.GenerateAttendanceCodeRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		h.logerr.Log.Error("Failed to decode request body", err)
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
 	code, err := h.Repo.GenerateAttendanceCode(cardID, req.CourseCode)
 	if err != nil {
+		h.logerr.Log.Error("Failed to generate attendance code", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -299,6 +301,7 @@ func (h *Handler) GenerateAttendanceCodeHandler(w http.ResponseWriter, r *http.R
 	}
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(response)
+	h.logerr.Log.Info("Attendance code generated", "code", code)
 }
 
 func (h *Handler) GetStudentsByCourseHandler(w http.ResponseWriter, r *http.Request) {
