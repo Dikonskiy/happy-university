@@ -328,10 +328,18 @@ func (h *Handler) GetDatesHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	resp := models.GetDatesResponse{
-		Dates: dates,
+	var resp []models.LessonDate
+	for _, date := range dates {
+		resp = append(resp, models.LessonDate{
+			Date:       date.Date,
+			StartTime:  date.StartTime,
+			CourseType: date.CourseType,
+		})
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(resp)
+	if err := json.NewEncoder(w).Encode(resp); err != nil {
+		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
+		return
+	}
 }

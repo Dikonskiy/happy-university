@@ -121,3 +121,9 @@ type GetStatusRequest struct {
 	CardIds string `json:"card_ids"`
 	Dates   string `json:"dates"`
 }
+
+type LessonDate struct {
+	Date       string `json:"date"`
+	StartTime  string `json:"start_time"`
+	CourseType string `json:"course_type"`
+}
