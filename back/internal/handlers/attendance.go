@@ -296,3 +296,45 @@ func (h *Handler) GenerateAttendanceCodeHandler(w http.ResponseWriter, r *http.R
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(response)
 }
+
+func (h *Handler) GetStudentsByCourseHandler(w http.ResponseWriter, r *http.Request) {
+	var req models.GenerateAttendanceCodeRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	cardIds, err := h.Repo.GetStudentsByCourse(req.CourseCode)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	resp := models.GetStudentsByCourseResponse{
+		CardIds: cardIds,
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(resp)
+}
+
+func (h *Handler) GetDatesHandler(w http.ResponseWriter, r *http.Request) {
+	var req models.GenerateAttendanceCodeRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	dates, err := h.Repo.GetLessonDatesByCourse(req.CourseCode)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	resp := models.GetDatesResponse{
+		Dates: dates,
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(resp)
+}

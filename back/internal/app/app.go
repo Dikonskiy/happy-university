@@ -78,6 +78,8 @@ func (a *Application) StartServer() {
 	r.HandleFunc("/get-image", Hand.GetImageHandler)
 	r.HandleFunc("/get-birthday", Hand.GetBirthdayHandler)
 	r.HandleFunc("/generate-code", Hand.GenerateAttendanceCodeHandler)
+	r.HandleFunc("/get-students", Hand.GetStudentsByCourseHandler)
+	r.HandleFunc("/get-dates", Hand.GetDatesHandler)
 
 	server := &http.Server{
 		Addr:         ":" + Cnfg.ListenPort,
@@ -106,7 +108,7 @@ func shutdown(quit chan os.Signal, logger logger.Logger) {
 
 func TokenMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path == "/login" || r.URL.Path == "/register" || r.URL.Path == "/refresh-token" || r.URL.Path == "/check-pincode" || r.URL.Path == "/update-password" || r.URL.Path == "/after-reg" {
+		if r.URL.Path == "/login" || r.URL.Path == "/register" || r.URL.Path == "/refresh-token" || r.URL.Path == "/check-pincode" || r.URL.Path == "/update-password" || r.URL.Path == "/after-reg" || r.URL.Path == "/get-students" || r.URL.Path == "/get-dates" {
 			next.ServeHTTP(w, r)
 			return
 		}

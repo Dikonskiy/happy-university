@@ -107,3 +107,11 @@ type AfterRegRequest struct {
 type GenerateAttendanceCodeRequest struct {
 	CourseCode string `json:"course_code"`
 }
+
+type GetStudentsByCourseResponse struct {
+	CardIds []string `json:"card_ids"`
+}
+
+type GetDatesResponse struct {
+	Dates []string `json:"dates"`
+}
