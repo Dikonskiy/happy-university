@@ -329,7 +329,7 @@ func (h *Handler) GetDatesHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	dates, err := h.Repo.GetLessonDatesByCourse(req.CourseCode)
+	dates, err := h.Repo.GetLessonDatesByCourse(req.CourseCode, req.CourseType)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

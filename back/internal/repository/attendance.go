@@ -298,8 +298,8 @@ func (r *Repository) GetStudentsByCourse(courseCode string) ([]string, error) {
 	return studentIDs, nil
 }
 
-func (r *Repository) GetLessonDatesByCourse(courseCode string) ([]models.LessonDate, error) {
-	rows, err := r.Db.Query("SELECT start_date, end_date, day_of_week, start_time, course_type FROM Schedule WHERE course_code = ?", courseCode)
+func (r *Repository) GetLessonDatesByCourse(courseCode, courseType string) ([]models.LessonDate, error) {
+	rows, err := r.Db.Query("SELECT start_date, end_date, day_of_week, start_time, course_type FROM Schedule WHERE course_code = ? and course_type = ?", courseCode, courseType)
 	if err != nil {
 		return nil, err
 	}
