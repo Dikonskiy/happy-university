@@ -107,6 +107,7 @@ type AfterRegRequest struct {
 
 type GenerateAttendanceCodeRequest struct {
 	CourseCode string `json:"course_code"`
+	CourseType string `json:"course_type"`
 }
 
 type GetStudentsByCourseResponse struct {
