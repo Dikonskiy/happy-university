@@ -2,15 +2,13 @@
 import React, { useEffect, useState } from "react";
 import TableAtt from "../components/TableAtt";
 import CourseDetails from "../components/CourseDetails";
-import { checkToken, getCourses, getStatus } from "../components/fetches";
+import { checkToken, getCourses } from "../components/fetches";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
 import { Course } from "../components/Models";
 
 const Attendance = () => {
   const [selectedCourse, setSelectedCourse] = useState(null); // Состояние для отслеживания выбранного курса
-  const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
-  const refreshToken = localStorage.getItem("refreshToken");
   const [loading, setLoading] = useState(true);
   const [courses, setCourses] = useState([]);
   const role = localStorage.getItem("userRole");
@@ -21,8 +19,7 @@ const Attendance = () => {
 
   useEffect(() => {
     const checkAccessToken = async () => {
-      const newAccessToken = await checkToken(accessToken, refreshToken);
-      setAccessToken(newAccessToken);
+      const newAccessToken = await checkToken(localStorage.getItem("accessToken"), localStorage.getItem("refreshToken"));
       localStorage.setItem("accessToken", newAccessToken);
       await fetchCourses();
     };
@@ -40,7 +37,7 @@ const Attendance = () => {
           if (data.length !== 0) {
             var getCourse = [];
             for (let i = 0; i < data.length; i++) {
-              getCourse.push(new Course(data[i].course_code, data[i].course_name, "2+1", "5", "45"));
+              getCourse.push(new Course(data[i].course_code, data[i].course_name, "2+1", "5", 45));
             }
             setCourses(getCourse);
           } else {
@@ -51,56 +48,18 @@ const Attendance = () => {
           console.error(error);
         });
 
+        
         setLoading(false)
-    };
-
-    checkAccessToken();
-  }, [accessToken, refreshToken]);
+      };
+      
+      checkAccessToken();
+  }, []);
 
   const handleReturn = () => {
     setSelectedCourse(null); // Сбросить выбранный курс при нажатии на кнопку "Назад"
   };
 
-  if (courses !== null){
-    for (let i=0; i<courses.length; i++) {
-      console.log(courses[i])
-      getStatus(courses[i].code, "N")
-        .then((response) => {
-          console.log(response);
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error("Failed to fetch courses");
-          }
-        })
-        .then((data) => {
-          console.log(data)
-          var attend=0
-          var absent=0
-          var permited=0
-          var manual=0
-          if (data.length !== 0) {
-            for (let i = 0; i < data.length; i++) {
-              if (data[i].status === "attend"){
-                absent+=1
-              } else if (data[i].status === "absent"){
-                attend+=1
-              } else if (data[i].status === "permited"){
-                permited+=1
-              } else if (data[i].status === "manual"){
-                manual+=1
-              }
-            }
-            console.log(attend, absent, permited, manual)
-          } else {
-            throw new Error("No courses found");
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
-  }
+  
   
 
   if (loading) {

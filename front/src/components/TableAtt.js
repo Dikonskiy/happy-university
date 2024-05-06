@@ -1,10 +1,70 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { checkToken, getStatus } from './fetches';
+import { Course } from './Models';
 
 const TableAtt = ({ courses, handleCourseClick }) => {
+    const [loading, setLoading] = useState(true);
+    const [lecture, setLecture] = useState([])
     let count = 0;
     
     const role = localStorage.getItem('userRole');
-    
+
+    useEffect(() => {
+        const checkAccessToken = async () => {
+            const newAccessToken = await checkToken(localStorage.getItem("accessToken"), localStorage.getItem("refreshToken"));
+            localStorage.setItem("accessToken", newAccessToken);
+            await fetchInfo();
+          };
+        const fetchInfo = async () => {
+            if (courses && courses.length !== 0){
+                for (let i=0; i<courses.length; i++) {
+                    getStatus(courses[i].code, "N")
+                    .then((response) => {
+                        if (response.ok) {
+                            return response.json();
+                        } else {
+                            throw new Error("Failed to fetch courses");
+                        }
+                    })
+                    .then((data) => {
+                            var newCourseData = []
+                            var attend=0
+                            var absent=0
+                            var permited=0
+                            var manual=0
+                            if (data.length !== 0) {
+                                for (let i = 0; i < data.length; i++) {
+                                if (data[i].status === "attend"){
+                                    attend+=1
+                                } else if (data[i].status === "absent"){
+                                    absent+=1
+                                } else if (data[i].status === "permited"){
+                                    permited+=1
+                                } else if (data[i].status === "manual"){
+                                    manual+=1
+                                }
+                                }
+                                newCourseData.push(new Course(courses[i].code, courses[i].name, courses[i].credits, courses[i].ects, courses[i].hours, attend, absent, permited, manual))
+                                setLecture(newCourseData)
+                            } else {
+                                throw new Error("No courses found");
+                            }
+                        })
+                        .catch((error) => {
+                            console.error(error);
+                        });
+                }
+            }else{
+                console.log('No courses found')
+            }
+            setLoading(false);
+        }
+        checkAccessToken();
+    }, [courses])
+
+    if (loading) {
+        return <div className="loader"></div>;
+    }
     return (
         <table className='course-table'>
             <tbody>
@@ -25,7 +85,7 @@ const TableAtt = ({ courses, handleCourseClick }) => {
                         </>
                     )}
                 </tr>
-                {courses.map(course => (
+                {lecture.map(course => (
                 <tr key={course.code} className='course-row'>
                     <td className='course-td'>{++count}</td>
                     <td className='course-td'>
