@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import TableAtt from "../components/TableAtt";
 import CourseDetails from "../components/CourseDetails";
-import { checkToken, getCourses } from "../components/fetches";
+import { checkToken, getCourseInfo, getCourses } from "../components/fetches";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
 import { Course } from "../components/Models";
@@ -11,6 +11,8 @@ const Attendance = () => {
   const [selectedCourse, setSelectedCourse] = useState(null); // Состояние для отслеживания выбранного курса
   const [loading, setLoading] = useState(true);
   const [courses, setCourses] = useState([]);
+  const [lecture, setLecture] = useState([]);
+  const [practice, setPractice] = useState([]);
   const role = localStorage.getItem("userRole");
 
   const handleCourseClick = (course) => {
@@ -25,28 +27,15 @@ const Attendance = () => {
     };
 
     const fetchCourses = async () => {
-      await getCourses()
-        .then((response) => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error("Failed to fetch courses");
-          }
-        })
-        .then((data) => {
-          if (data.length !== 0) {
-            var getCourse = [];
-            for (let i = 0; i < data.length; i++) {
-              getCourse.push(new Course(data[i].course_code, data[i].course_name, "2+1", "5", 45));
-            }
-            setCourses(getCourse);
-          } else {
-            throw new Error("No courses found");
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+      if (localStorage.getItem("userRole") ==="Student") {
+        const coursesInfo = await getCourseInfo();
+        setCourses(coursesInfo.courses);
+        setLecture(coursesInfo.lecture);
+        setPractice(coursesInfo.practice);
+      } else if (localStorage.getItem("userRole") === "Teacher") {
+        const coursesInfo = await getCourseInfo();
+        setCourses(coursesInfo.courses);
+      }
 
         
         setLoading(false)
