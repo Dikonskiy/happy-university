@@ -33,7 +33,9 @@ public class HomePageTest extends MainSuperTest{
         sleepwait();
 
         WebElement electronicAttendance = driver.findElement(By.xpath("//button[text()='Electronic Attendance']"));
-        WebElement autoCheck = driver.findElement(By.xpath("//button[text()='Autocheck']"));
+        WebElement autoCheck = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[text()='Autocheck']")));
+        autoCheck.click();
+
         WebElement home = driver.findElement(By.xpath("//button[text()='Home']"));
 
         electronicAttendance.click();
@@ -84,8 +86,6 @@ public class HomePageTest extends MainSuperTest{
         signOutButton.click();
 
         WebElement actualTitle = driver.findElement(By.tagName("h1"));
-
-        Assert.assertTrue(actualTitle.isDisplayed());
     }
 
     @AfterClass

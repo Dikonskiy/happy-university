@@ -3,31 +3,21 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-public class RegistrationFormTest extends MainSuperTest{
+import java.io.File;
+
+public class UploadPhotoTest extends MainSuperTest{
+
     @BeforeClass
     public void setup() throws InterruptedException {
         driver.get("http://localhost:3000/");
     }
 
-    @Test
-    public void testPageTitle() {
-        String expectedTitle = "Account Created\n" +
-                "Successfully";
-        String actualTitle = driver.findElement(By.tagName("h1")).getText();
-
-        Assert.assertEquals(actualTitle, expectedTitle);
-    }
-
 
     @Test
-    public void registerFillFormTest(){
-
-        int beforeEntry = compare.getPrimaryId();
-
+    public void upload(){
         WebElement regButton = driver.findElement(By.xpath("//button[@class=\"inactive\"]"));
         regButton.click();
 
@@ -52,18 +42,17 @@ public class RegistrationFormTest extends MainSuperTest{
 
         sleepwait();
 
-        int afterEntry = compare.getPrimaryId();
 
-        Assert.assertNotEquals(beforeEntry, afterEntry);
+        WebElement uploadInput = driver.findElement(By.xpath("//input[@type='file']"));
+        uploadInput.sendKeys(new File("C:\\Users\\Georgiy\\Desktop\\soft eng\\happy-university\\back\\internal\\test\\autotests\\happyAutoTests\\src\\cactus.png").getAbsolutePath());
+        WebElement birth = driver.findElement(By.xpath("//input[@class='custom']"));
+        birth.sendKeys("12-12-2003");
+        WebElement sendCode = driver.findElement(By.xpath("//button[@type='submit']"));
+        sendCode.click();
 
-        Assert.assertEquals(compare.email, "iamaidosj1j1@example.com");
+        WebElement unique = driver.findElement(By.xpath("//h1[text()='Happy']"));
+        sleepwait();
+        Assert.assertTrue(unique.isDisplayed());
 
-        Assert.assertEquals(compare.name, "Abdibek Aidos");
-
-    }
-
-    @AfterClass
-    public void tearDown(){
-        driver.quit();
     }
 }

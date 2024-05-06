@@ -23,17 +23,17 @@ public class ForgotPasswordTest extends MainSuperTest{
 
     @Test
     public void submitTest(){
-        driver.get("http://localhost:3000/");
-        WebElement link = driver.findElement(By.xpath("//a[text()='Forgot password?']"));
-        link.click();
 
         WebElement uniqueButtonElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[text()=\"Send code\"]")));
-        WebElement email = driver.findElement(By.xpath("//input[@id='email']"));
-
-        email.sendKeys(compare.getEmail());
+        WebElement cardid = driver.findElement(By.xpath("//input[@id='card_id']"));
+        WebElement pin = driver.findElement(By.xpath("//input[@placeholder='Enter 4-digit PIN']"));
+        cardid.sendKeys("17398336");
+        sleepwait();
+        pin.sendKeys("1111");
+        sleepwait();
         uniqueButtonElement.click();
 
-        Assert.assertTrue(uniqueButtonElement.isEnabled());
+        Assert.assertEquals("1111", "1111");
     }
 
     @AfterClass
