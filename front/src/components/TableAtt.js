@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { checkToken, getStatus } from './fetches';
-import { Course } from './Models';
+import React from 'react';
+
 
 const TableAtt = ({ courses, handleCourseClick }) => {
     let count = 0;
@@ -31,7 +30,7 @@ const TableAtt = ({ courses, handleCourseClick }) => {
                 <tr key={index} className='course-row'>
                     <td className='course-td'>{++count}</td>
                     <td className='course-td'>
-                        <span onClick={() => handleCourseClick(course)} className="course-link">{course.code}</span>    
+                        <span onClick={() => handleCourseClick(course, index)} className="course-link">{course.code}</span>    
                     </td>
                     <td className='course-td'>{course.name}</td>
                     <td align="center" className='course-td'>{course.credits}</td>

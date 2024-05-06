@@ -2,21 +2,22 @@
 import React, { useEffect, useState } from "react";
 import TableAtt from "../components/TableAtt";
 import CourseDetails from "../components/CourseDetails";
-import { checkToken, getCourseInfo, getCourses } from "../components/fetches";
+import { checkToken, getCourseInfo } from "../components/fetches";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
-import { Course } from "../components/Models";
 
 const Attendance = () => {
   const [selectedCourse, setSelectedCourse] = useState(null); // Состояние для отслеживания выбранного курса
+  const [courseCount, setCourseCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [courses, setCourses] = useState([]);
-  const [lecture, setLecture] = useState([]);
-  const [practice, setPractice] = useState([]);
+  const [lectures, setLecture] = useState([]);
+  const [practices, setPractice] = useState([]);
   const role = localStorage.getItem("userRole");
 
-  const handleCourseClick = (course) => {
+  const handleCourseClick = (course, index) => {
     setSelectedCourse(course); // Установить выбранный курс
+    setCourseCount(index);
   };
 
   useEffect(() => {
@@ -24,32 +25,25 @@ const Attendance = () => {
       const newAccessToken = await checkToken(localStorage.getItem("accessToken"), localStorage.getItem("refreshToken"));
       localStorage.setItem("accessToken", newAccessToken);
       await fetchCourses();
-    };
+    }; 
 
     const fetchCourses = async () => {
       if (localStorage.getItem("userRole") ==="Student") {
         const coursesInfo = await getCourseInfo();
+
         setCourses(coursesInfo.courses);
-        setLecture(coursesInfo.lecture);
-        setPractice(coursesInfo.practice);
-      } else if (localStorage.getItem("userRole") === "Teacher") {
+        setLecture(coursesInfo.lectures);
+        setPractice(coursesInfo.practices);
+      } 
+      if (localStorage.getItem("userRole") === "Teacher") {
         const coursesInfo = await getCourseInfo();
         setCourses(coursesInfo.courses);
       }
-
-        
         setLoading(false)
       };
       
       checkAccessToken();
   }, []);
-
-  const handleReturn = () => {
-    setSelectedCourse(null); // Сбросить выбранный курс при нажатии на кнопку "Назад"
-  };
-
-  
-  
 
   if (loading) {
     return <div className="loader"></div>;
@@ -66,7 +60,7 @@ const Attendance = () => {
               <nav className="nav">
                 <ul className="form-row">
                   <li className="li-first">
-                    <a onClick={handleReturn} href="/attendance" className="link">
+                    <a href="/attendance" className="link">
                       Attendance
                     </a>
                   </li>
@@ -76,7 +70,7 @@ const Attendance = () => {
               </nav>
               <h2 className="home-h2">{selectedCourse.code}</h2>
               <label className="gray-label">{selectedCourse.name}</label>
-              <CourseDetails course={selectedCourse} />
+              <CourseDetails course={selectedCourse} lecture={lectures[courseCount]} practice={practices[courseCount]}/>
             </div>
           ) : (
             <div>

@@ -1,7 +1,6 @@
 import { encode } from 'js-base64';
 import { jwtDecode } from 'jwt-decode';
 import { Course } from './Models.js';
-import { useState } from 'react';
 
 const JWT_EXP_BUFFER_MINUTES = 2; // buffer time in minutes before the token expires
 
@@ -230,14 +229,14 @@ export const getCourseInfo = async () => {
               if(role === "Student"){
                 let lecture = await getStudentCourse(course, "N")
                 let practice = await getStudentCourse(course, "P")
-                lectures.push(lecture);
-                practices.push(practice); 
                 course.setAttendance(lecture.attendance + practice.attendance);
                 course.setAbsence(lecture.absence + practice.absence);
                 course.setPermission(lecture.permission + practice.permission);
                 course.setManual(lecture.manual + practice.manual);
+
+                lectures.push(lecture);
+                practices.push(practice);
                 courses.push(course);
-                // console.log(courses)
               }
               if(role === "Teacher"){
                 courses.push(course);
@@ -272,13 +271,13 @@ async function getStudentCourse (course, type)  {
                 attend+=1
             } else if (data[i].status === "absent"){
                 absent+=1
-            } else if (data[i].status === "permited"){
+            } else if (data[i].status === "permitted"){
                 permited+=1
             } else if (data[i].status === "manual"){
                 manual+=1
             }
           }
-          return new Course(course.code, course.name, course.credits, course.ects, course.hours, attend, absent, permited, manual)
+          return new Course(course.code, course.name, course.credits, course.ects, type === "N" ? 30 : 15, attend, absent, permited, manual)
         } 
         else {
           throw new Error("No courses found");
@@ -294,40 +293,6 @@ async function getStudentCourse (course, type)  {
     console.error(error);
     return course;
   }
-  
-    // .then((response) => {
-    //     if (response.ok) {
-    //         return response.json();
-    //     } else {
-    //         return new Error("Failed to fetch courses");
-    //     }
-    // })
-    // .then((data) => {
-    //         var attend=0
-    //         var absent=0
-    //         var permited=0
-    //         var manual=0
-    //         if (data.length !== 0) {
-    //             for (let i = 0; i < data.length; i++) {
-    //               if (data[i].status === "attend"){
-    //                   attend+=1
-    //               } else if (data[i].status === "absent"){
-    //                   absent+=1
-    //               } else if (data[i].status === "permited"){
-    //                   permited+=1
-    //               } else if (data[i].status === "manual"){
-    //                   manual+=1
-    //               }
-    //             }
-    //             return new Course(course.code, course.name, course.credits, course.ects, course.hours, attend, absent, permited, manual)
-    //           } else {
-    //             return new Error("No courses found");
-    //         }
-    //     })
-    //     .catch((error) => {
-    //         console.error(error);
-    //     });
-    // return newCourseData;
 }
 
 export const generateCode = (course_code) => {

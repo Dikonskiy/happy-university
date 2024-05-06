@@ -1,13 +1,13 @@
 import React from 'react';
 
-const CourseTable = ({ course, students }) => {
+const CourseTable = ({ course }) => {
     let count = 0;
     
     return (
         <table className='course-table'>
             <tbody>
                 <tr className='course-row'>
-                    <td width="20">&nbsp;</td>
+                    <td width="20"></td>
                     <td width="80" align="center"><b>Code</b></td>
                     <td width="180"><b>Course name</b></td>
                     <td width="60" align="center" title="Credits"><b>Credits</b></td>
