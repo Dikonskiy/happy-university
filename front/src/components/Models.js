@@ -1,5 +1,5 @@
 export class Course {
-    constructor(code, name, credits, ects, hours, attendance, absence, permission, manual) {
+    constructor(code, name, credits, ects, hours, attendance, absence, permission, manual, dates) {
         this.code = code;
         this.name = name;
         this.credits = credits;
@@ -9,6 +9,7 @@ export class Course {
         this.absence = absence;
         this.permission = permission;
         this.manual = manual;
+        this.dates = dates;
     }
     setCode(code) {
         this.code = code;

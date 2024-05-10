@@ -21,13 +21,13 @@ const ResetPassword = () => {
     if (accessToken && typeof accessToken === "string" && accessToken !== "undefined") {
       checkAccessToken();
     }
+    if (id === null) {
+      window.location.href = "/sign";
+    } else {
+      setLoading(false);
+    }
   });
 
-  if (id === null) {
-    window.location.href = "/sign";
-  } else {
-    setLoading(false);
-  }
 
   const isFormValid = () => newPassword.length >= 8 && newPassword === confirmPassword;
 

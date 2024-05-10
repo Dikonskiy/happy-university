@@ -56,7 +56,7 @@ const Registration = () => {
                 // Handle error
                 console.error(error);
                 // Show error message to user
-                alert(error.message)
+                alert("Registration failed. Please try again.")
             });
     } else {
         alert("Please fill all fields")

@@ -239,6 +239,8 @@ export const getCourseInfo = async () => {
                 courses.push(course);
               }
               if(role === "Teacher"){
+                lectures.push(course);
+                practices.push(course);
                 courses.push(course);
               }
             }
@@ -265,8 +267,14 @@ async function getStudentCourse (course, type)  {
         var absent=0
         var permited=0
         var manual=0
+        var dates = {
+          date: [],
+          status: []
+        }
         if (data.length !== 0) {
           for (let i = 0; i < data.length; i++) {
+            dates.date.push(data[i].date)
+            dates.status.push(data[i].status)
             if (data[i].status === "attend"){
                 attend+=1
             } else if (data[i].status === "absent"){
@@ -277,7 +285,7 @@ async function getStudentCourse (course, type)  {
                 manual+=1
             }
           }
-          return new Course(course.code, course.name, course.credits, course.ects, type === "N" ? 30 : 15, attend, absent, permited, manual)
+          return new Course(course.code, course.name, course.credits, course.ects, type === "N" ? 30 : 15, attend, absent, permited, manual, dates);
         } 
         else {
           throw new Error("No courses found");

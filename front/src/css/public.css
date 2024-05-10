@@ -141,3 +141,15 @@ img {
 i {
     margin-right: 5px;
 }
+
+#wrapper {  /* ADDED */
+    position: relative;
+    width: 200px;
+  }
+  
+#scrollable {
+    height: 350px;
+    border: 1px solid;
+    overflow: auto;
+    position: relative;
+}

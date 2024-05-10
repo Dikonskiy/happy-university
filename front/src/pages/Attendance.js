@@ -78,6 +78,7 @@ const Attendance = () => {
               {role === "Student" && <h2 className="home-h2">Electronic Attendance</h2>}
 
               <div className="choose">
+                {role === "Student" && (
                 <ul className="form-row">
                   <li>
                     <i className="fas fa-check-circle"></i>
@@ -96,7 +97,7 @@ const Attendance = () => {
                     <span>Manual</span>
                   </li>
                   {/* Add more icon and definition pairs as needed */}
-                </ul>
+                </ul>)}
                 <TableAtt courses={courses} handleCourseClick={handleCourseClick} />
               </div>
             </div>
