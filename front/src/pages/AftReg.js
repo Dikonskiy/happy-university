@@ -50,10 +50,13 @@ const AftReg = () => {
 
           if (!allowedTypes.includes(file.type)) {
             setError("Please select a valid image file (JPEG, PNG, or GIF)");
+            setImage(null);
           } else if (aspectRatio < minAspectRatio || aspectRatio > maxAspectRatio) {
             setError("Please upload an image with a profile aspect ratio between 9:16 and 1:1.");
+            setImage(null);
           } else if (sizeInMB > 5) {
             setError("Please upload an image that is less than 5MB in size.");
+            setImage(null);
           } else {
             setImage(reader.result);
             setError(null);
@@ -69,7 +72,9 @@ const AftReg = () => {
     event.preventDefault();
     localStorage.clear();
 
-    afterRegistration(id, event.target.birth.value, image.split(",")[1])
+    const birth = event.target.birth.value;
+    if (image && birth) {
+      afterRegistration(id, birth, image.split(",")[1])
       .then((response) => {
         if (response.ok) {
           return response;
@@ -79,7 +84,10 @@ const AftReg = () => {
         console.log(error);
       });
 
-    window.location.href = "/sign";
+      window.location.href = "/sign";
+    } else {
+      alert("Please fill all the fields");
+    }
   };
   if (loading) {
     return <div className="loader"></div>;
@@ -102,7 +110,7 @@ const AftReg = () => {
         <div className="input-field">
           <label htmlFor="image">Profile Image:</label>
           <div>
-            <input type="file" onChange={handleImageChange} accept="image/*" />
+            <input className="" type="file" onChange={handleImageChange} accept="image/*" />
             {error && <div style={{ color: "red", marginTop: "5px" }}>{error}</div>}
             {image && <img src={image} alt="Uploaded" style={{ width: "200px", height: "200px", marginTop: "10px" }} />}
           </div>

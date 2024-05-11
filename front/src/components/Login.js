@@ -25,6 +25,11 @@ const Login = () => {
     const id = e.target.card_id.value;
     const password = e.target.password.value;
 
+    if (!id || !password) {
+      alert("Please fill all the fields");
+      return;
+    }
+
     // Send the data to your Go back-end
     authorization(id, password)
       .then((response) => {

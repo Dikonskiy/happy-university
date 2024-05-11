@@ -61,9 +61,6 @@ const Registration = () => {
     } else {
         alert("Please fill all fields")
     }
-
-    
-
   };
 
   return (

@@ -62,10 +62,6 @@ input[type="number"] {
     box-sizing: border-box;
 }
 
-input[type="number"]:hover {
-    user-select: none;
-}
-
 input[type="date"]{
     width: 353px;
     padding: 16px;
