@@ -1,4 +1,4 @@
-module github.com/Dikonskiy/happy-university
+module github.com/Dikonskiy/happy-university/back
 
 go 1.21.0
 

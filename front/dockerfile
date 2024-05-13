@@ -3,11 +3,11 @@ FROM node:16-alpine as builder
 
 WORKDIR /app
 
-COPY package.json .
-COPY package-lock.json .
+COPY front/package.json ./
+COPY front/package-lock.json ./
 
-# Install dependencies
-RUN npm install --silent
+# Install dependencies without printing npm notice
+RUN npm install --silent --no-progress --no-audit --no-optional --no-fund
 
 # Copy the frontend source code
 COPY front/ .
