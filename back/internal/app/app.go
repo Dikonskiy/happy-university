@@ -73,7 +73,6 @@ func (a *Application) StartServer() {
 	r.HandleFunc("/get-attendance", Hand.GetAttendanceHandler)
 	r.HandleFunc("/check-pincode", Hand.CheckPinCodeHandler)
 	r.HandleFunc("/update-password", Hand.UpdatePasswordHandler)
-	// r.HandleFunc("/get-courses-schedule", Hand.GetCourseScheduleHandler)
 	r.HandleFunc("/after-reg", Hand.AfterRegHandler)
 	r.HandleFunc("/get-image", Hand.GetImageHandler)
 	r.HandleFunc("/get-birthday", Hand.GetBirthdayHandler)
