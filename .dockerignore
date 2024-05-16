@@ -1,0 +1,69 @@
+# flyctl launch added from .gitignore
+**\*.log
+
+# flyctl launch added from back\internal\test\autotests\happyAutoTests\.gitignore
+### IntelliJ IDEA ###
+back\internal\test\autotests\happyAutoTests\**\out
+!back\internal\test\autotests\happyAutoTests\**\**\src\main\**\out
+!back\internal\test\autotests\happyAutoTests\**\**\src\test\**\out
+
+### Eclipse ###
+back\internal\test\autotests\happyAutoTests\**\.apt_generated
+back\internal\test\autotests\happyAutoTests\**\.classpath
+back\internal\test\autotests\happyAutoTests\**\.factorypath
+back\internal\test\autotests\happyAutoTests\**\.project
+back\internal\test\autotests\happyAutoTests\**\.settings
+back\internal\test\autotests\happyAutoTests\**\.springBeans
+back\internal\test\autotests\happyAutoTests\**\.sts4-cache
+back\internal\test\autotests\happyAutoTests\**\bin
+!back\internal\test\autotests\happyAutoTests\**\**\src\main\**\bin
+!back\internal\test\autotests\happyAutoTests\**\**\src\test\**\bin
+
+### NetBeans ###
+back\internal\test\autotests\happyAutoTests\nbproject\private
+back\internal\test\autotests\happyAutoTests\nbbuild
+back\internal\test\autotests\happyAutoTests\dist
+back\internal\test\autotests\happyAutoTests\nbdist
+back\internal\test\autotests\happyAutoTests\.nb-gradle
+
+### VS Code ###
+back\internal\test\autotests\happyAutoTests\**\.vscode
+
+### Mac OS ###
+back\internal\test\autotests\happyAutoTests\**\.DS_Store
+
+# flyctl launch added from back\internal\test\autotests\happyAutoTests\.idea\.gitignore
+# Default ignored files
+back\internal\test\autotests\happyAutoTests\.idea\shelf
+back\internal\test\autotests\happyAutoTests\.idea\workspace.xml
+# Editor-based HTTP Client requests
+back\internal\test\autotests\happyAutoTests\.idea\httpRequests
+# Datasource local storage ignored files
+back\internal\test\autotests\happyAutoTests\.idea\dataSources
+back\internal\test\autotests\happyAutoTests\.idea\dataSources.local.xml
+
+# flyctl launch added from front\.gitignore
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+front\node_modules
+front\.pnp
+front\**\.pnp.js
+
+# testing
+front\coverage
+
+# production
+front\build
+
+# misc
+front\**\.DS_Store
+front\**\.env.local
+front\**\.env.development.local
+front\**\.env.test.local
+front\**\.env.production.local
+
+front\**\npm-debug.log*
+front\**\yarn-debug.log*
+front\**\yarn-error.log*
+fly.toml

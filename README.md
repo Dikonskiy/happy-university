@@ -31,7 +31,7 @@ cd front
 Execute the following command to run the application:
 
 ```bash
-npm start
+npm `start`
 ```
 
 ## Endpoints
@@ -43,7 +43,8 @@ npm start
     "name": "string",
     "email": "string",
     "role": "string",
-    "password": "string"   
+    "password": "string",
+    "pin_code": "int"
 }
 ```
 

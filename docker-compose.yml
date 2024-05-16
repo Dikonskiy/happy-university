@@ -1,0 +1,38 @@
+version: '3'
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: back/Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql-db
+    networks:
+      - university-network
+
+  mysql-db:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: my-secret-pw
+      MYSQL_DATABASE: happy-university
+      MYSQL_USER: kursUser
+      MYSQL_PASSWORD: kursPswd
+    ports:
+      - "3307:3306"
+    networks:
+      - university-network
+
+  frontend:
+    build:
+      context: .
+      dockerfile: front/Dockerfile
+    ports:
+      - "3000:80"
+    networks:
+      - university-network
+
+networks:
+  university-network:
+    driver: bridge
