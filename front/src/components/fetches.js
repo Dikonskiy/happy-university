@@ -1,5 +1,6 @@
 import { encode } from 'js-base64';
 import { jwtDecode } from 'jwt-decode';
+import { Course } from './Models.js';
 
 const JWT_EXP_BUFFER_MINUTES = 2; // buffer time in minutes before the token expires
 
@@ -195,21 +196,111 @@ export const takeUserData = () => {
   })
 }
 
-export const getCoursesStudent = (term) => {
-  const data = {
-    term: term
-  }
+export const getCourses = () => {
   let headers = new Headers();
   headers.append('Content-Type', 'application/json');
   headers.append('Accept', 'application/json');
   headers.append('Origin','http://localhost:3000');
   headers.append('Authorization', 'Bearer'+ localStorage.getItem('accessToken'))
 
-  return fetch('http://localhost:8080/attendance', {
+  return fetch('http://localhost:8080/get-courses', {
     method: 'GET',
     headers: headers,
-    body: JSON.stringify(data),
   })
+}
+
+export const getCourseInfo = async () => {
+  const role = localStorage.getItem('userRole');
+  var courses = [];
+  var lectures = [];
+  var practices = [];
+  await getCourses()
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error("Failed to fetch courses");
+          }
+        })
+        .then( async (data) => {
+          if (data.length !== 0) {
+            for (let i = 0; i < data.length; i++) {
+              const course = new Course(data[i].course_code, data[i].course_name, "2+1", "5", 45);
+              if(role === "Student"){
+                let lecture = await getStudentCourse(course, "N")
+                let practice = await getStudentCourse(course, "P")
+                course.setAttendance(lecture.attendance + practice.attendance);
+                course.setAbsence(lecture.absence + practice.absence);
+                course.setPermission(lecture.permission + practice.permission);
+                course.setManual(lecture.manual + practice.manual);
+
+                lectures.push(lecture);
+                practices.push(practice);
+                courses.push(course);
+              }
+              if(role === "Teacher"){
+                lectures.push(course);
+                practices.push(course);
+                courses.push(course);
+              }
+            }
+          } else {
+            throw new Error("No courses found");
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+
+        return {courses, lectures, practices};
+}
+
+async function getStudentCourse (course, type)  {
+
+    // var newCourseData = null;
+  try{
+    const res = await getStatus(course.code, type)
+    if (res.ok) {
+      const data = await res.json();
+      if (data){
+        var attend=0
+        var absent=0
+        var permited=0
+        var manual=0
+        var dates = {
+          date: [],
+          status: []
+        }
+        if (data.length !== 0) {
+          for (let i = 0; i < data.length; i++) {
+            dates.date.push(data[i].date)
+            dates.status.push(data[i].status)
+            if (data[i].status === "attend"){
+                attend+=1
+            } else if (data[i].status === "absent"){
+                absent+=1
+            } else if (data[i].status === "permitted"){
+                permited+=1
+            } else if (data[i].status === "manual"){
+                manual+=1
+            }
+          }
+          return new Course(course.code, course.name, course.credits, course.ects, type === "N" ? 30 : 15, attend, absent, permited, manual, dates);
+        } 
+        else {
+          throw new Error("No courses found");
+        }
+      }else{
+        throw new Error("No courses found");
+      }
+
+    } else {
+      throw new Error("Failed to fetch courses");
+    }
+  }catch(error){
+    console.error(error);
+    return course;
+  }
 }
 
 export const generateCode = (course_code) => {
@@ -223,6 +314,43 @@ export const generateCode = (course_code) => {
   headers.append('Authorization', 'Bearer'+ localStorage.getItem('accessToken'))
 
   return fetch('http://localhost:8080/generate-code', {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify(data),
+  })
+}
+
+export const takeAttendance = (generateCode, course) => {
+  const data = {
+    generated_code: generateCode,
+    room: "",
+    course: course
+  }
+  let headers = new Headers();
+  headers.append('Content-Type', 'application/json');
+  headers.append('Accept', 'application/json');
+  headers.append('Origin','http://localhost:3000');
+  headers.append('Authorization', 'Bearer'+ localStorage.getItem('accessToken'))
+
+  return fetch('http://localhost:8080/card-entry-in', {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify(data),
+  })
+}
+
+export const getStatus = (course_code, course_type) => {
+  const data = {
+    course_code: course_code,
+    course_type: course_type
+  }
+  let headers = new Headers();
+  headers.append('Content-Type', 'application/json');
+  headers.append('Accept', 'application/json');
+  headers.append('Origin','http://localhost:3000');
+  headers.append('Authorization', 'Bearer'+ localStorage.getItem('accessToken'))
+
+  return fetch('http://localhost:8080/get-status', {
     method: 'POST',
     headers: headers,
     body: JSON.stringify(data),

@@ -43,7 +43,8 @@ npm `start`
     "name": "string",
     "email": "string",
     "role": "string",
-    "password": "string"   
+    "password": "string",
+    "pin_code": "int"
 }
 ```
 

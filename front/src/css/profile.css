@@ -54,7 +54,7 @@
   display: flex;
   flex-direction: row;
   height: 30%;
-  width: 80%;
+  width: 90%;
   align-items: center;
 }
 
@@ -97,7 +97,7 @@
 
 .box {
   background-color: #66718D;
-  width: 70%;
+  width: 80%;
   height: 70%;
   padding: 20px;  
   border-radius: 32px;
@@ -106,12 +106,12 @@
 
 .box img {
   display: block;
-  width: 250px;
+  width: 350px;
   height: 400px;
 }
 
 .attendance-box {
-  width: 70%;
+  width: 90%;
   height: 70%;
   padding: 20px;
 }
@@ -136,12 +136,6 @@
   border-radius: 10px;
 }
 
-.user-info {
-  display: block;
-  align-items: center;
-  width: auto;
-}
-
 .td-info {
   font-size: 20px;
 }
@@ -149,7 +143,7 @@
 .images {
   border-radius: 15px;
   margin: 10px;
-  width: 130px;
+  width: 170px;
   height: 180px;
 }
 
@@ -207,7 +201,7 @@
 }
 
 .course-link {
-  color: gray;
+  color: blue;
 }
 
 .course-link:hover {
@@ -241,4 +235,22 @@ th, td {
   font-family: "Roboto Mono", monospace;
   font-weight: 300;
   font-size: 48px;
+}
+
+.generated-code{
+  font-size: 24px;
+  font-weight: 700;
+  margin: auto;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+.status p{
+  font-size: 18px;
+  color: black;
+  margin: auto;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
 }

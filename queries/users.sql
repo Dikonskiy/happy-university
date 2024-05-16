@@ -78,8 +78,8 @@ CREATE TABLE IF NOT EXISTS TeacherCode (
 
 INSERT INTO Attendance (student_id_card, course_code, check_in_time, check_out_time, attendance_date, status, room)
 SELECT 
-    13488217 AS student_id_card,
-    'INF 368' AS course_code,
+    your_id AS student_id_card,
+    your_course AS course_code,
     ADDTIME('2024-01-26 09:00:00', SEC_TO_TIME(FLOOR(RAND() * (2 * 3600)))) AS check_in_time,
     ADDTIME('2024-01-26 09:00:00', SEC_TO_TIME(FLOOR(RAND() * (2 * 3600)))) AS check_out_time,
     dt.d AS attendance_date,

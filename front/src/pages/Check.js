@@ -16,7 +16,6 @@ const Check = () => {
 
   const isButtonDisabled = selectedOption === "none";
 
-  const role = localStorage.getItem("userRole");
   const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
   const refreshToken = localStorage.getItem("refreshToken");
   const [loading, setLoading] = useState(true);
@@ -41,9 +40,7 @@ const Check = () => {
     <div className="main">
     <Topbar />
     <div className="attendance-box">
-    {role === "Teacher" && <h2 className="home-h2">Start Class</h2>}
-    {role === "Student" && <h2 className="home-h2">Manual Attendance</h2>}
-    {role === "Admin" && <h2 className="home-h2">Work with Attendance</h2>}
+    <h2 className="home-h2">Auto Check</h2>
     <div>
     <span className="ct">Room: </span>
     <select className="select-term" type="room" id="room" name="room" value={selectedOption} disabled={isDisabled} onChange={handleSelectChange}>

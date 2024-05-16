@@ -1,9 +1,33 @@
-import React, { useState } from 'react';
-import { updatePassword } from '../components/fetches';
+import React, { useEffect, useState } from "react";
+import { checkToken, updatePassword } from "../components/fetches";
 
 const ResetPassword = () => {
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  var id = localStorage.getItem("userId");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
+  const refreshToken = localStorage.getItem("refreshToken");
+
+  useEffect(() => {
+    const checkAccessToken = async () => {
+      // refresh token
+      const newAccessToken = await checkToken(accessToken, refreshToken);
+      setAccessToken(newAccessToken);
+      localStorage.setItem("accessToken", newAccessToken);
+      window.location.href = "/home";
+    };
+
+    if (accessToken && typeof accessToken === "string" && accessToken !== "undefined") {
+      checkAccessToken();
+    }
+    if (id === null) {
+      window.location.href = "/sign";
+    } else {
+      setLoading(false);
+    }
+  });
+
 
   const isFormValid = () => newPassword.length >= 8 && newPassword === confirmPassword;
 
@@ -11,29 +35,32 @@ const ResetPassword = () => {
     e.preventDefault();
 
     // Implement your password reset logic here.
-    updatePassword(localStorage.getItem('cardId'), newPassword)
+    updatePassword(id, newPassword)
       .then((response) => {
-        if(response.ok){
+        if (response.ok) {
           return response.text();
         } else {
-          throw new Error('Password reset failed');
+          throw new Error("Password reset failed");
         }
       })
       .then((data) => {
-        if(data){
-          if (data === 'Password changed successfully'){
-            window.alert('Password changed successfully')
-            window.location.href = '/sign';
+        if (data) {
+          if (data === "Password changed successfully") {
+            window.alert("Password changed successfully");
+            window.location.href = "/sign";
           }
         } else {
-          console.error('Invalid data:', data);
+          console.error("Invalid data:", data);
         }
       })
-      .catch((error) =>  { 
-        console.error(error); 
+      .catch((error) => {
+        console.error(error);
       });
-  }
+  };
 
+  if (loading) {
+    return <div className="loader"></div>;
+  }
   return (
     <div>
       <div className="form-wrapper">
@@ -42,25 +69,13 @@ const ResetPassword = () => {
         <form onSubmit={handleFormSubmit}>
           <div className="input-field">
             <label htmlFor="newPassword">New password</label>
-            <input
-              type="password"
-              id="newPassword"
-              placeholder="must be 8 characters"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}  
-            />
+            <input type="password" id="newPassword" placeholder="must be 8 characters" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
           </div>
           <div className="input-field">
             <label htmlFor="confirmPassword">Confirm new password</label>
-            <input
-              type="password"
-              id="confirmPassword"
-              placeholder="repeat password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            />
+            <input type="password" id="confirmPassword" placeholder="repeat password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
           </div>
-          <br/> <br/>
+          <br /> <br />
           <button type="submit" disabled={!isFormValid()}>
             Reset password
           </button>

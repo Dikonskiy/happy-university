@@ -26,6 +26,7 @@ func (r *Repository) UpdateAttendance(studentID, course, room, generatedCode str
 		var expectedGeneratedCode int
 		err := r.Db.QueryRow("SELECT generated_code FROM TeacherCode WHERE course_code = ?", course).Scan(&expectedGeneratedCode)
 		if err != nil {
+			println(course, expectedGeneratedCode)
 			return err
 		}
 

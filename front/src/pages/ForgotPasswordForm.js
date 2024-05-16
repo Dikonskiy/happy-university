@@ -46,7 +46,7 @@ const ForgotPasswordForm = () => {
       .then((data) => {
         console.log(data)
         if(data && data.correct){
-          localStorage.setItem('cardId', ID);
+          localStorage.setItem('userId', ID);
           window.location.href = '/sign/forgotpassword/resetpassword';
         } else {
           console.error('Invalid data:', data);

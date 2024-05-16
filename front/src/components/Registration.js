@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { registration } from './fetches';
 
 const Registration = () => {
-  const [agreeToTerms, setAgreeToTerms] = React.useState(false);
+  const [agreeToTerms, setAgreeToTerms] = useState(false);
   const [pin, setPin] = useState('');
 
   const handleChange = (e) => {
@@ -31,33 +31,36 @@ const Registration = () => {
     const password = event.target.password.value;
     const pincode = parseInt(pin);
 
-    // Send the data to your Go back-end
-    registration(fullName, email, role, password, pincode)
-        .then((response) => {
-            // Handle successful login
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error("Registration failed");
-            }
-        })
-        .then((data) => {
-            console.log(data)
-            if(data && data.card_id){
-                localStorage.setItem('userId', JSON.stringify(data.card_id));
-                console.log(localStorage.getItem('userId'));
-                window.location.href = '/sign/aftereg';
-            } else {
-                throw new Error('Invalid user data from back: ', data);
-            }
-        })
-        .catch((error) => {
-            // Handle error
-            console.error(error);
-            // Show error message to user
-            alert(error.message)
-        });
-
+    if (email && fullName && role && password && pincode && agreeToTerms){
+        // Send the data to your Go back-end
+        registration(fullName, email, role, password, pincode)
+            .then((response) => {
+                // Handle successful login
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error("Registration failed");
+                }
+            })
+            .then((data) => {
+                console.log(data)
+                if(data && data.card_id){
+                    localStorage.setItem('userId', data.card_id);
+                    console.log(localStorage.getItem('userId'));
+                    window.location.href = '/sign/aftereg';
+                } else {
+                    throw new Error('Invalid user data from back: ', data);
+                }
+            })
+            .catch((error) => {
+                // Handle error
+                console.error(error);
+                // Show error message to user
+                alert("Registration failed. Please try again.")
+            });
+    } else {
+        alert("Please fill all fields")
+    }
   };
 
   return (
@@ -106,7 +109,7 @@ const Registration = () => {
                 I accept the terms and privacy policy
                 </label>
             </div>
-            <button type="submit" disabled={!agreeToTerms}>
+            <button type="submit" >
                 Commit
             </button>
         </form>
