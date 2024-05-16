@@ -1,0 +1,9 @@
+{
+    "builds": [
+      { "src": "*.go", "use": "@now/go" }
+    ],
+    "routes": [
+      { "handle": "filesystem" }
+    ]
+  }
+  
