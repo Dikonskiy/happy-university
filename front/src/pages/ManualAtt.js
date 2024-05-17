@@ -160,7 +160,7 @@ const ManualAtt = () => {
                   </option>
                   {courses.map((course) => (
                     <option key={course.code} value={course.code}>
-                      {course.code}
+                      {course.code+': '+course.name}
                     </option>
                   ))}
                 </select>

@@ -60,7 +60,7 @@ const Attendance = () => {
               <nav className="nav">
                 <ul className="form-row">
                   <li className="li-first">
-                    <a href="/attendance" className="link">
+                    <a href="/attendance" className="link" style={{color: "blue"}}>
                       Attendance
                     </a>
                   </li>

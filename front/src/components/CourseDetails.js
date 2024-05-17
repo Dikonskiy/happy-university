@@ -92,8 +92,8 @@ const CourseDetails = ({ course, lecture, practice }) => {
     case 'Teacher':
       return (
         <>
-          <p>Course Code: {course.code}</p>
-          <p>Course Name: {course.name}</p>
+          <h2>Course Code: {course.code}</h2>
+          <h2>Course Name: {course.name}</h2>
         </>
     )
     default:
