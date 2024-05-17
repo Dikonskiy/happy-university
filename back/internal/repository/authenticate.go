@@ -16,7 +16,7 @@ func (r *Repository) Authenticate(cardID, password string) bool {
 
 	switch cardID[0] {
 	case '1':
-		err := r.Db.QueryRow("SELECT password FROM students WHERE student_id_card = ?", cardID).Scan(&storedPasswordHash)
+		err := r.Db.QueryRow("SELECT password FROM Students WHERE student_id_card = ?", cardID).Scan(&storedPasswordHash)
 		if err != nil {
 			if err == sql.ErrNoRows {
 				return false
@@ -25,7 +25,7 @@ func (r *Repository) Authenticate(cardID, password string) bool {
 		}
 
 	case '2':
-		err := r.Db.QueryRow("SELECT password FROM teachers WHERE teacher_id_card = ?", cardID).Scan(&storedPasswordHash)
+		err := r.Db.QueryRow("SELECT password FROM Teachers WHERE teacher_id_card = ?", cardID).Scan(&storedPasswordHash)
 		if err != nil {
 			if err == sql.ErrNoRows {
 				return false
@@ -33,7 +33,7 @@ func (r *Repository) Authenticate(cardID, password string) bool {
 			panic(err)
 		}
 	case '3':
-		err := r.Db.QueryRow("SELECT password FROM admins WHERE admin_id_card = ?", cardID).Scan(&storedPasswordHash)
+		err := r.Db.QueryRow("SELECT password FROM Admins WHERE admin_id_card = ?", cardID).Scan(&storedPasswordHash)
 		if err != nil {
 			if err == sql.ErrNoRows {
 				return false
@@ -145,12 +145,12 @@ func (r *Repository) GetCourses(cardId string) ([]models.GetCoursesResponse, err
 
 	if cardId[0] == '1' {
 		query = `SELECT sc.course_code, c.course_name 
-		         FROM student_courses sc 
+		         FROM Student_Courses sc 
 		         JOIN Courses c ON sc.course_code = c.course_code
 		         WHERE sc.student_id_card LIKE ?`
 		idType = "student"
 	} else if cardId[0] == '2' {
-		query = "SELECT course_code, course_name FROM courses WHERE teacher_id_card LIKE ?"
+		query = "SELECT course_code, course_name FROM Courses WHERE teacher_id_card LIKE ?"
 		idType = "teacher"
 	} else {
 		return nil, errors.New("invalid card ID")
