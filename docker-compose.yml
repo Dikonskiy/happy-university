@@ -1,9 +1,8 @@
-version: '3'
 services:
   backend:
     build:
-      context: .
-      dockerfile: back/Dockerfile
+      context: ./back
+      dockerfile: dockerfile
     ports:
       - "8080:8080"
     depends_on:
@@ -26,8 +25,8 @@ services:
 
   frontend:
     build:
-      context: .
-      dockerfile: front/Dockerfile
+      context: ./front
+      dockerfile: dockerfile
     ports:
       - "3000:80"
     networks:
