@@ -27,9 +27,9 @@ export const checkToken = async (accessToken, refreshToken) => {
   let headers = new Headers();
   headers.append('Content-Type', 'application/json');
   headers.append('Accept', 'application/json');
-  headers.append('Origin','http://localhost:3000');
+  headers.append('Origin','http://206.189.60.189:3000');
   try{
-    const response = await fetch('http://localhost:8080/refresh-token', {
+    const response = await fetch('http://206.189.60.189:8080/refresh-token', {
       method: 'POST',
       headers: headers,
       body: JSON.stringify(data),
@@ -65,9 +65,9 @@ export const authorization = (id, password) => {
   headers.append('Content-Type', 'application/json');
   headers.append('Accept', 'application/json');
   headers.append('Authorization', 'Basic ' + encode(id + ":" +  password));
-  headers.append('Origin','http://localhost:3000');
+  headers.append('Origin','http://206.189.60.189:3000');
 
-  return fetch('http://localhost:8080/login', {
+  return fetch('http://206.189.60.189:8080/login', {
     method: 'POST',
     headers: headers,
     body: JSON.stringify(data),
@@ -85,9 +85,9 @@ export const registration = (name, email, role, password, pincode) => {
   let headers = new Headers();
   headers.append('Content-Type', 'application/json');
   headers.append('Accept', 'application/json');
-  headers.append('Origin','http://localhost:3000');
+  headers.append('Origin','http://206.189.60.189:3000');
 
-  return fetch('http://localhost:8080/register', {
+  return fetch('http://206.189.60.189:8080/register', {
       method: 'POST',
       headers: headers,
       body: JSON.stringify(data),
@@ -103,9 +103,9 @@ export const afterRegistration = (card_id, birth_date, image) => {
   let headers = new Headers();
   headers.append('Content-Type', 'application/json');
   headers.append('Accept', 'application/json');
-  headers.append('Origin','http://localhost:3000');
+  headers.append('Origin','http://206.189.60.189:3000');
 
-  return fetch('http://localhost:8080/after-reg', {
+  return fetch('http://206.189.60.189:8080/after-reg', {
     method: 'POST',
     headers: headers,
     body: JSON.stringify(data),
@@ -120,10 +120,10 @@ export const getImage = (card_id) => {
   let headers = new Headers();
   headers.append('Content-Type', 'application/json');
   headers.append('Accept', 'application/json');
-  headers.append('Origin','http://localhost:3000');
+  headers.append('Origin','http://206.189.60.189:3000');
   headers.append('Authorization', 'Bearer'+ localStorage.getItem('accessToken'));
 
-  return fetch('http://localhost:8080/get-image', {
+  return fetch('http://206.189.60.189:8080/get-image', {
     method: 'POST',
     headers: headers,
     body: JSON.stringify(data),
@@ -138,10 +138,10 @@ export const getBirthDate = (card_id) => {
   let headers = new Headers();
   headers.append('Content-Type', 'application/json'); 
   headers.append('Accept', 'application/json'); 
-  headers.append('Origin','http://localhost:3000'); 
+  headers.append('Origin','http://206.189.60.189:3000'); 
   headers.append('Authorization', 'Bearer'+ localStorage.getItem('accessToken'));
   
-  return fetch('http://localhost:8080/get-birthday', { 
+  return fetch('http://206.189.60.189:8080/get-birthday', { 
     method: 'POST', 
     headers: headers, 
     body: JSON.stringify(data), 
@@ -156,9 +156,9 @@ export const checkPinCode = (card_id, pin_code) => {
   let headers = new Headers();
   headers.append('Content-Type', 'application/json');
   headers.append('Accept', 'application/json');
-  headers.append('Origin','http://localhost:3000');
+  headers.append('Origin','http://206.189.60.189:3000');
 
-  return fetch('http://localhost:8080/check-pincode', {
+  return fetch('http://206.189.60.189:8080/check-pincode', {
     method: 'POST',
     headers: headers,
     body: JSON.stringify(data),
@@ -173,9 +173,9 @@ export const updatePassword = (card_id, new_password) => {
   let headers = new Headers();
   headers.append('Content-Type', 'application/json');
   headers.append('Accept', 'application/json');
-  headers.append('Origin','http://localhost:3000');
+  headers.append('Origin','http://206.189.60.189:3000');
 
-  return fetch('http://localhost:8080/update-password', {
+  return fetch('http://206.189.60.189:8080/update-password', {
     method: 'POST',
     headers: headers,
     body: JSON.stringify(data),
@@ -186,11 +186,11 @@ export const takeUserData = () => {
   let headers = new Headers();
   headers.append('Content-Type', 'application/json');
   headers.append('Accept', 'application/json');
-  headers.append('Origin','http://localhost:3000');
-  headers.append('Access-Control-Allow-Origin', 'http://localhost:3000');
+  headers.append('Origin','http://206.189.60.189:3000');
+  headers.append('Access-Control-Allow-Origin', 'http://206.189.60.189:3000');
   headers.append('Authorization', 'Bearer' + localStorage.getItem('accessToken'))
 
-  return fetch('http://localhost:8080/get-user-data', {
+  return fetch('http://206.189.60.189:8080/get-user-data', {
     method: 'GET',
     headers: headers,
   })
@@ -200,10 +200,10 @@ export const getCourses = () => {
   let headers = new Headers();
   headers.append('Content-Type', 'application/json');
   headers.append('Accept', 'application/json');
-  headers.append('Origin','http://localhost:3000');
+  headers.append('Origin','http://206.189.60.189:3000');
   headers.append('Authorization', 'Bearer'+ localStorage.getItem('accessToken'))
 
-  return fetch('http://localhost:8080/get-courses', {
+  return fetch('http://206.189.60.189:8080/get-courses', {
     method: 'GET',
     headers: headers,
   })
@@ -310,10 +310,10 @@ export const generateCode = (course_code) => {
   let headers = new Headers();
   headers.append('Content-Type', 'application/json');
   headers.append('Accept', 'application/json');
-  headers.append('Origin','http://localhost:3000');
+  headers.append('Origin','http://206.189.60.189:3000');
   headers.append('Authorization', 'Bearer'+ localStorage.getItem('accessToken'))
 
-  return fetch('http://localhost:8080/generate-code', {
+  return fetch('http://206.189.60.189:8080/generate-code', {
     method: 'POST',
     headers: headers,
     body: JSON.stringify(data),
@@ -329,10 +329,10 @@ export const takeAttendance = (generateCode, course) => {
   let headers = new Headers();
   headers.append('Content-Type', 'application/json');
   headers.append('Accept', 'application/json');
-  headers.append('Origin','http://localhost:3000');
+  headers.append('Origin','http://206.189.60.189:3000');
   headers.append('Authorization', 'Bearer'+ localStorage.getItem('accessToken'))
 
-  return fetch('http://localhost:8080/card-entry-in', {
+  return fetch('http://206.189.60.189:8080/card-entry-in', {
     method: 'POST',
     headers: headers,
     body: JSON.stringify(data),
@@ -347,10 +347,10 @@ export const getStatus = (course_code, course_type) => {
   let headers = new Headers();
   headers.append('Content-Type', 'application/json');
   headers.append('Accept', 'application/json');
-  headers.append('Origin','http://localhost:3000');
+  headers.append('Origin','http://206.189.60.189:3000');
   headers.append('Authorization', 'Bearer'+ localStorage.getItem('accessToken'))
 
-  return fetch('http://localhost:8080/get-status', {
+  return fetch('http://206.189.60.189:8080/get-status', {
     method: 'POST',
     headers: headers,
     body: JSON.stringify(data),
