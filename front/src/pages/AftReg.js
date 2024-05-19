@@ -76,7 +76,10 @@ const AftReg = () => {
     if (image && birth) {
       afterRegistration(id, birth, image.split(",")[1])
       .then((response) => {
+        console.log(response);
         if (response.ok) {
+          window.alert("Information saved successfully");
+          window.location.href = "/sign";
           return response;
         }
       })
@@ -84,7 +87,6 @@ const AftReg = () => {
         console.log(error);
       });
 
-      window.location.href = "/sign";
     } else {
       alert("Please fill all the fields");
     }

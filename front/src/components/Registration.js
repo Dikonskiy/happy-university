@@ -21,7 +21,7 @@ const Registration = () => {
     setAgreeToTerms(!agreeToTerms);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     // Implement your password reset logic here.
 
@@ -33,7 +33,7 @@ const Registration = () => {
 
     if (email && fullName && role && password && pincode && agreeToTerms){
         // Send the data to your Go back-end
-        registration(fullName, email, role, password, pincode)
+        await registration(fullName, email, role, password, pincode)
             .then((response) => {
                 // Handle successful login
                 if (response.ok) {
