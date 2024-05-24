@@ -3,6 +3,8 @@ services:
     build:
       context: ./back
       dockerfile: dockerfile
+    restart: always
+    command: ["./back"]
     ports:
       - "8080:8080"
     depends_on:
@@ -11,7 +13,7 @@ services:
       - university-network
 
   mysql-db:
-    image: mysql
+    image: mysql/mysql-server:8.0
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: my-secret-pw
@@ -22,6 +24,8 @@ services:
       - "3307:3306"
     networks:
       - university-network
+    volumes:
+      - database:/var/lib/mysql
 
   frontend:
     build:
@@ -35,3 +39,7 @@ services:
 networks:
   university-network:
     driver: bridge
+
+volumes:
+  database:
+    driver: local
