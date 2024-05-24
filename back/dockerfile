@@ -1,29 +1,23 @@
-# Start from the official Golang base image
-FROM golang:1.21-alpine as builder
+FROM golang:1.21.4-alpine3.18 AS builder
+WORKDIR /src
 
-# Set the Current Working Directory inside the container
-WORKDIR /root
+COPY go.mod go.sum ./
+RUN go mod download && go mod verify
 
-# Copy go mod and sum files
 COPY . .
+RUN go build -v -ldflags="-w -s" -o back cmd/main.go
 
-# Download all dependencies. Dependencies will be cached if the go.mod and go.sum files are not changed
-RUN go mod download
+FROM golang:1.21.4-alpine3.18
+WORKDIR /app
+RUN apk add --no-cache tzdata && \
+   apk --no-cache add curl && \
+   apk add busybox && \
+   addgroup -g 1000 -S appgroup && \
+   adduser -u 1000 -S appuser -G appgroup
 
-# Build the binary
-RUN go build -o back cmd/main.go
+COPY --from=builder /src/config.json .
+COPY --from=builder /src/back .
 
-# Start a new stage from scratch
-FROM alpine:latest
+RUN chmod +x /app/back && chown -R appuser:appgroup /app
 
-WORKDIR /root
-
-# Copy the Pre-built binary file from the previous stage
-COPY --from=builder /root/back .
-COPY --from=builder /root/config.json .
-
-# Expose port 8080 to the outside world
-EXPOSE 8080
-
-# Command to run the executable
-CMD ["./back"]
+USER appuser:appgroup
